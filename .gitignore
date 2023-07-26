@@ -1,0 +1,16 @@
+# environments
+.env
+.env.*
+!.env.example
+.venv
+.venv.*
+!.venv.example
+
+# own cookies
+resources/hugchat_cookies.json
+
+# outputs folder
+outputs
+
+# byte-compiled / optimized / DLL files
+__pycache__
