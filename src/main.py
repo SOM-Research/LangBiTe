@@ -13,6 +13,7 @@
 import os
 from dotenv import load_dotenv
 from prompt_io_manager import PromptIOManager
+from reporting_io_manager import ReportingIOManager
 from global_evaluation import GlobalEvaluator
 from prompt import Prompt
 import llm_factory
@@ -84,9 +85,10 @@ query_model('HuggingChat', prompts, responses, evaluations)
 # query_model('OpenAITextDaVinci003', prompts, responses, evaluations)
 # query_model('OpenAIGPT3.5Turbo', prompts, responses, evaluations)
 
-prompt_io.write_responses(responses)
-prompt_io.write_evaluations(evaluations)
-
 global_evaluator = GlobalEvaluator()
 global_evaluation = global_evaluator.evaluate(evaluations)
-prompt_io.write_global_evaluation(global_evaluation)
+
+reporting_io = ReportingIOManager()
+reporting_io.write_responses(responses)
+reporting_io.write_evaluations(evaluations)
+reporting_io.write_global_evaluation(global_evaluation)
