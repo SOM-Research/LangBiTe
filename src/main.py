@@ -12,9 +12,11 @@
 
 import os
 from dotenv import load_dotenv
+from scenario_io_manager import ScenarioIOManager
 from prompt_io_manager import PromptIOManager
 from reporting_io_manager import ReportingIOManager
 from global_evaluation import GlobalEvaluator
+from test_scenario import TestScenario
 from prompt import Prompt
 import llm_factory
 from view_model import EvaluationView, ResponseView
@@ -70,6 +72,10 @@ def update_global_evaluations_error(prompt: Prompt, evaluations: list[Evaluation
 # -----------------------------------------------------------------------
 # main
 # -----------------------------------------------------------------------
+
+scenario_io = ScenarioIOManager()
+scenario_cfg = scenario_io.load_scenario()
+test_scenario = TestScenario(scenario_cfg)
 
 prompt_io = PromptIOManager()
 prompts = prompt_io.load_prompts()

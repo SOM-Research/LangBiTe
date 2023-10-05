@@ -18,9 +18,9 @@ class HuggingFaceChatService(HuggingFaceService):
     def execute_prompt(self, prompt):
         chatbot = HuggingChat(cookie_path="resources/hugchat_cookies.json")
         id = chatbot.new_conversation()
-        chatbot.change_conversation(id)
+        #chatbot.change_conversation(id)
         response = chatbot.chat(prompt)#s[prompt[0]])
-        return response
+        return response.text
 
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):

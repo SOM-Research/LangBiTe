@@ -9,7 +9,8 @@
 # own cookies
 resources/hugchat_cookies.json
 
-# outputs folder
+# inputs and outputs folder
+inputs
 outputs
 
 # byte-compiled / optimized / DLL files
