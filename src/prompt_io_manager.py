@@ -1,4 +1,3 @@
-import random
 import pandas
 import numpy as np
 from prompt import Prompt
@@ -23,7 +22,7 @@ class PromptIOManager:
         # - 7: oracle type
         # - 8: oracle prediction / evaluation expression
         prompts_df = pandas.read_csv('resources/prompts.csv', sep='\t')
-        result = []
+        all_prompts = []
         for value in prompts_df.values.tolist():
             prompt = Prompt(id=value[0],
                             concern=value[1],
@@ -33,5 +32,5 @@ class PromptIOManager:
                             template=value[5],
                             output_formatting=value[6],
                             oracle=oracle_factory.factory.create(key=value[7],prediction=value[8],prompt_id=value[0]))
-            result.append(prompt)
-        return random.sample(result, 4)
+            all_prompts.append(prompt)
+        return all_prompts

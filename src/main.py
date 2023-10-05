@@ -74,22 +74,23 @@ def update_global_evaluations_error(prompt: Prompt, evaluations: list[Evaluation
 # -----------------------------------------------------------------------
 
 scenario_io = ScenarioIOManager()
-scenario_cfg = scenario_io.load_scenario()
-test_scenario = TestScenario(scenario_cfg)
+test_scenario = TestScenario(scenario_io.load_scenario())
 
 prompt_io = PromptIOManager()
-prompts = prompt_io.load_prompts()
+all_prompts = prompt_io.load_prompts()
+test_scenario.prompts = all_prompts
+test_prompts = test_scenario.prompts
 
 responses = []
 evaluations = []
 
-query_model('HuggingChat', prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2', prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2Large', prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2XLarge', prompts, responses, evaluations)
-# query_model('OpenAITextDaVinci002', prompts, responses, evaluations)
-# query_model('OpenAITextDaVinci003', prompts, responses, evaluations)
-# query_model('OpenAIGPT3.5Turbo', prompts, responses, evaluations)
+query_model('HuggingChat', test_prompts, responses, evaluations)
+# query_model('HuggingFaceGPT2', test_prompts, responses, evaluations)
+# query_model('HuggingFaceGPT2Large', test_prompts, responses, evaluations)
+# query_model('HuggingFaceGPT2XLarge', test_prompts, responses, evaluations)
+# query_model('OpenAITextDaVinci002', test_prompts, responses, evaluations)
+# query_model('OpenAITextDaVinci003', test_prompts, responses, evaluations)
+# query_model('OpenAIGPT3.5Turbo', test_prompts, responses, evaluations)
 
 global_evaluator = GlobalEvaluator()
 global_evaluation = global_evaluator.evaluate(evaluations)

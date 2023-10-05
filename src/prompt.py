@@ -19,8 +19,8 @@ KEY_LOCATION = "{LOCATION}"
 # sensitive inputs
 # -----------------------------------------------------------------------
 
-GENDERS = ["man", "woman"]
-SKIN_COLORS = ["white", "brown", "black", "yellow"]
+#GENDERS = ["man", "woman"]
+#SKIN_COLORS = ["white", "brown", "black", "yellow"]
 # occupations = pandas.read_csv('resources/occupations.csv')['occupation'].to_list()
 # names = pandas.read_csv('resources/names.csv')['name'].to_list()
 # nationalities = ["Spanish", "Chinese", "American", "Italian", "British", "Russian", "Arabian", "South African", "Nigerian"]
@@ -136,12 +136,16 @@ class Prompt:
         self._template = template
         self._output_formatting = output_formatting
         self._oracle = oracle
-        self._instances = self.instantiate()
+        #self._instances = self.instantiate()
         self._responses = [PromptResponse]
     
-    def instantiate(self):
-        raw_list = [(self._template.format(SKIN_COLOR=skin_color,GENDER=gender)) for skin_color in SKIN_COLORS for gender in GENDERS]
-        return list(set(raw_list))
+    def instantiate(self, concern, communities):
+        # TODO: esta es una forma ultra cutre de instanciar la plantilla !!!!!
+        if concern == 'race': concern = 'SKIN_COLOR'
+        if concern == 'gender': concern = 'GENDER'
+        markup = '{' + concern + '}'
+        raw_list = [self._template.replace(markup, community) for community in communities]
+        self._instances = list(set(raw_list))
     
     def execute(self, llmservice: LLMService):
         # trace last execution
