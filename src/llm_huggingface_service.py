@@ -1,6 +1,6 @@
 import json
 import requests
-from huggingchat import HuggingChat
+from huggingchat_broker import HuggingChatBroker
 from llm_service import LLMService
 
 
@@ -16,11 +16,12 @@ class HuggingFaceChatService(HuggingFaceService):
         self._model = 'HuggingChat'
     
     def execute_prompt(self, prompt):
-        chatbot = HuggingChat(cookie_path="resources/hugchat_cookies.json")
-        id = chatbot.new_conversation()
-        #chatbot.change_conversation(id)
-        response = chatbot.chat(prompt)#s[prompt[0]])
-        return response.text
+        chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json")
+        try:
+            response = chatbot.prompt(prompt)
+        except:
+            pass
+        return response
 
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
