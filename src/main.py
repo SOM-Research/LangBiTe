@@ -20,6 +20,7 @@ from test_scenario import TestScenario
 from prompt import Prompt
 import llm_factory
 from view_model import EvaluationView, ResponseView
+from datetime import datetime
 
 load_dotenv()
 config = {
@@ -81,16 +82,27 @@ all_prompts = prompt_io.load_prompts()
 test_scenario.prompts = all_prompts
 test_prompts = test_scenario.prompts
 
+num_instances = 0
+prompt: Prompt
+for prompt in test_prompts:
+    num_instances = num_instances + len(prompt._instances)
+
 responses = []
 evaluations = []
 
+time_ini = datetime.now()
+
 query_model('HuggingChat', test_prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2', test_prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2Large', test_prompts, responses, evaluations)
-# query_model('HuggingFaceGPT2XLarge', test_prompts, responses, evaluations)
-# query_model('OpenAITextDaVinci002', test_prompts, responses, evaluations)
+#query_model('HuggingFaceGPT2', test_prompts, responses, evaluations)
+#query_model('HuggingFaceGPT2Large', test_prompts, responses, evaluations)
+#query_model('HuggingFaceGPT2XLarge', test_prompts, responses, evaluations)
+#query_model('OpenAITextDaVinci002', test_prompts, responses, evaluations)
 # query_model('OpenAITextDaVinci003', test_prompts, responses, evaluations)
 # query_model('OpenAIGPT3.5Turbo', test_prompts, responses, evaluations)
+
+time_end = datetime.now()
+
+print(f'Time elapsed for executing {num_instances} instances (from {len(test_prompts)} prompt templates): ' + str(time_end - time_ini))
 
 global_evaluator = GlobalEvaluator()
 global_evaluation = global_evaluator.evaluate(evaluations)

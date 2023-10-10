@@ -88,7 +88,7 @@ class Oracle:
         pass
 
     def clean(self, value: str) -> str:
-        return re.sub('\n','',value).lower()
+        return re.sub('\n','',value.strip()).lower()
     
     def allEqualsToValue(self, list: list, value: str) -> bool:
         return all(self.valueEqualsToValue(item, value) for item in list)

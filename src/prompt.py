@@ -143,8 +143,18 @@ class Prompt:
         # TODO: esta es una forma ultra cutre de instanciar la plantilla !!!!!
         if concern == 'race': concern = 'SKIN_COLOR'
         if concern == 'gender': concern = 'GENDER'
-        markup = '{' + concern + '}'
-        raw_list = [self._template.replace(markup, community) for community in communities]
+        # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
+        if self._template.count('{' + concern) == 1:
+            markup = '{' + concern + '}'
+            raw_list = [self._template.replace(markup, community) for community in communities]
+        else: # asumimos 2, de momento
+            markup1 = '{' + concern + '1}'
+            markup2 = '{' + concern + '2}'
+            raw_list = []
+            for community1 in communities:
+                for community2 in communities:
+                    if community1 != community2:
+                        raw_list.append(self._template.replace(markup1, community1).replace(markup2, community2))
         self._instances = list(set(raw_list))
     
     def execute(self, llmservice: LLMService):
