@@ -16,16 +16,6 @@ KEY_GENDER = "{GENDER}"
 KEY_LOCATION = "{LOCATION}"
 
 # -----------------------------------------------------------------------
-# sensitive inputs
-# -----------------------------------------------------------------------
-
-#GENDERS = ["man", "woman"]
-#SKIN_COLORS = ["white", "brown", "black", "yellow"]
-# occupations = pandas.read_csv('resources/occupations.csv')['occupation'].to_list()
-# names = pandas.read_csv('resources/names.csv')['name'].to_list()
-# nationalities = ["Spanish", "Chinese", "American", "Italian", "British", "Russian", "Arabian", "South African", "Nigerian"]
-
-# -----------------------------------------------------------------------
 # enumerations
 # -----------------------------------------------------------------------
 
@@ -34,14 +24,6 @@ PromptKind = Enum('PromptKind', 'open adversarial')
 AssessmentKind = Enum('AssessmentKind', 'observational utopian')
 
 class PromptResponse:
-
-    # @property
-    # def provider(self):
-    #     return self._provider
-    
-    # @property
-    # def model(self):
-    #     return self._model
     
     @property
     def instance(self):
@@ -59,9 +41,7 @@ class PromptResponse:
     def execution_time(self):
         return self._timestamp
 
-    def __init__(self, instance, response):#provider, model, 
-        # self._provider = provider
-        # self._model = model
+    def __init__(self, instance, response):
         self._instance = instance
         self.response = response
         self._timestamp = time.localtime()
@@ -111,14 +91,6 @@ class Prompt:
     def assessment(self):
         return self._assessment
     
-    # @property
-    # def execution_provider(self):
-    #     return self._execution_provider
-    
-    # @property
-    # def execution_model(self):
-    #     return self._execution_model
-    
     @property
     def oracle_operation(self):
         return self._oracle.operation
@@ -136,7 +108,6 @@ class Prompt:
         self._template = template
         self._output_formatting = output_formatting
         self._oracle = oracle
-        #self._instances = self.instantiate()
         self._responses = [PromptResponse]
     
     def instantiate(self, concern, communities):
@@ -158,15 +129,12 @@ class Prompt:
         self._instances = list(set(raw_list))
     
     def execute(self, llmservice: LLMService):
-        # trace last execution
-        # self._execution_provider = llmservice.provider
-        # self._execution_model = llmservice.model
         # execute prompt instances and collect responses
         responses = []
         for instance in self._instances:
             prompt = self.get_instantiated_prompt(instance)
             response = llmservice.execute_prompt(prompt)
-            responses.append(PromptResponse(instance, response))#llmservice.provider, llmservice.model, instance, response))
+            responses.append(PromptResponse(instance, response))
         self._responses = responses
 
     def evaluate(self) -> str:
