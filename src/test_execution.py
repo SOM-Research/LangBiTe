@@ -35,9 +35,9 @@ class TestExecution:
         # self.__query_model('HuggingFaceGPT2')
         # self.__query_model('HuggingFaceGPT2Large')
         # self.__query_model('HuggingFaceGPT2XLarge')
-        self.__query_model('OpenAITextDaVinci002')
+        # self.__query_model('OpenAITextDaVinci002')
         # self.__query_model('OpenAITextDaVinci003')
-        # self.__query_model('OpenAIGPT35Turbo')
+        self.__query_model('OpenAIGPT35Turbo')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')

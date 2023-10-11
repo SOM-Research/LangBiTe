@@ -9,9 +9,10 @@
 # own cookies
 resources/hugchat_cookies.json
 
-# inputs and outputs folder
+# inputs and outputs folders
 inputs
 outputs
+reports
 
 # byte-compiled / optimized / DLL files
 __pycache__

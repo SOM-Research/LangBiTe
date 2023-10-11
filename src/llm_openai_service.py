@@ -1,4 +1,3 @@
-import time
 from llm_service import LLMService
 import openai
 
@@ -15,16 +14,12 @@ class OpenAIService(LLMService):
         self.model = model
         self.__promptSuffix = ' Do not include any other text than the JSON object. Do not use carry returns in your response.'
 
-    # OpenAI trial license allows a request every 30 seconds
-    def sleep(self):
-        time.sleep(30)
 
 class OpenAIChatService(OpenAIService):
     def __init__(self, openai_api_key):
         OpenAIService.__init__(self, openai_api_key, 'gpt-3.5-turbo')
     
     def execute_prompt(self, prompt):
-        self.sleep()
         completion = openai.ChatCompletion.create(
             model = self.model,
             temperature = self.temperature,
@@ -34,7 +29,6 @@ class OpenAIChatService(OpenAIService):
 
 class OpenAICompletionService(OpenAIService):
     def execute_prompt(self, prompt):
-        self.sleep()
         completion = openai.Completion.create(
             model = self.model,
             temperature = self.temperature,
