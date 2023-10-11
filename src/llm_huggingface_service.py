@@ -6,17 +6,17 @@ from llm_service import LLMService
 
 class HuggingFaceService(LLMService):
     def __init__(self, huggingface_api_key, model):
-        self._headers = {'Authorization': f'Bearer {huggingface_api_key}'}
-        self._provider = 'HuggingFace'
-        self._model = model
+        self.__headers = {'Authorization': f'Bearer {huggingface_api_key}'}
+        self.provider = 'HuggingFace'
+        self.model = model
 
 class HuggingFaceChatService(HuggingFaceService):
     def __init__(self, **ignored):
-        self._provider = 'HuggingFace'
-        self._model = 'HuggingChat'
+        self.provider = 'HuggingFace'
+        self.model = 'HuggingChat'
     
     def execute_prompt(self, prompt):
-        chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json")
+        chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json", temperature=self.temperature, tokens=self.tokens)
         try:
             response = chatbot.prompt(prompt)
         except:
@@ -26,5 +26,5 @@ class HuggingFaceChatService(HuggingFaceService):
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
         data = json.dumps(prompt)
-        response = requests.request('POST', self._model, headers=self._headers, data=data)
+        response = requests.request('POST', self.model, headers=self.__headers, data=data)
         return json.loads(response.content.decode("utf-8"))[0]['generated_text']

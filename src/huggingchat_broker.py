@@ -43,7 +43,7 @@ class HuggingChatBroker:
         self._session = value
 
 
-    def __init__(self, cookie_path: str = "") -> None:
+    def __init__(self, cookie_path: str = "", temperature=1, tokens=500) -> None:
         cookies = dict
         with open(cookie_path, "r", encoding='utf-8') as f:
             cookies = json.load(f)
@@ -54,6 +54,8 @@ class HuggingChatBroker:
         self.session = session
         self.model = 'meta-llama/Llama-2-70b-chat-hf'
         self.conversation = self.new_conversation()
+        self.temperature = temperature
+        self.tokens = tokens
 
     
     def new_conversation(self) -> str:
@@ -72,7 +74,11 @@ class HuggingChatBroker:
     def _stream_http_query(self, text: str):
 
         request = {
-            "inputs": text
+            "inputs": text,
+             "parameters": {
+                "temperature": self.temperature,
+                "max_new_tokens": self.tokens
+            },
         }
         headers = {
             "Origin": self.BASE_URL,

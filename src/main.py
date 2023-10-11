@@ -32,10 +32,9 @@ test_scenario = TestScenario(scenario_io.load_scenario())
 # TEST GENERATION
 
 prompt_io = PromptIOManager()
-all_prompts = prompt_io.load_prompts()
-test_scenario.prompts = all_prompts
-test_prompts = test_scenario.prompts
+test_scenario.prompts = prompt_io.load_prompts()
 
+test_prompts = test_scenario.prompts
 num_instances = 0
 prompt: Prompt
 for prompt in test_prompts:

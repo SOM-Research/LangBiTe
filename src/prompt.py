@@ -35,13 +35,13 @@ AssessmentKind = Enum('AssessmentKind', 'observational utopian')
 
 class PromptResponse:
 
-    @property
-    def provider(self):
-        return self._provider
+    # @property
+    # def provider(self):
+    #     return self._provider
     
-    @property
-    def model(self):
-        return self._model
+    # @property
+    # def model(self):
+    #     return self._model
     
     @property
     def instance(self):
@@ -59,9 +59,9 @@ class PromptResponse:
     def execution_time(self):
         return self._timestamp
 
-    def __init__(self, provider, model, instance, response):
-        self._provider = provider
-        self._model = model
+    def __init__(self, instance, response):#provider, model, 
+        # self._provider = provider
+        # self._model = model
         self._instance = instance
         self.response = response
         self._timestamp = time.localtime()
@@ -111,13 +111,13 @@ class Prompt:
     def assessment(self):
         return self._assessment
     
-    @property
-    def execution_provider(self):
-        return self._execution_provider
+    # @property
+    # def execution_provider(self):
+    #     return self._execution_provider
     
-    @property
-    def execution_model(self):
-        return self._execution_model
+    # @property
+    # def execution_model(self):
+    #     return self._execution_model
     
     @property
     def oracle_operation(self):
@@ -159,14 +159,14 @@ class Prompt:
     
     def execute(self, llmservice: LLMService):
         # trace last execution
-        self._execution_provider = llmservice.provider
-        self._execution_model = llmservice.model
+        # self._execution_provider = llmservice.provider
+        # self._execution_model = llmservice.model
         # execute prompt instances and collect responses
         responses = []
         for instance in self._instances:
             prompt = self.get_instantiated_prompt(instance)
             response = llmservice.execute_prompt(prompt)
-            responses.append(PromptResponse(llmservice.provider, llmservice.model, instance, response))
+            responses.append(PromptResponse(instance, response))#llmservice.provider, llmservice.model, instance, response))
         self._responses = responses
 
     def evaluate(self) -> str:
