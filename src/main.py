@@ -10,72 +10,26 @@
 # --- -------------------------------------------------------------------
 
 
-import os
-from dotenv import load_dotenv
 from scenario_io_manager import ScenarioIOManager
 from prompt_io_manager import PromptIOManager
 from reporting_io_manager import ReportingIOManager
 from global_evaluation import GlobalEvaluator
 from test_scenario import TestScenario
+from test_execution import TestExecution
 from prompt import Prompt
-import llm_factory
-from view_model import EvaluationView, ResponseView
 from datetime import datetime
-
-load_dotenv()
-config = {
-    'openai_api_key' : os.environ["API_KEY_OPENAI"],
-    'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"]
-}
-
-
-# -----------------------------------------------------------------------
-# query model functions
-# -----------------------------------------------------------------------
-
-def query_model(model: str, prompts: list[Prompt], responses: list, evaluations: list):
-    print(f'querying {model}...')
-    llmservice = llm_factory.factory.create(model, **config)
-    for prompt in prompts:
-        try:
-            prompt.execute(llmservice)
-            evaluation = prompt.evaluate()
-            update_global_responses(prompt, responses)
-            update_global_evaluations(prompt, evaluation, evaluations)
-        except:
-            update_global_responses_error(prompt, responses)
-            update_global_evaluations_error(prompt, evaluations)
-    print('done')
-
-
-# -----------------------------------------------------------------------
-# auxiliary functions
-# -----------------------------------------------------------------------
-
-def update_global_responses(prompt: Prompt, responses: list[ResponseView]):
-    if len(prompt.responses) == 0:
-        responses.append(ResponseView(prompt.execution_provider, prompt.execution_model, 'Template: ' + prompt.template, 'No response provided'))
-    else:
-        for prompt_response in prompt.responses:
-            responses.append(ResponseView(prompt_response.provider, prompt_response.model, prompt_response.instance, prompt_response.response))
-
-def update_global_evaluations(prompt: Prompt, evaluation: str, evaluations: list[EvaluationView]):
-    evaluations.append(EvaluationView(prompt.execution_provider, prompt.execution_model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
-
-def update_global_responses_error(prompt: Prompt, responses: list[ResponseView]):
-    for prompt_response in prompt.responses:
-        responses.append(ResponseView(prompt_response.provider, prompt_response.model, prompt_response.instance, 'ERROR'))
-
-def update_global_evaluations_error(prompt: Prompt, evaluations: list[EvaluationView]):
-    evaluations.append(EvaluationView(prompt.execution_provider, prompt.execution_model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR'))
 
 
 # -----------------------------------------------------------------------
 # main
 # -----------------------------------------------------------------------
 
+# TEST SCENARIO
+
 scenario_io = ScenarioIOManager()
 test_scenario = TestScenario(scenario_io.load_scenario())
+
+# TEST GENERATION
 
 prompt_io = PromptIOManager()
 all_prompts = prompt_io.load_prompts()
@@ -87,22 +41,20 @@ prompt: Prompt
 for prompt in test_prompts:
     num_instances = num_instances + len(prompt._instances)
 
-responses = []
-evaluations = []
+# TEST EXECUTION AND EVALUATION
 
 time_ini = datetime.now()
 
-query_model('HuggingChat', test_prompts, responses, evaluations)
-#query_model('HuggingFaceGPT2', test_prompts, responses, evaluations)
-#query_model('HuggingFaceGPT2Large', test_prompts, responses, evaluations)
-#query_model('HuggingFaceGPT2XLarge', test_prompts, responses, evaluations)
-#query_model('OpenAITextDaVinci002', test_prompts, responses, evaluations)
-# query_model('OpenAITextDaVinci003', test_prompts, responses, evaluations)
-# query_model('OpenAIGPT3.5Turbo', test_prompts, responses, evaluations)
+transaction = TestExecution(test_scenario)
+transaction.execute_scenario()
+responses = transaction.responses
+evaluations = transaction.evaluations
 
 time_end = datetime.now()
 
 print(f'Time elapsed for executing {num_instances} instances (from {len(test_prompts)} prompt templates): ' + str(time_end - time_ini))
+
+# TEST REPORTING
 
 global_evaluator = GlobalEvaluator()
 global_evaluation = global_evaluator.evaluate(evaluations)
