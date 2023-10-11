@@ -12,4 +12,4 @@ factory.register_builder('HuggingChat', HuggingFaceChatServiceBuilder())
 
 factory.register_builder('OpenAITextDaVinci002', OpenAIServiceBuilder('text-davinci-002'))
 factory.register_builder('OpenAITextDaVinci003', OpenAIServiceBuilder('text-davinci-003'))
-factory.register_builder('OpenAIGPT3.5Turbo', OpenAIChatServiceBuilder())
+factory.register_builder('OpenAIGPT35Turbo', OpenAIChatServiceBuilder())

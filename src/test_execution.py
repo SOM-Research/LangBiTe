@@ -28,15 +28,15 @@ class TestExecution:
         }
     
     def execute_scenario(self):
-        # for model in self.__scenario.models:
-        #     self.__query_model(model)
-        self.__query_model('HuggingChat')
+        for model in self.__scenario.models:
+            self.__query_model(model)
+        # self.__query_model('HuggingChat')
         # self.__query_model('HuggingFaceGPT2')
         # self.__query_model('HuggingFaceGPT2Large')
         # self.__query_model('HuggingFaceGPT2XLarge')
         # self.__query_model('OpenAITextDaVinci002')
         # self.__query_model('OpenAITextDaVinci003')
-        # self.__query_model('OpenAIGPT3.5Turbo')
+        # self.__query_model('OpenAIGPT35Turbo')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
