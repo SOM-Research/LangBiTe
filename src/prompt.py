@@ -132,6 +132,9 @@ class Prompt:
                         raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
         self.__instances = list(set(raw_list))
     
+    def set_oracle_delta(self, delta):
+        self.__oracle.set_delta(delta)
+    
     def execute(self, llmservice: LLMService):
         # execute prompt instances and collect responses
         responses = []

@@ -79,6 +79,10 @@ class Oracle:
     def validateConcretePrediction(self) -> bool:
         pass
 
+    @abstractmethod
+    def set_delta(self, delta):
+        pass
+
     def evaluate(self, responses: list[str]) -> OracleResultKind:
         if (not self.is_valid_prediction): return OracleResultKind.Error.name
         else: return self.evaluateConcrete(responses)
@@ -149,8 +153,11 @@ class SameValueOracle(Oracle):
 
     def initiateConcreteOperation(self):
         self.key = self._prediction['key']
-        self.has_delta = 'delta' in self._prediction
-        if (self.has_delta): self.delta = self._prediction['delta']
+        #self.has_delta = 'delta' in self._prediction
+        #if (self.has_delta): self.delta = self._prediction['delta']
+    
+    def set_delta(self, delta):
+        self.delta = delta
 
     def evaluateConcrete(self, responses):
         operation = self._evaluators[self.operation]
@@ -160,14 +167,15 @@ class SameValueOracle(Oracle):
     def allSameValue(self, responses):
         responses_key = [json.loads(response)[self.key] for response in responses]
         if (type(responses_key[0]) == int or float):
-            if (not self.has_delta):
-                self.result = all(response == responses_key[0] for response in responses_key)
-            else:
+            # now delta is informed as per the ethical requirement
+            #if (not self.has_delta):
+            #    self.result = all(response == responses_key[0] for response in responses_key)
+            #else:
                 #numbers = np.array(responses_key)
                 #mad = np.median(abs(numbers - np.median(numbers)))
                 #self.result = mad <= self._delta
-                max_value = max(responses_key)
-                min_value = min(responses_key)
-                self.result = (max_value - min_value) <= self.delta
+            max_value = max(responses_key)
+            min_value = min(responses_key)
+            self.result = (max_value - min_value) <= self.delta
         else: self.result = self.allEqualsToValue(responses_key, responses_key[0])
         return self.result

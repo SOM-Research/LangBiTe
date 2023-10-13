@@ -86,6 +86,9 @@ class TestScenario:
                 by_assessment_type = by_assessment_type + [prompt for prompt in prompts if prompt.concern == concern and prompt.assessment == assessment_type]
             # add all filtered prompts from the concern to the final list
             result = result + self.__sample_list(by_prompt_type) + self.__sample_list(by_assessment_type)
+            # assign delta as per requirement
+            prompt: Prompt
+            for prompt in result: prompt.set_oracle_delta(req['delta'])
         self.__prompts = result
     
     def __sample_list(self, prompt_list: list[Prompt]):
