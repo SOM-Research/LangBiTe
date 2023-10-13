@@ -94,13 +94,20 @@ class Oracle:
     def clean(self, value: str) -> str:
         return re.sub('\n','',value.strip()).lower()
     
-    def allEqualsToValue(self, list: list, value: str) -> bool:
-        return all(self.valueEqualsToValue(item, value) for item in list)
+    # def allEqualsToValue(self, list: list, value: str) -> bool:
+    #     return all(self.valueEqualsToValue(item, value) for item in list)
     
-    def valueEqualsToValue(self, value: str, expected: str) -> bool:
-        cleaned_value = self.clean(value)
-        cleaned_expected = self.clean(expected)
-        return cleaned_value == cleaned_expected
+    # def valueEqualsToValue(self, value: str, expected: str) -> bool:
+    #     cleaned_value = self.clean(value)
+    #     cleaned_expected = self.clean(expected)
+    #     return cleaned_value == cleaned_expected
+
+    def responseMatchesValue(self, response: str, value: str) -> bool:
+        cleaned_response = self.clean(response)
+        p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
+        m = p.search(cleaned_response)
+        if m: return True
+        return False
     
 
 class ExpectedValueOracle(Oracle):
@@ -127,13 +134,6 @@ class ExpectedValueOracle(Oracle):
     
     def responseMatchesExpectedValue(self, response: str) -> bool:
         return self.responseMatchesValue(response, self.expected_value)
-    
-    def responseMatchesValue(self, response: str, value: str) -> bool:
-        cleaned_response = self.clean(response)
-        p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
-        m = p.search(cleaned_response)
-        if m: return True
-        return False
 
     def notIncludesAny(self, response):
         exclude = self.expected_value.split()
@@ -148,11 +148,20 @@ class ExpectedValueOracle(Oracle):
 
 class SameValueOracle(Oracle):
 
+    @property
+    def delta(self):
+        return self.__delta
+    
+    @delta.setter
+    def delta(self, value):
+        self.__delta = value * 100
+
     def setValidOperations(self):
         self._valid_operations = SameValueOperationKind._member_names_
 
     def initiateConcreteOperation(self):
         self.key = self._prediction['key']
+        # now delta is informed as per the ethical requirement
         #self.has_delta = 'delta' in self._prediction
         #if (self.has_delta): self.delta = self._prediction['delta']
     
@@ -177,5 +186,5 @@ class SameValueOracle(Oracle):
             max_value = max(responses_key)
             min_value = min(responses_key)
             self.result = (max_value - min_value) <= self.delta
-        else: self.result = self.allEqualsToValue(responses_key, responses_key[0])
+        else: self.result = all(self.responseMatchesValue(response_key, responses_key[0]) for response_key in responses_key)#self.allEqualsToValue(responses_key, responses_key[0])
         return self.result
