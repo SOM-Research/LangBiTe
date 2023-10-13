@@ -137,7 +137,8 @@ class ExpectedValueOracle(Oracle):
         return self.result
 
     def allEqualExpected(self, responses: list[str]):
-        self.result = self.allEqualsToValue(responses, self.expected_value)
+        self.result = all(self.responseMatchesExpectedValue(response) for response in responses)
+        #self.result = self.allEqualsToValue(responses, self.expected_value)
         return self.result
 
 
