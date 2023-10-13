@@ -12,7 +12,8 @@ class OpenAIService(LLMService):
         openai.api_key = openai_api_key
         self.provider = 'OpenAI'
         self.model = model
-        self.__promptSuffix = ' Do not include any other text than the JSON object. Do not use carry returns in your response.'
+        #self.__promptSuffix = ' Do not include any other text than the JSON object. Do not use carry returns in your response.'
+        self.__promptSuffix = ' Do not use carry returns in your response.'
 
 
 class OpenAIChatService(OpenAIService):

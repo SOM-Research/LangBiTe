@@ -26,98 +26,102 @@ AssessmentKind = Enum('AssessmentKind', 'observational utopian')
 class PromptResponse:
     
     @property
-    def instance(self):
-        return self._instance
+    def instance(self) -> str:
+        return self.__instance
     
     @property
-    def response(self):
-        return self._response
+    def response(self) -> str:
+        return self.__response
     
     @response.setter
-    def response(self, value):
-        self._response = re.sub('\n','',value).lower()
+    def response(self, value: str):
+        self.__response = re.sub('\n','',value.strip()).lower()
     
     @property
     def execution_time(self):
-        return self._timestamp
+        return self.__timestamp
 
     def __init__(self, instance, response):
-        self._instance = instance
+        self.__instance = instance
         self.response = response
-        self._timestamp = time.localtime()
+        self.__timestamp = time.localtime()
 
 class Prompt:
     
-    prompt_delimiter = f'"""'
+    __prompt_delimiter = f'"""'
 
     @property
     def prompt_id(self):
-        return self._id
+        return self.__id
+    
+    @property
+    def instances(self) -> list[str]:
+        return self.__instances
     
     @property
     def responses(self) -> list[PromptResponse]:
-        return self._responses
+        return self.__responses
     
     @property
     def responses_text(self) -> list[str]:
-        return list(response.response for response in self._responses)
+        return list(response.response for response in self.responses)
     
     @property
     def task_prefix(self):
-        return self._task_prefix
+        return self.__task_prefix
     
     @task_prefix.setter
     def task_prefix(self, value):
-        if value is not None: self._task_prefix = f'{value} The sentence is delimited by {self.prompt_delimiter}.'
-        else: self._task_prefix = None
+        if value is not None: self.__task_prefix = f'{value} The sentence is delimited by {self.__prompt_delimiter}.'
+        else: self.__task_prefix = None
     
     @property
     def has_prefix(self):
-        return self._task_prefix is not None
+        return self.__task_prefix is not None
     
     @property
-    def template(self):
-        return self._template
+    def template(self) -> str:
+        return self.__template
     
     @property
     def concern(self):
-        return self._concern
+        return self.__concern
     
     @property
     def type(self):
-        return self._type
+        return self.__type
     
     @property
     def assessment(self):
-        return self._assessment
+        return self.__assessment
     
     @property
     def oracle_operation(self):
-        return self._oracle.operation
+        return self.__oracle.operation
     
     @property
     def oracle_prediction(self):
-        return self._oracle.expected_value
+        return self.__oracle.expected_value
             
     def __init__(self, id, concern: ConcernKind, type: PromptKind, assessment: AssessmentKind, task_prefix, template, output_formatting, oracle: Oracle):
-        self._id = id
-        self._concern = concern
-        self._type = type
-        self._assessment = assessment
+        self.__id = id
+        self.__concern = concern
+        self.__type = type
+        self.__assessment = assessment
         self.task_prefix = task_prefix
-        self._template = template
-        self._output_formatting = output_formatting
-        self._oracle = oracle
-        self._responses = [PromptResponse]
+        self.__template = template
+        self.__output_formatting = output_formatting
+        self.__oracle = oracle
+        self.__responses = [PromptResponse]
     
     def instantiate(self, concern, communities):
         # TODO: esta es una forma ultra cutre de instanciar la plantilla !!!!!
         if concern == 'race': concern = 'SKIN_COLOR'
         if concern == 'gender': concern = 'GENDER'
         # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
-        if self._template.count('{' + concern) == 1:
+        if self.template.count('{' + concern) == 1:
             markup = '{' + concern + '}'
-            raw_list = [self._template.replace(markup, community) for community in communities]
+            raw_list = [self.template.replace(markup, community) for community in communities]
         else: # asumimos 2, de momento
             markup1 = '{' + concern + '1}'
             markup2 = '{' + concern + '2}'
@@ -125,26 +129,26 @@ class Prompt:
             for community1 in communities:
                 for community2 in communities:
                     if community1 != community2:
-                        raw_list.append(self._template.replace(markup1, community1).replace(markup2, community2))
-        self._instances = list(set(raw_list))
+                        raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
+        self.__instances = list(set(raw_list))
     
     def execute(self, llmservice: LLMService):
         # execute prompt instances and collect responses
         responses = []
-        for instance in self._instances:
-            prompt = self.get_instantiated_prompt(instance)
+        for instance in self.instances:
+            prompt = self.__get_instantiated_prompt(instance)
             response = llmservice.execute_prompt(prompt)
             responses.append(PromptResponse(instance, response))
-        self._responses = responses
+        self.__responses = responses
 
     def evaluate(self) -> str:
         #if (self._responses is None or self._oracle is None): return "none"
-        result = self._oracle.evaluate(self.responses_text)
+        result = self.__oracle.evaluate(self.responses_text)
         return result
     
-    def get_instantiated_prompt(self, instance) -> str:
+    def __get_instantiated_prompt(self, instance) -> str:
         if self.has_prefix:
-                prompt = f'{self.task_prefix} {self.prompt_delimiter}{instance}{self.prompt_delimiter}. {self._output_formatting}'
+                prompt = f'{self.task_prefix} {self.__prompt_delimiter}{instance}{self.__prompt_delimiter}. {self.__output_formatting}'
         else:
-            prompt = f'{instance} {self._output_formatting}'
+            prompt = f'{instance} {self.__output_formatting}'
         return prompt

@@ -38,7 +38,7 @@ test_prompts = test_scenario.prompts
 num_instances = 0
 prompt: Prompt
 for prompt in test_prompts:
-    num_instances = num_instances + len(prompt._instances)
+    num_instances = num_instances + len(prompt.instances)
 
 # TEST EXECUTION AND EVALUATION
 
@@ -56,7 +56,7 @@ print(f'Time elapsed for executing {num_instances} instances (from {len(test_pro
 # TEST REPORTING
 
 global_evaluator = GlobalEvaluator()
-global_evaluation = global_evaluator.evaluate(evaluations)
+global_evaluation = global_evaluator.evaluate(evaluations, test_scenario.ethical_requirements)
 
 reporting_io = ReportingIOManager()
 reporting_io.write_responses(responses)
