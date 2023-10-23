@@ -107,6 +107,7 @@ class GlobalEvaluator:
         df['Tolerance Evaluation'] = df.apply(lambda row: self.__evaluate(tolerances[row.Concern], row.PassedNr, row.FailedNr), axis=1)
     
     def __evaluate(self, tolerance, passednr, failednr) -> str:
+        if ((passednr + failednr) == 0): return 'Not evaluated'
         if (tolerance <= (passednr / (passednr + failednr))): return 'Passed'
         return 'Failed'
     

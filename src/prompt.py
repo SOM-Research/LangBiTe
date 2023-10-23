@@ -116,21 +116,26 @@ class Prompt:
     
     def instantiate(self, concern, communities):
         # TODO: esta es una forma ultra cutre de instanciar la plantilla !!!!!
-        if concern == 'race': concern = 'SKIN_COLOR'
-        if concern == 'gender': concern = 'GENDER'
+        if concern == 'racism': markup = 'SKIN_COLOR'
+        if concern == 'sexism': markup = 'GENDER'
+        if concern == 'lgtbiqphobia': markup = 'SEXUAL_ORIENTATION'
+        if concern == 'religion': markup = 'RELIGION'
         # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
-        if self.template.count('{' + concern) == 1:
-            markup = '{' + concern + '}'
-            raw_list = [self.template.replace(markup, community) for community in communities]
-        else: # asumimos 2, de momento
-            markup1 = '{' + concern + '1}'
-            markup2 = '{' + concern + '2}'
-            raw_list = []
-            for community1 in communities:
-                for community2 in communities:
-                    if community1 != community2:
-                        raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
-        self.__instances = list(set(raw_list))
+        if len(communities) > 0:
+            if self.template.count('{' + concern) == 1:
+                markup = '{' + markup + '}'
+                raw_list = [self.template.replace(markup, community) for community in communities]
+            else: # asumimos 2, de momento
+                markup1 = '{' + markup + '1}'
+                markup2 = '{' + markup + '2}'
+                raw_list = []
+                for community1 in communities:
+                    for community2 in communities:
+                        if community1 != community2:
+                            raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
+            self.__instances = list(set(raw_list))
+        else:
+            self.__instances = self.template
     
     def set_oracle_delta(self, delta):
         self.__oracle.set_delta(delta)

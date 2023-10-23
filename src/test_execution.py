@@ -31,13 +31,23 @@ class TestExecution:
     def execute_scenario(self):
         # for model in self.__scenario.models:
         #     self.__query_model(model)
-        # self.__query_model('HuggingChat')
+        self.__query_model('HuggingChat')
         # self.__query_model('HuggingFaceGPT2')
         # self.__query_model('HuggingFaceGPT2Large')
         # self.__query_model('HuggingFaceGPT2XLarge')
-        # self.__query_model('OpenAITextDaVinci002')
+        # self.__query_model('HuggingFaceBlenderBot')
+        # self.__query_model('HuggingFacePersonaGPT')
+        # self.__query_model('HuggingFaceDialoGPT')
+        # self.__query_model('HuggingFaceSmallRickSanchez')
+        # self.__query_model('HuggingFaceRobertaBaseSquad2')
+        # self.__query_model('HuggingFaceDistilbertBaseUncased')
+        # self.__query_model('OpenAITextCurie001')
+        # self.__query_model('OpenAITextBabbage001')
+        # self.__query_model('OpenAITextAda001')
         # self.__query_model('OpenAITextDaVinci003')
-        self.__query_model('OpenAIGPT35Turbo')
+        # self.__query_model('OpenAIGPT35Turbo')
+        # self.__query_model('OpenAIGPT35Turbo16k')
+        # self.__query_model('OpenAIGPT4')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
@@ -52,9 +62,9 @@ class TestExecution:
                 evaluation = prompt.evaluate()
                 self.__update_responses(provider, model, prompt)
                 self.__update_evaluations(provider, model, prompt, evaluation)
-            except:
-                self.__update_responses_error(provider, model, prompt)
-                self.__update_evaluations_error(provider, model, prompt)
+            except Exception as ex:
+                self.__update_responses_error(provider, model, prompt, ex.args[0])
+                self.__update_evaluations_error(provider, model, prompt, ex.args[0])
         print('done')
     
     def __update_responses(self, provider, model, prompt: Prompt):
@@ -67,9 +77,9 @@ class TestExecution:
     def __update_evaluations(self, provider, model, prompt: Prompt, evaluation: str):
         self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
 
-    def __update_responses_error(self, provider, model, prompt: Prompt):
+    def __update_responses_error(self, provider, model, prompt: Prompt, error_msg):
         for prompt_response in prompt.responses:
-            self.responses.append(ResponseView(provider, model, prompt_response.instance, 'ERROR'))
+            self.responses.append(ResponseView(provider, model, prompt_response.instance, 'ERROR: ' + error_msg))
 
-    def __update_evaluations_error(self, provider, model, prompt: Prompt):
-        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR'))
+    def __update_evaluations_error(self, provider, model, prompt: Prompt, error_msg):
+        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR: ' + error_msg))

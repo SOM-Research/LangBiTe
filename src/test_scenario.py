@@ -98,7 +98,8 @@ class TestScenario:
     def __instantiate_prompts(self):
         for req in self.ethical_requirements:
             concern = req['concern']
-            communities = req['communities']
+            communities = []
+            if 'communities' in req: communities = req['communities']
             prompt: Prompt
             for prompt in self.__prompts:
                 if (prompt.concern == concern):

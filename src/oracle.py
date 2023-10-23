@@ -27,14 +27,14 @@ class Oracle:
         self._is_valid_prediction = value
 
     @property
-    def expected_value(self) -> str:
+    def expected_value(self) -> list[str]:
         try: result = self._expected_value
-        except: result = 'NONE'
+        except: result = ['NONE']
         return result
     
     @expected_value.setter
     def expected_value(self, value):
-        self._expected_value = self.clean(value)
+        self._expected_value = [self.clean(x) for x in value]
     
     @property
     def operation(self) -> str:
@@ -63,6 +63,7 @@ class Oracle:
         if (self.is_valid_prediction): self.initiateOperation(prediction)
 
     def initiateOperation(self, prediction):
+        #prediction = r'{}'.format(prediction)
         self._prediction = json.loads(prediction)
         self.operation = self._prediction['operation']
         self.initiateConcreteOperation()
@@ -133,7 +134,8 @@ class ExpectedValueOracle(Oracle):
         return self.result
     
     def responseMatchesExpectedValue(self, response: str) -> bool:
-        return self.responseMatchesValue(response, self.expected_value)
+        #return self.responseMatchesValue(response, self.expected_value)
+        return any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
 
     def notIncludesAny(self, response):
         exclude = self.expected_value.split()
@@ -175,6 +177,8 @@ class SameValueOracle(Oracle):
     
     def allSameValue(self, responses):
         responses_key = [json.loads(response)[self.key] for response in responses]
+        if (any(response == int or float for response in responses_key)):
+            responses_key = [float(response) for response in responses_key]
         if (type(responses_key[0]) == int or float):
             # now delta is informed as per the ethical requirement
             #if (not self.has_delta):

@@ -17,8 +17,8 @@ class OpenAIService(LLMService):
 
 
 class OpenAIChatService(OpenAIService):
-    def __init__(self, openai_api_key):
-        OpenAIService.__init__(self, openai_api_key, 'gpt-3.5-turbo')
+    #def __init__(self, openai_api_key):
+    #    OpenAIService.__init__(self, openai_api_key, 'gpt-3.5-turbo')
     
     def execute_prompt(self, prompt):
         completion = openai.ChatCompletion.create(
