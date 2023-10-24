@@ -23,6 +23,12 @@ factory.register_builder('OpenAITextBabbage001', OpenAIServiceBuilder('text-babb
 factory.register_builder('OpenAITextAda001', OpenAIServiceBuilder('text-ada-001'))
 factory.register_builder('OpenAITextDaVinci003', OpenAIServiceBuilder('text-davinci-003'))
 
+factory.register_builder('OpenAIGPT35Turbo0301', OpenAIChatServiceBuilder('gpt-3.5-turbo-0301')) # snapshot March 1st, 2023
+factory.register_builder('OpenAIGPT35Turbo0613', OpenAIChatServiceBuilder('gpt-3.5-turbo-0613')) # snapshot June 13th, 2023
+
+factory.register_builder('OpenAIGPT40314', OpenAIChatServiceBuilder('gpt-4-0314')) # snapshot March 14th, 2023
+factory.register_builder('OpenAIGPT40613', OpenAIChatServiceBuilder('gpt-4-0613')) # snapshot June 13th, 2023
+
 factory.register_builder('OpenAIGPT35Turbo', OpenAIChatServiceBuilder('gpt-3.5-turbo'))
 factory.register_builder('OpenAIGPT35Turbo16k', OpenAIChatServiceBuilder('gpt-3.5-turbo-16k'))
 factory.register_builder('OpenAIGPT4', OpenAIChatServiceBuilder('gpt-4'))

@@ -5,6 +5,7 @@ from llm_service import LLMService
 from dotenv import load_dotenv
 import os
 from view_model import EvaluationView, ResponseView
+import time
 
 class TestExecution:
 
@@ -44,10 +45,14 @@ class TestExecution:
         # self.__query_model('OpenAITextCurie001')
         # self.__query_model('OpenAITextBabbage001')
         # self.__query_model('OpenAITextAda001')
-        # self.__query_model('OpenAITextDaVinci003')
-        # self.__query_model('OpenAIGPT35Turbo')
+        self.__query_model('OpenAITextDaVinci003')
+        self.__query_model('OpenAIGPT35Turbo0301')
+        self.__query_model('OpenAIGPT35Turbo0613')
+        self.__query_model('OpenAIGPT35Turbo')
         # self.__query_model('OpenAIGPT35Turbo16k')
-        # self.__query_model('OpenAIGPT4')
+        self.__query_model('OpenAIGPT40314')
+        self.__query_model('OpenAIGPT40613')
+        self.__query_model('OpenAIGPT4')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
@@ -65,6 +70,7 @@ class TestExecution:
             except Exception as ex:
                 self.__update_responses_error(provider, model, prompt, ex.args[0])
                 self.__update_evaluations_error(provider, model, prompt, ex.args[0])
+                time.sleep(10) # sleep for 10 seconds to allow the model to restore
         print('done')
     
     def __update_responses(self, provider, model, prompt: Prompt):
@@ -73,6 +79,7 @@ class TestExecution:
         else:
             for prompt_response in prompt.responses:
                 self.responses.append(ResponseView(provider, model, prompt_response.instance, prompt_response.response))
+                # print(f'{prompt_response.instance}: {prompt_response.response}')
 
     def __update_evaluations(self, provider, model, prompt: Prompt, evaluation: str):
         self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
@@ -80,6 +87,7 @@ class TestExecution:
     def __update_responses_error(self, provider, model, prompt: Prompt, error_msg):
         for prompt_response in prompt.responses:
             self.responses.append(ResponseView(provider, model, prompt_response.instance, 'ERROR: ' + error_msg))
+            # print(f'{prompt_response.instance}: ERROR - {error_msg}')
 
     def __update_evaluations_error(self, provider, model, prompt: Prompt, error_msg):
         self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR: ' + error_msg))

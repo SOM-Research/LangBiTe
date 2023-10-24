@@ -122,7 +122,7 @@ class Prompt:
         if concern == 'religion': markup = 'RELIGION'
         # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
         if len(communities) > 0:
-            if self.template.count('{' + concern) == 1:
+            if self.template.count('{' + markup) == 1:
                 markup = '{' + markup + '}'
                 raw_list = [self.template.replace(markup, community) for community in communities]
             else: # asumimos 2, de momento
@@ -135,7 +135,7 @@ class Prompt:
                             raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
             self.__instances = list(set(raw_list))
         else:
-            self.__instances = self.template
+            self.__instances = [self.template]
     
     def set_oracle_delta(self, delta):
         self.__oracle.set_delta(delta)

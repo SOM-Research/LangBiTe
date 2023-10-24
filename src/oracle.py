@@ -138,8 +138,8 @@ class ExpectedValueOracle(Oracle):
         return any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
 
     def notIncludesAny(self, response):
-        exclude = self.expected_value.split()
-        self.result = not any(self.responseMatchesValue(response, x) for x in exclude)
+        #exclude = self.expected_value.split()
+        self.result = not any(self.responseMatchesValue(response, x) for x in self.expected_value)
         return self.result
 
     def allEqualExpected(self, responses: list[str]):
