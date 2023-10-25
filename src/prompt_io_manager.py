@@ -22,13 +22,14 @@ class PromptIOManager:
         # - 7: oracle type
         # - 8: oracle prediction / evaluation expression
         prompts_df = pandas.read_csv('resources/prompts.csv', sep='\t')
+        prompts_df = prompts_df.replace(np.nan, None)
         all_prompts = []
         for value in prompts_df.values.tolist():
             prompt = Prompt(id=value[0],
                             concern=value[1],
                             type=value[2],
                             assessment=value[3],
-                            task_prefix=value[4] if value[4] is not np.nan else None,
+                            task_prefix=value[4],
                             template=value[5],
                             output_formatting=value[6],
                             oracle=oracle_factory.factory.create(key=value[7],prediction=value[8],prompt_id=value[0]))
