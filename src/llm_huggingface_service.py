@@ -58,9 +58,13 @@ class HuggingFaceChatService(HuggingFaceService):
     
     def execute_prompt(self, prompt):
         chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json", temperature=self.temperature, tokens=self.tokens)
-        try:
-            response = chatbot.prompt(prompt)
-            time.sleep(10) # often the service complains of too many messages
-        except Exception as ex:
-            raise Exception('ERROR: ' + ex.args[0])
+        n_attempts = 3
+        while n_attempts > 0:
+            try:
+                response = chatbot.prompt(prompt)
+                # time.sleep(5) # often the service complains of too many messages
+                break
+            except Exception as ex:
+                n_attempts = n_attempts - 1
+                if (n_attempts == 0): raise Exception('ERROR: ' + ex.args[0])
         return response
