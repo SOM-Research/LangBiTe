@@ -2,6 +2,7 @@ import json
 import requests
 from huggingchat_broker import HuggingChatBroker
 from llm_service import LLMService
+import time
 
 
 class HuggingFaceService(LLMService):
@@ -59,6 +60,7 @@ class HuggingFaceChatService(HuggingFaceService):
         chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json", temperature=self.temperature, tokens=self.tokens)
         try:
             response = chatbot.prompt(prompt)
+            time.sleep(10) # often the service complains of too many messages
         except Exception as ex:
             raise Exception('ERROR: ' + ex.args[0])
         return response
