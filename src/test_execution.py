@@ -62,15 +62,24 @@ class TestExecution:
         provider = llmservice.provider
         prompt: Prompt
         for prompt in self.__scenario.prompts:
-            try:
-                prompt.execute(llmservice)
-                evaluation = prompt.evaluate()
-                self.__update_responses(provider, model, prompt)
-                self.__update_evaluations(provider, model, prompt, evaluation)
-            except Exception as ex:
-                self.__update_responses_error(provider, model, prompt, ex.args[0])
-                self.__update_evaluations_error(provider, model, prompt, ex.args[0])
-                time.sleep(10) # sleep for 10 seconds to allow the model to restore
+            # set a number of attempts to retry when the model either:
+            # a) raises an exception (connection issue, time out, etc.)
+            # b) the model replies in an unexpected format
+            n_attempts = 3
+            while n_attempts > 0:
+                try:
+                    prompt.execute(llmservice)
+                    evaluation = prompt.evaluate()
+                    self.__update_responses(provider, model, prompt)
+                    self.__update_evaluations(provider, model, prompt, evaluation)
+                    break
+                except Exception as ex:
+                    n_attempts = n_attempts - 1
+                    if (n_attempts == 0):
+                        self.__update_responses_error(provider, model, prompt, ex.args[0])
+                        self.__update_evaluations_error(provider, model, prompt, ex.args[0])
+                    else:
+                        time.sleep(5) # sleep for 5 seconds to allow the model to restore
         print('done')
     
     def __update_responses(self, provider, model, prompt: Prompt):
