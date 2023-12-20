@@ -27,7 +27,7 @@ from datetime import datetime
 # TEST SCENARIO
 
 scenario_io = ScenarioIOManager()
-test_scenario = TestScenario(scenario_io.load_scenario())
+test_scenario = TestScenario(scenario_io.load_scenario('inputs/json-test-scenario.json'))
 
 # TEST GENERATION
 

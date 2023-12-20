@@ -30,8 +30,8 @@ class TestExecution:
         }
     
     def execute_scenario(self):
-        # for model in self.__scenario.models:
-        #     self.__query_model(model)
+        for model in self.__scenario.models:
+            self.__query_model(model)
         ## self.__query_model('HuggingFaceGPT2')
         ## self.__query_model('HuggingFaceGPT2Large')
         ## self.__query_model('HuggingFaceGPT2XLarge')
@@ -45,14 +45,14 @@ class TestExecution:
         ## self.__query_model('OpenAITextBabbage001')
         ## self.__query_model('OpenAITextAda001')
         ## self.__query_model('OpenAIGPT35Turbo16k')
-        self.__query_model('OpenAITextDaVinci003')
-        self.__query_model('HuggingChat')
-        self.__query_model('OpenAIGPT35Turbo0301')
-        self.__query_model('OpenAIGPT35Turbo0613')
-        self.__query_model('OpenAIGPT35Turbo')
-        self.__query_model('OpenAIGPT40314')
-        self.__query_model('OpenAIGPT40613')
-        self.__query_model('OpenAIGPT4')
+        # self.__query_model('OpenAITextDaVinci003')
+        # self.__query_model('HuggingChat')
+        # self.__query_model('OpenAIGPT35Turbo0301')
+        # self.__query_model('OpenAIGPT35Turbo0613')
+        # self.__query_model('OpenAIGPT35Turbo')
+        # self.__query_model('OpenAIGPT40314')
+        # self.__query_model('OpenAIGPT40613')
+        # self.__query_model('OpenAIGPT4')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
