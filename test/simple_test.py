@@ -30,9 +30,10 @@ class SimpleTest:
             self.__num_instances = self.__num_instances + len(prompt.instances)
 
     def generate(self):
+        path = os.path.normpath(os.path.join(sys.path[0], self.__file))
         # load test scenario
         scenario_io = ScenarioIOManager()
-        self.__test_scenario = TestScenario(scenario_io.load_scenario(self.__file))
+        self.__test_scenario = TestScenario(scenario_io.load_scenario(path))
         prompt_io = PromptIOManager()
         # test generation
         self.__test_scenario.prompts = prompt_io.load_prompts()
