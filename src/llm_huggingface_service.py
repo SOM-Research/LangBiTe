@@ -25,10 +25,6 @@ class HuggingFaceService(LLMService):
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
         output = self.query(prompt)
-        #data = json.dumps(prompt)
-        #response = requests.request('POST', self.model, headers=self.headers, data=data)
-        #output = response.json()
-        #return json.loads(response.content.decode("utf-8"))[0]['generated_text'] <- old GPT2 ones
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output['generated_text']
 
@@ -43,8 +39,5 @@ class HuggingFaceQuestionAnsweringService(HuggingFaceService):
             }
         }
         output = self.query(data)
-        #data = json.dumps(data)
-        #response = requests.request('POST', self.model, headers=self.headers, data=data)
-        #output = response.json()
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output['answer']
