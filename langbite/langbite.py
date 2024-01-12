@@ -40,8 +40,16 @@ class LangBite:
         self.__requirements_file = value
 
     @property
+    def requirements_dict(self):
+        return self.__requirements_dict
+
+    @requirements_dict.setter
+    def requirements_file(self, value):
+        self.__requirements_dict = value
+
+    @property
     def __requirements_file_empty(self):
-        return not self.__requirements_file or not self.__requirements_file.strip()
+        return (not self.__requirements_file or not self.__requirements_file.strip()) and not self.requirements_dict
     
     # very simple state machine
     # 0 = initiated
@@ -60,8 +68,9 @@ class LangBite:
     # Internal and auxiliary methods
     # ---------------------------------------------------------------------------------
 
-    def __init__(self, file):
+    def __init__(self, file=None, file_dict=None):
         self.requirements_file = file
+        self.requirements_dict = file_dict
         self.__current_status = 0
 
     def __update_figures(self):
@@ -85,7 +94,10 @@ class LangBite:
         if (self.__requirements_file_empty): raise RequirementsFileRequiredException
         # load test scenario
         scenario_io = ScenarioIOManager()
-        self.__test_scenario = TestScenario(scenario_io.load_scenario(self.requirements_file))
+        if self.requirements_file:
+            self.__test_scenario = TestScenario(scenario_io.load_scenario(self.requirements_file))
+        elif self.requirements_dict:
+            self.__test_scenario = TestScenario(self.requirements_dict)
         prompt_io = PromptIOManager()
         # test generation
         self.__test_scenario.prompts = prompt_io.load_prompts()
