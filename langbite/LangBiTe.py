@@ -65,6 +65,14 @@ class LangBiTe:
     def __current_status(self, value):
         self.__current_internal_status = value
 
+    @property
+    def evaluations(self):
+        return self.__evaluations
+
+    @property
+    def responses(self):
+        return self.__responses
+
     # ---------------------------------------------------------------------------------
     # Internal and auxiliary methods
     # ---------------------------------------------------------------------------------
