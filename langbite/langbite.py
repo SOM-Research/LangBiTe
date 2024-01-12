@@ -44,7 +44,7 @@ class LangBite:
         return self.__requirements_dict
 
     @requirements_dict.setter
-    def requirements_file(self, value):
+    def requirements_dict(self, value):
         self.__requirements_dict = value
 
     @property
@@ -69,8 +69,8 @@ class LangBite:
     # ---------------------------------------------------------------------------------
 
     def __init__(self, file=None, file_dict=None):
-        self.requirements_file = file
-        self.requirements_dict = file_dict
+        self.__requirements_file = file
+        self.__requirements_dict = file_dict
         self.__current_status = 0
 
     def __update_figures(self):
