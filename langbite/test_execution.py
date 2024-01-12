@@ -61,7 +61,9 @@ class TestExecution:
         llmservice.tokens = self.__scenario.tokens
         provider = llmservice.provider
         prompt: Prompt
-        for prompt in self.__scenario.prompts:
+        print(f'running {len(self.__scenario.prompts)} prompts...')
+        for i, prompt in enumerate(self.__scenario.prompts):
+            print(f'running prompt {i}')
             # set a number of attempts to retry when the model either:
             # a) raises an exception (connection issue, time out, etc.)
             # b) the model replies in an unexpected format
