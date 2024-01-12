@@ -1,10 +1,10 @@
-from test_scenario import TestScenario
-from prompt import Prompt
-import llm_factory
-from llm_service import LLMService
+from langbite.test_scenario import TestScenario
+from langbite.prompt import Prompt
+from langbite import llm_factory
+from langbite.llm_service import LLMService
 from dotenv import load_dotenv
 import os
-from view_model import EvaluationView, ResponseView
+from langbite.view_model import EvaluationView, ResponseView
 import time
 
 class TestExecution:

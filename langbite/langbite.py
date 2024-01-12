@@ -9,13 +9,13 @@
 # --- unethical responses.
 # --- -------------------------------------------------------------------
 
-from scenario_io_manager import ScenarioIOManager
-from prompt_io_manager import PromptIOManager
-from reporting_io_manager import ReportingIOManager
-from global_evaluation import GlobalEvaluator
-from test_scenario import TestScenario
-from test_execution import TestExecution
-from prompt import Prompt
+from langbite.scenario_io_manager import ScenarioIOManager
+from langbite.prompt_io_manager import PromptIOManager
+from langbite.reporting_io_manager import ReportingIOManager
+from langbite.global_evaluation import GlobalEvaluator
+from langbite.test_scenario import TestScenario
+from langbite.test_execution import TestExecution
+from langbite.prompt import Prompt
 from datetime import datetime
 
 

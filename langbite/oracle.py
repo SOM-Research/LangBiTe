@@ -2,7 +2,7 @@ from abc import abstractmethod
 from enum import Enum
 import json
 import re
-from oracle_prediction_validation import OraclePredictionSchema
+from langbite.oracle_prediction_validation import OraclePredictionSchema
 
 
 ExpectedValueOperationKind = Enum('IndividualOperation', 'equal different notIncludesAny allEqualExpected')

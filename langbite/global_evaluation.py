@@ -1,5 +1,5 @@
 import pandas as pd
-from view_model import EvaluationView
+from langbite.view_model import EvaluationView
 
 
 class GlobalEvaluation:

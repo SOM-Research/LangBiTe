@@ -1,8 +1,8 @@
 from enum import Enum
 import re
-from llm_service import LLMService
+from langbite.llm_service import LLMService
 import time
-from oracle import Oracle
+from langbite.oracle import Oracle
 
 
 # -----------------------------------------------------------------------

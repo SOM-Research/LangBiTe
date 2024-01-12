@@ -1,7 +1,7 @@
 import pandas
 import numpy as np
 from prompt import Prompt
-import oracle_factory
+from langbite import oracle_factory
 
 
 class PromptIOManager:

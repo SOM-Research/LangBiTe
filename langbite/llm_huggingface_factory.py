@@ -1,4 +1,4 @@
-from llm_huggingface_service import HuggingFaceChatService, HuggingFaceCompletionService, HuggingFaceQuestionAnsweringService
+from langbite.llm_huggingface_service import HuggingFaceChatService, HuggingFaceCompletionService, HuggingFaceQuestionAnsweringService
 
 class HuggingFaceCompletionServiceBuilder:
     def __init__(self, model):

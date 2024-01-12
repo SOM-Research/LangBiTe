@@ -1,7 +1,7 @@
 import json
 import requests
-from huggingchat_broker import HuggingChatBroker
-from llm_service import LLMService
+from langbite.huggingchat_broker import HuggingChatBroker
+from langbite.llm_service import LLMService
 import time
 
 
