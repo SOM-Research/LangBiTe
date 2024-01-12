@@ -1,8 +1,6 @@
 import json
 import requests
-from huggingchat_broker import HuggingChatBroker
 from llm_service import LLMService
-import time
 
 
 class HuggingFaceService(LLMService):
@@ -50,22 +48,3 @@ class HuggingFaceQuestionAnsweringService(HuggingFaceService):
         #output = response.json()
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output['answer']
-
-class HuggingFaceChatService(HuggingFaceService):
-    def __init__(self, **ignored):
-        self.provider = 'HuggingFace'
-        self.model = 'HuggingChat'
-    
-    def execute_prompt(self, prompt):
-        chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json", temperature=self.temperature, tokens=self.tokens)
-        #n_attempts = 3
-        #while n_attempts > 0:
-        try:
-            response = chatbot.prompt(prompt)
-            # time.sleep(5) # often the service complains of too many messages
-            # break
-        except Exception as ex:
-            # n_attempts = n_attempts - 1
-            # if (n_attempts == 0):
-            raise Exception('ERROR: ' + ex.args[0])
-        return response

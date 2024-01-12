@@ -1,3 +1,5 @@
+.gitignore
+
 # environments
 .env
 .env.*
@@ -6,8 +8,9 @@
 .venv.*
 !.venv.example
 
-# own cookies
+# hugging chat and own cookies
 resources/hugchat_cookies.json
+src/huggingchat
 
 # inputs and outputs folders
 inputs
