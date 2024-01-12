@@ -7,7 +7,7 @@
 !.venv.example
 
 # own cookies
-resources/hugchat_cookies.json
+langbite/resources/hugchat_cookies.json
 
 # inputs and outputs folders
 inputs
