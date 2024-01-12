@@ -1,6 +1,6 @@
-from langbite.langbite import LangBite
+from langbite.LangBiTe import LangBiTe
 
-test = LangBite('inputs/json-test-scenario.json')
+test = LangBiTe(file='inputs/json-test-scenario.json')
 test.generate()
 test.execute()
 test.report()

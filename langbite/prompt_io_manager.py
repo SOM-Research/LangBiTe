@@ -10,7 +10,7 @@ class PromptIOManager:
     EVALUATIONS_FILENAME = 'generated_evaluations'
     GLOBAL_EVALUATION_FILENAME = 'global_evaluation'
 
-    def load_prompts(self):
+    def load_prompts(self, prompts_path):
         # reads a csv file containing the prompts, with the following columns:
         # - 0: prompt id
         # - 1: concern
@@ -21,7 +21,7 @@ class PromptIOManager:
         # - 6: output formatting instructions
         # - 7: oracle type
         # - 8: oracle prediction / evaluation expression
-        prompts_df = pandas.read_csv('resources/prompts.csv', sep='\t')
+        prompts_df = pandas.read_csv(prompts_path, sep='\t')
         prompts_df = prompts_df.replace(np.nan, None)
         all_prompts = []
         for value in prompts_df.values.tolist():

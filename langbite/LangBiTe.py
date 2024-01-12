@@ -8,6 +8,7 @@
 # --- trying to detect sensitive words and/or unexpected
 # --- unethical responses.
 # --- -------------------------------------------------------------------
+from importlib.resources import files
 
 from langbite.scenario_io_manager import ScenarioIOManager
 from langbite.prompt_io_manager import PromptIOManager
@@ -25,7 +26,7 @@ class RequirementsFileRequiredException(Exception):
 class WrongStateException(Exception):
     '''Sorry, you haven't followed the expected workflow. The proper invoking sequence is: init LangBite, generate, execute and report.'''
 
-class LangBite:
+class LangBiTe:
 
     # ---------------------------------------------------------------------------------
     # Public and private properties
@@ -68,9 +69,13 @@ class LangBite:
     # Internal and auxiliary methods
     # ---------------------------------------------------------------------------------
 
-    def __init__(self, file=None, file_dict=None):
+    def __init__(self, prompts_path=None, file=None, file_dict=None):
         self.__requirements_file = file
         self.__requirements_dict = file_dict
+        if not prompts_path:
+            self.__prompts_path = files('langbite.resources').joinpath('prompts.csv')
+        else:
+            self.__prompts_path = prompts_path
         self.__current_status = 0
 
     def __update_figures(self):
@@ -85,9 +90,9 @@ class LangBite:
     # ---------------------------------------------------------------------------------
 
     def execute_full_scenario(self):
-        self.generate
-        self.execute
-        self.report
+        self.generate()
+        self.execute()
+        self.report()
 
     def generate(self):
         if (self.__current_status != 0): raise WrongStateException
@@ -100,7 +105,7 @@ class LangBite:
             self.__test_scenario = TestScenario(self.requirements_dict)
         prompt_io = PromptIOManager()
         # test generation
-        self.__test_scenario.prompts = prompt_io.load_prompts()
+        self.__test_scenario.prompts = prompt_io.load_prompts(self.__prompts_path)
         # aux: for output reasons
         self.__update_figures()
         self.__current_status = 1
