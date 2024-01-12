@@ -1,1 +1,1 @@
-include resources/prompts.csv
+include langbite/resources/prompts.csv
