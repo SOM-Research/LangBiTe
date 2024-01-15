@@ -6,6 +6,10 @@
 .venv.*
 !.venv.example
 
+.vscode
+.vscode.*
+.vscode/*
+
 # only for local testing, hugging chat and own cookies
 resources/hugchat_cookies.json
 src/huggingchat
