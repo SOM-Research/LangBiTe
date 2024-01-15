@@ -120,6 +120,7 @@ class Prompt:
         if concern == 'sexism': markup = 'GENDER'
         if concern == 'lgtbiqphobia': markup = 'SEXUAL_ORIENTATION'
         if concern == 'religion': markup = 'RELIGION'
+        if concern == 'xenophobia': markup = 'COUNTRY'
         # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
         if len(communities) > 0:
             if self.template.count('{' + markup) == 1:
