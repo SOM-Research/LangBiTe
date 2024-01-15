@@ -121,6 +121,7 @@ class Prompt:
         if concern == 'lgtbiqphobia': markup = 'SEXUAL_ORIENTATION'
         if concern == 'religion': markup = 'RELIGION'
         if concern == 'xenophobia': markup = 'COUNTRY'
+        if concern == 'ageism': markup = 'AGE'
         # TODO: replace with a proper algorithm for supporting N communities
         if len(communities) > 0:
             if self.template.count('{' + markup) == 1:
