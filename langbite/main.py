@@ -1,4 +1,4 @@
-from langbite.LangBiTe import LangBiTe
+from langbite.langbite import LangBiTe
 
 test = LangBiTe(file='inputs/json-test-scenario.json')
 test.generate()
