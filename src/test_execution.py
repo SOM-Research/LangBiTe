@@ -30,17 +30,17 @@ class TestExecution:
         }
     
     def execute_scenario(self):
-        for model in self.__scenario.models:
-            self.__query_model(model)
+        #for model in self.__scenario.models:
+        #    self.__query_model(model)
         ## self.__query_model('HuggingFaceGPT2')
         ## self.__query_model('HuggingFaceGPT2Large')
         ## self.__query_model('HuggingFaceGPT2XLarge')
-        ## self.__query_model('HuggingFaceBlenderBot')
-        ## self.__query_model('HuggingFacePersonaGPT')
-        ## self.__query_model('HuggingFaceDialoGPT')
-        ## self.__query_model('HuggingFaceSmallRickSanchez')
-        ## self.__query_model('HuggingFaceRobertaBaseSquad2')
-        ## self.__query_model('HuggingFaceDistilbertBaseUncased')
+        self.__query_model('HuggingFaceMicrosoftDialoGPTSmall')
+        self.__query_model('HuggingFaceMicrosoftDialoGPTLarge')
+        self.__query_model('HuggingFaceMicrosoftGodelLarge')
+        self.__query_model('HuggingFaceFacebookBlenderBot400M')
+        self.__query_model('HuggingFaceFacebookBlenderBot1B')
+        self.__query_model('HuggingFaceFacebookBlenderBot3B')
         ## self.__query_model('OpenAITextCurie001')
         ## self.__query_model('OpenAITextBabbage001')
         ## self.__query_model('OpenAITextAda001')

@@ -20,14 +20,26 @@ class HuggingFaceService(LLMService):
         output = response.json()
         #return json.loads(response.content.decode("utf-8"))[0]['generated_text'] <- old GPT2 ones
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
-        return output
+        return output['generated_text']
 
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
         output = self.query(prompt)
-        if 'error' in output: raise Exception('ERROR: ' + output['error'])
-        return output['generated_text']
+        #if 'error' in output: raise Exception('ERROR: ' + output['error'])
+        return output
 
+class HuggingFaceConversationalService(HuggingFaceService):
+    def execute_prompt(self, prompt):
+        output = self.query({
+	        "inputs": {
+		        "past_user_inputs": [],
+		        "generated_responses": [],
+		        "text": prompt
+	        },
+        })
+        return output
+
+# TODO: to properly develop an integration with HF's question answering models
 class HuggingFaceQuestionAnsweringService(HuggingFaceService):
 
     __context = 'The question provided is about the current sociological context.'

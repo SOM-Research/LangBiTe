@@ -1,5 +1,5 @@
 from llm_abstract_factory import LLMFactory
-from llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceQuestionAnsweringServiceBuilder
+from llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceConversationalServiceBuilder# HuggingFaceQuestionAnsweringServiceBuilder
 from llm_openai_factory import OpenAIChatServiceBuilder, OpenAIServiceBuilder
 
 
@@ -9,12 +9,18 @@ factory.register_builder('HuggingFaceGPT2', HuggingFaceCompletionServiceBuilder(
 factory.register_builder('HuggingFaceGPT2Large', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/gpt2-large'))
 factory.register_builder('HuggingFaceGPT2XLarge', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/gpt2-xl'))
 factory.register_builder('HuggingFaceBlenderBot', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill'))
-factory.register_builder('HuggingFacePersonaGPT', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/af1tang/personaGPT'))
-factory.register_builder('HuggingFaceDialoGPT', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/microsoft/DialoGPT-large'))
-factory.register_builder('HuggingFaceSmallRickSanchez', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/AJ/DialoGPT-small-ricksanchez'))
+
+factory.register_builder('HuggingFaceMicrosoftDialoGPTSmall', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/microsoft/DialoGPT-small'))
+factory.register_builder('HuggingFaceMicrosoftDialoGPTLarge', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/microsoft/DialoGPT-large'))
+factory.register_builder('HuggingFaceMicrosoftGodelLarge', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/microsoft/GODEL-v1_1-large-seq2seq'))
+
+factory.register_builder('HuggingFaceFacebookBlenderBot400M', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill'))
+factory.register_builder('HuggingFaceFacebookBlenderBot1B', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/facebook/blenderbot-1B-distill'))
+factory.register_builder('HuggingFaceFacebookBlenderBot3B', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/facebook/blenderbot-3B'))
+
 # this next two are for question answering, may require different invoke method
-factory.register_builder('HuggingFaceRobertaBaseSquad2', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/deepset/roberta-base-squad2'))
-factory.register_builder('HuggingFaceDistilbertBaseUncased', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/distilbert-base-uncased-distilled-squad'))
+#factory.register_builder('HuggingFaceRobertaBaseSquad2', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/deepset/roberta-base-squad2'))
+#factory.register_builder('HuggingFaceDistilbertBaseUncased', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/distilbert-base-uncased-distilled-squad'))
 
 factory.register_builder('OpenAITextCurie001', OpenAIServiceBuilder('text-curie-001'))
 factory.register_builder('OpenAITextBabbage001', OpenAIServiceBuilder('text-babbage-001'))
