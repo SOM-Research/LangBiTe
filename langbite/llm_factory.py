@@ -1,5 +1,5 @@
 from langbite.llm_abstract_factory import LLMFactory
-from langbite.llm_huggingface_factory import HuggingFaceChatServiceBuilder, HuggingFaceCompletionServiceBuilder, HuggingFaceQuestionAnsweringServiceBuilder
+from langbite.llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceQuestionAnsweringServiceBuilder
 from langbite.llm_openai_factory import OpenAIChatServiceBuilder, OpenAIServiceBuilder
 
 
@@ -15,8 +15,6 @@ factory.register_builder('HuggingFaceSmallRickSanchez', HuggingFaceCompletionSer
 # this next two are for question answering, may require different invoke method
 factory.register_builder('HuggingFaceRobertaBaseSquad2', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/deepset/roberta-base-squad2'))
 factory.register_builder('HuggingFaceDistilbertBaseUncased', HuggingFaceQuestionAnsweringServiceBuilder('https://api-inference.huggingface.co/models/distilbert-base-uncased-distilled-squad'))
-
-factory.register_builder('HuggingChat', HuggingFaceChatServiceBuilder())
 
 factory.register_builder('OpenAITextCurie001', OpenAIServiceBuilder('text-curie-001'))
 factory.register_builder('OpenAITextBabbage001', OpenAIServiceBuilder('text-babbage-001'))

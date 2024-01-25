@@ -115,17 +115,19 @@ class Prompt:
         self.__responses = [PromptResponse]
     
     def instantiate(self, concern, communities):
-        # TODO: esta es una forma ultra cutre de instanciar la plantilla !!!!!
+        # TODO: markup should be an attribute of the ethical concern
         if concern == 'racism': markup = 'SKIN_COLOR'
         if concern == 'sexism': markup = 'GENDER'
         if concern == 'lgtbiqphobia': markup = 'SEXUAL_ORIENTATION'
         if concern == 'religion': markup = 'RELIGION'
-        # TODO: esta es una forma ultra cutre de hacer combinaciones de 2 communities !!!!!
+        if concern == 'xenophobia': markup = 'COUNTRY'
+        if concern == 'ageism': markup = 'AGE'
+        # TODO: replace with a proper algorithm for supporting N communities
         if len(communities) > 0:
             if self.template.count('{' + markup) == 1:
                 markup = '{' + markup + '}'
                 raw_list = [self.template.replace(markup, community) for community in communities]
-            else: # asumimos 2, de momento
+            else: # let's have 2 max, yet
                 markup1 = '{' + markup + '1}'
                 markup2 = '{' + markup + '2}'
                 raw_list = []

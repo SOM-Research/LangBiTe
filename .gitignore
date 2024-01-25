@@ -6,8 +6,13 @@
 .venv.*
 !.venv.example
 
-# own cookies
+.vscode
+.vscode.*
+.vscode/*
+
+# only for local testing, hugging chat and own cookies
 langbite/resources/hugchat_cookies.json
+langbite/huggingchat
 
 # inputs and outputs folders
 inputs

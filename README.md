@@ -12,12 +12,11 @@ The following tree shows the list of the repository's sections and their main co
 
 ```
 ├── resources
-|      ├── prompts.csv             // The prompt templates library in CSV format. See below and the referenced article for more information about its structure.
-|      └── hugchat_cookies.json    // Cookies of a valid session on Hugging Chat. The file is not included in the repository, but is required for testing Hugging Chat.
+|      └── prompts.csv             // The prompt templates library in CSV format. See below and the referenced article for more information about its structure.
 ├── src                            // The source code of the tool.
-|      └── langbite.py             // Main controller to invoke for generating, executing and reporting test scenarios.
+|      └── langbite.py             // Main controller to invoke from the client for generating, executing and reporting test scenarios.
 └── test                           // A simple example of a test scenario.
-       ├── simple_test.json        // An example of a test scenario definition which tests religion bias on ChatGPT 3.5 Turbo.
+       ├── simple_test.json        // An example of a test scenario definition which assesses religion bias on ChatGPT 3.5 Turbo.
        └── simple_test.py          // A controller for executing the whole testing workflow.
 ```
 
@@ -31,10 +30,6 @@ Your project needs the following keys in the .env file:
 
 - API_KEY_OPENAI, to properly connect to OpenAI's API and models.
 - API_KEY_HUGGINGFACE, to properly invoke Inference APIs in HuggingFace.
-
-Your project needs the following file to test Hugging Chat. It must containg cookies of a valid session on HuggingChat:
-
-- resources/hugchat_cookies.json
 
 ### Reference within a Project
 

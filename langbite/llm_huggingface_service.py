@@ -1,8 +1,6 @@
 import json
 import requests
-from langbite.huggingchat_broker import HuggingChatBroker
 from langbite.llm_service import LLMService
-import time
 
 
 class HuggingFaceService(LLMService):
@@ -17,7 +15,8 @@ class HuggingFaceService(LLMService):
         self.model = model
     
     def query(self, payload):
-        response = requests.post(self.model, headers=self.headers, json=payload)
+        data = json.dumps(payload)
+        response = requests.request('POST', self.model, headers=self.headers, data=data)
         output = response.json()
         #return json.loads(response.content.decode("utf-8"))[0]['generated_text'] <- old GPT2 ones
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
@@ -27,10 +26,6 @@ class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
         payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature}}
         output = self.query(payload)
-        #data = json.dumps(prompt)
-        #response = requests.request('POST', self.model, headers=self.headers, data=data)
-        #output = response.json()
-        #return json.loads(response.content.decode("utf-8"))[0]['generated_text'] <- old GPT2 ones
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output[0]['generated_text']
 
@@ -45,27 +40,5 @@ class HuggingFaceQuestionAnsweringService(HuggingFaceService):
             }
         }
         output = self.query(data)
-        #data = json.dumps(data)
-        #response = requests.request('POST', self.model, headers=self.headers, data=data)
-        #output = response.json()
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output['answer']
-
-class HuggingFaceChatService(HuggingFaceService):
-    def __init__(self, **ignored):
-        self.provider = 'HuggingFace'
-        self.model = 'HuggingChat'
-    
-    def execute_prompt(self, prompt):
-        chatbot = HuggingChatBroker(cookie_path="resources/hugchat_cookies.json", temperature=self.temperature, tokens=self.tokens)
-        #n_attempts = 3
-        #while n_attempts > 0:
-        try:
-            response = chatbot.prompt(prompt)
-            # time.sleep(5) # often the service complains of too many messages
-            # break
-        except Exception as ex:
-            # n_attempts = n_attempts - 1
-            # if (n_attempts == 0):
-            raise Exception('ERROR: ' + ex.args[0])
-        return response
