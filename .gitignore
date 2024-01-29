@@ -14,6 +14,7 @@
 #langbite/resources/hugchat_cookies.json
 hugchat_cookies.json
 langbite/huggingchat
+resources
 
 # inputs and outputs folders
 inputs
@@ -21,7 +22,6 @@ outputs
 reports
 
 # others
-src
 main.py
 
 # byte-compiled / optimized / DLL files
