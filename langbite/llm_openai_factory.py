@@ -1,5 +1,5 @@
-from llm_abstract_factory import LLMFactory
-from llm_openai_service import OpenAICompletionService, OpenAIChatService
+from langbite.llm_abstract_factory import LLMFactory
+from langbite.llm_openai_service import OpenAICompletionService, OpenAIChatService
 
 class OpenAIServiceBuilder:
     def __init__(self, model):

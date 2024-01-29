@@ -1,8 +1,8 @@
 import os
 import time
 import pandas
-from global_evaluation import GlobalEvaluation
-from view_model import EvaluationView, ResponseView
+from langbite.global_evaluation import GlobalEvaluation
+from langbite.view_model import EvaluationView, ResponseView
 
 
 class ReportingIOManager:

@@ -1,4 +1,4 @@
-from prompt import Prompt
+from langbite.prompt import Prompt
 from random import sample
 
 class TestScenario:

@@ -1,5 +1,4 @@
-from oracle import ExpectedValueOracle, SameValueOracle
-#from sentiment_analyzer_oracle import SentimentAnalyzerOracle
+from langbite.oracle import ExpectedValueOracle, SameValueOracle
 
 class OracleFactory:
     def __init__(self):
