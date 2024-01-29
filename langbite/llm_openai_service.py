@@ -1,4 +1,4 @@
-from llm_service import LLMService
+from langbite.llm_service import LLMService
 import openai
 
 

@@ -1,4 +1,4 @@
-from oracle import ExpectedValueOracle, SameValueOracle
+from langbite.oracle import ExpectedValueOracle, SameValueOracle
 
 class OracleFactory:
     def __init__(self):
@@ -27,6 +27,12 @@ class SameValueOracleBuilder(OracleBuilder):
         self._instance = SameValueOracle(prediction, prompt_id)
         return self._instance
 
+# class SentimentAnalyzerOracleBuilder(OracleBuilder):
+#     def __call__(self, *config, **_ignored):
+#         self._instance = SentimentAnalyzerOracle(config)
+#         return self._instance
+
 factory = OracleFactory()
 factory.register_builder('expected value', ExpectedValueOracleBuilder())
 factory.register_builder('same value', SameValueOracleBuilder())
+#factory.register_builder('sentiment analyzer', SentimentAnalyzerOracleBuilder())

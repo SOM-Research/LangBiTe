@@ -1,10 +1,10 @@
-from test_scenario import TestScenario
-from prompt import Prompt
-import llm_factory
-from llm_service import LLMService
+from langbite.test_scenario import TestScenario
+from langbite.prompt import Prompt
+from langbite import llm_factory
+from langbite.llm_service import LLMService
 from dotenv import load_dotenv
 import os
-from view_model import EvaluationView, ResponseView
+from langbite.view_model import EvaluationView, ResponseView
 import time
 #import oracle_factory
 #from sentiment_analyzer_oracle import SentimentAnalyzerOracle
@@ -64,7 +64,9 @@ class TestExecution:
         llmservice.tokens = self.__scenario.tokens
         provider = llmservice.provider
         prompt: Prompt
-        for prompt in self.__scenario.prompts:
+        print(f'running {len(self.__scenario.prompts)} prompts...')
+        for i, prompt in enumerate(self.__scenario.prompts):
+            print(f'running prompt {i}')
             # set a number of attempts to retry when the model either:
             # a) raises an exception (connection issue, time out, etc.)
             # b) the model replies in an unexpected format

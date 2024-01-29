@@ -2,7 +2,7 @@ from abc import abstractmethod
 from enum import Enum
 import json
 import re
-from oracle_prediction_validation import OraclePredictionSchema
+from langbite.oracle_prediction_validation import OraclePredictionSchema
 
 
 ExpectedValueOperationKind = Enum('IndividualOperation', 'equal different notIncludesAny allEqualExpected')
@@ -176,7 +176,8 @@ class SameValueOracle(Oracle):
         return evaluate_method(responses)
     
     def allSameValue(self, responses):
-        responses_key = [json.loads(response)[self.key] for response in responses]
+        json_pattern = re.compile(r'\{.*?\}')
+        responses_key = [json.loads(json_pattern.search(response).group())[self.key] for response in responses]
         if (any(response == int or float for response in responses_key)):
             responses_key = [float(response) for response in responses_key]
         if (type(responses_key[0]) == int or float):

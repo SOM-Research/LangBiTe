@@ -8,14 +8,15 @@
 # --- trying to detect sensitive words and/or unexpected
 # --- unethical responses.
 # --- -------------------------------------------------------------------
+from importlib.resources import files
 
-from scenario_io_manager import ScenarioIOManager
-from prompt_io_manager import PromptIOManager
-from reporting_io_manager import ReportingIOManager
-from global_evaluation import GlobalEvaluator
-from test_scenario import TestScenario
-from test_execution import TestExecution
-from prompt import Prompt
+from langbite.scenario_io_manager import ScenarioIOManager
+from langbite.prompt_io_manager import PromptIOManager
+from langbite.reporting_io_manager import ReportingIOManager
+from langbite.global_evaluation import GlobalEvaluator
+from langbite.test_scenario import TestScenario
+from langbite.test_execution import TestExecution
+from langbite.prompt import Prompt
 from datetime import datetime
 
 
@@ -25,7 +26,7 @@ class RequirementsFileRequiredException(Exception):
 class WrongStateException(Exception):
     '''Sorry, you haven't followed the expected workflow. The proper invoking sequence is: init LangBite, generate, execute and report.'''
 
-class LangBite:
+class LangBiTe:
 
     # ---------------------------------------------------------------------------------
     # Public and private properties
@@ -40,8 +41,16 @@ class LangBite:
         self.__requirements_file = value
 
     @property
+    def requirements_dict(self):
+        return self.__requirements_dict
+
+    @requirements_dict.setter
+    def requirements_dict(self, value):
+        self.__requirements_dict = value
+
+    @property
     def __requirements_file_empty(self):
-        return not self.__requirements_file or not self.__requirements_file.strip()
+        return (not self.__requirements_file or not self.__requirements_file.strip()) and not self.requirements_dict
     
     # very simple state machine
     # 0 = initiated
@@ -56,12 +65,25 @@ class LangBite:
     def __current_status(self, value):
         self.__current_internal_status = value
 
+    @property
+    def evaluations(self):
+        return self.__evaluations
+
+    @property
+    def responses(self):
+        return self.__responses
+
     # ---------------------------------------------------------------------------------
     # Internal and auxiliary methods
     # ---------------------------------------------------------------------------------
 
-    def __init__(self, file):
-        self.requirements_file = file
+    def __init__(self, prompts_path=None, file=None, file_dict=None):
+        self.__requirements_file = file
+        self.__requirements_dict = file_dict
+        if not prompts_path:
+            self.__prompts_path = files('langbite.resources').joinpath('prompts.csv')
+        else:
+            self.__prompts_path = prompts_path
         self.__current_status = 0
 
     def __update_figures(self):
@@ -76,19 +98,22 @@ class LangBite:
     # ---------------------------------------------------------------------------------
 
     def execute_full_scenario(self):
-        self.generate
-        self.execute
-        self.report
+        self.generate()
+        self.execute()
+        self.report()
 
     def generate(self):
         if (self.__current_status != 0): raise WrongStateException
         if (self.__requirements_file_empty): raise RequirementsFileRequiredException
         # load test scenario
         scenario_io = ScenarioIOManager()
-        self.__test_scenario = TestScenario(scenario_io.load_scenario(self.requirements_file))
+        if self.requirements_file:
+            self.__test_scenario = TestScenario(scenario_io.load_scenario(self.requirements_file))
+        elif self.requirements_dict:
+            self.__test_scenario = TestScenario(self.requirements_dict)
         prompt_io = PromptIOManager()
         # test generation
-        self.__test_scenario.prompts = prompt_io.load_prompts()
+        self.__test_scenario.prompts = prompt_io.load_prompts(self.__prompts_path)
         # aux: for output reasons
         self.__update_figures()
         self.__current_status = 1
