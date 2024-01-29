@@ -1,7 +1,7 @@
 import os
 
 import replicate
-from langbite.llm_service import LLMService
+from langbite.llm_services.llm_service import LLMService
 
 
 class ReplicateService(LLMService):

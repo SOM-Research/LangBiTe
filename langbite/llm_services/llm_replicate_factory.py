@@ -1,4 +1,4 @@
-from langbite.llm_replicate_service import ReplicateService
+from langbite.llm_services.llm_replicate_service import ReplicateService
 
 
 class ReplicateServiceBuilder:

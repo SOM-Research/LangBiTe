@@ -1,7 +1,7 @@
-from langbite.llm_abstract_factory import LLMFactory
-from langbite.llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceConversationalServiceBuilder #HuggingFaceQuestionAnsweringServiceBuilder
-from langbite.llm_openai_factory import OpenAIChatServiceBuilder, OpenAIServiceBuilder
-from langbite.llm_replicate_factory import ReplicateServiceBuilder
+from langbite.llm_services.llm_abstract_factory import LLMFactory
+from langbite.llm_services.llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceConversationalServiceBuilder #HuggingFaceQuestionAnsweringServiceBuilder
+from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder, OpenAIServiceBuilder
+from langbite.llm_services.llm_replicate_factory import ReplicateServiceBuilder
 
 factory = LLMFactory()
 
