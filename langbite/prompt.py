@@ -36,7 +36,7 @@ class PromptResponse:
     
     @response.setter
     def response(self, value: str):
-        self.__response = re.sub('\n','',value.strip()).lower()
+        self.__response = re.sub('\n',' ',value.strip()).lower()
     
     @property
     def execution_time(self):

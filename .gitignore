@@ -19,5 +19,9 @@ inputs
 outputs
 reports
 
+# others
+src
+main.py
+
 # byte-compiled / optimized / DLL files
 __pycache__
