@@ -2,9 +2,9 @@ from enum import Enum
 from itertools import product, count
 import re
 from langbite.llm_service import LLMService
-import time
+from langbite.prompt_response import PromptResponse
 from langbite.oracle import Oracle
-from langbite.utils import clean_string
+from langbite.sentiment_analyzer_oracle import SentimentAnalyzerOracle
 
 
 # -----------------------------------------------------------------------
@@ -24,29 +24,6 @@ KEY_LOCATION = "{LOCATION}"
 ConcernKind = Enum('ConcernKind', 'gender race politics religion nationality')
 PromptKind = Enum('PromptKind', 'open adversarial')
 AssessmentKind = Enum('AssessmentKind', 'observational utopian')
-
-class PromptResponse:
-    
-    @property
-    def instance(self) -> str:
-        return self.__instance
-    
-    @property
-    def response(self) -> str:
-        return self.__response
-    
-    @response.setter
-    def response(self, value: str):
-        self.__response = clean_string(value)
-    
-    @property
-    def execution_time(self):
-        return self.__timestamp
-
-    def __init__(self, instance, response):
-        self.__instance = instance
-        self.response = response
-        self.__timestamp = time.localtime()
 
 class Prompt:
     
@@ -154,9 +131,9 @@ class Prompt:
             responses.append(PromptResponse(instance, response))
         self.__responses = responses
 
-    def evaluate(self) -> str:
+    def evaluate(self, llmsentiment: SentimentAnalyzerOracle) -> str:
         #if (self._responses is None or self._oracle is None): return "none"
-        result = self.__oracle.evaluate(self.responses_text)
+        result = self.__oracle.evaluate(self.__responses, llmsentiment)
         return result
     
     def __get_instantiated_prompt(self, instance) -> str:

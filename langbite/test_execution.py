@@ -2,12 +2,11 @@ from langbite.test_scenario import TestScenario
 from langbite.prompt import Prompt
 from langbite import llm_factory
 from langbite.llm_service import LLMService
+from langbite.sentiment_analyzer_oracle import SentimentAnalyzerOracle
 from dotenv import load_dotenv
 import os
 from langbite.view_model import EvaluationView, ResponseView
 import time
-#import oracle_factory
-#from sentiment_analyzer_oracle import SentimentAnalyzerOracle
 
 class TestExecution:
 
@@ -30,20 +29,20 @@ class TestExecution:
             'openai_api_key' : os.environ["API_KEY_OPENAI"],
             'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"]
         }
-        #self.__llm_oracle: SentimentAnalyzerOracle = oracle_factory.factory.create('sentiment analyzer', self.__config)
+        self.__llm_sentiment = SentimentAnalyzerOracle(**self.__config)
     
     def execute_scenario(self):
-        #for model in self.__scenario.models:
-        #    self.__query_model(model)
+        for model in self.__scenario.models:
+            self.__query_model(model)
         ## self.__query_model('HuggingFaceGPT2')
         ## self.__query_model('HuggingFaceGPT2Large')
         ## self.__query_model('HuggingFaceGPT2XLarge')
         #self.__query_model('HuggingFaceMicrosoftDialoGPTSmall')
-        self.__query_model('HuggingFaceMicrosoftDialoGPTLarge')
+        #self.__query_model('HuggingFaceMicrosoftDialoGPTLarge')
         #self.__query_model('HuggingFaceMicrosoftGodelLarge')
         #self.__query_model('HuggingFaceFacebookBlenderBot400M')
         #self.__query_model('HuggingFaceFacebookBlenderBot1B')
-        self.__query_model('HuggingFaceFacebookBlenderBot3B')
+        #self.__query_model('HuggingFaceFacebookBlenderBot3B')
         ## self.__query_model('OpenAITextCurie001')
         ## self.__query_model('OpenAITextBabbage001')
         ## self.__query_model('OpenAITextAda001')
@@ -55,7 +54,7 @@ class TestExecution:
         # self.__query_model('OpenAIGPT35Turbo')
         # self.__query_model('OpenAIGPT40314')
         # self.__query_model('OpenAIGPT40613')
-        # self.__query_model('OpenAIGPT4')
+        #self.__query_model('OpenAIGPT4')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
@@ -74,20 +73,16 @@ class TestExecution:
             while n_attempts > 0:
                 try:
                     prompt.execute(llmservice)
-                    evaluation = prompt.evaluate()
+                    evaluation = prompt.evaluate(self.__llm_sentiment)
                     self.__update_responses(provider, model, prompt)
                     self.__update_evaluations(provider, model, prompt, evaluation)
                     break
                 except Exception as ex:
                     n_attempts = n_attempts - 1
                     if (n_attempts == 0):
-                        #sentiment_response = self.__llm_oracle.evaluate(prompt.instances, prompt.oracle_prediction, prompt.responses_text)
-                        #if (sentiment_response == 'Error'):
                         self.__update_responses_error(provider, model, prompt, ex.args[0])
                         #self.__update_evaluations_error(provider, model, prompt, ex.args[0])
                         self.__update_evaluations(provider, model, prompt, 'Error')
-                        #else:
-                        #    self.__update_responses(provider, model, )
                     else:
                         time.sleep(5) # sleep for 5 seconds to allow the model to restore
         print('done')

@@ -4,6 +4,8 @@ import json
 import re
 from langbite.oracle_prediction_validation import OraclePredictionSchema
 from langbite.utils import clean_string
+from langbite.sentiment_analyzer_oracle import SentimentAnalyzerOracle
+from langbite.prompt_response import PromptResponse
 
 
 ExpectedValueOperationKind = Enum('IndividualOperation', 'equal different notIncludesAny allEqualExpected')
@@ -85,12 +87,14 @@ class Oracle:
     def set_delta(self, delta):
         pass
 
-    def evaluate(self, responses: list[str]) -> OracleResultKind:
+    def evaluate(self, responses: list[PromptResponse], llm_sentiment: SentimentAnalyzerOracle) -> OracleResultKind:
         if (not self.is_valid_prediction): return OracleResultKind.Error.name
-        else: return self.evaluateConcrete(responses)
+        else:
+            self.__llm_sentiment = llm_sentiment
+            return self.evaluateConcrete(responses)
 
     @abstractmethod
-    def evaluateConcrete(self, responses: list[str]) -> OracleResultKind:
+    def evaluateConcrete(self, responses: list[PromptResponse], llmsentiment) -> OracleResultKind:
         pass
 
     # def clean(self, value: str) -> str:
@@ -104,12 +108,13 @@ class Oracle:
     #     cleaned_expected = self.clean(expected)
     #     return cleaned_value == cleaned_expected
 
-    def responseMatchesValue(self, response: str, value: str) -> bool:
-        cleaned_response = clean_string(response) # self.clean(response)
+    def responseMatchesValue(self, response: PromptResponse, value: str) -> bool:
+        #cleaned_response = clean_string(response.response) # self.clean(response)
         p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
-        m = p.search(cleaned_response)
+        m = p.search(response.response)
         if m: return True
-        return False
+        else: return self.__llm_sentiment.evaluate(response.instance, response.response, value)
+        #return False
     
 
 class ExpectedValueOracle(Oracle):
@@ -120,30 +125,31 @@ class ExpectedValueOracle(Oracle):
     def initiateConcreteOperation(self):
         self.expected_value = self._prediction['expected_value']
 
-    def evaluateConcrete(self, responses):
+    def evaluateConcrete(self, responses: list[PromptResponse]):
         operation = self._evaluators[self.operation]
         evaluate_method = getattr(self, operation)
         if operation == ExpectedValueOperationKind.allEqualExpected.name: return evaluate_method(responses)
         else: return evaluate_method(responses[0])
     
-    def equal(self, response):
+    def equal(self, response: PromptResponse):
         self.result = self.responseMatchesExpectedValue(response)
         return self.result
     
-    def different(self, response):
+    def different(self, response: PromptResponse):
         self.result = not self.responseMatchesExpectedValue(response)
         return self.result
     
-    def responseMatchesExpectedValue(self, response: str) -> bool:
+    def responseMatchesExpectedValue(self, response: PromptResponse) -> bool:
         #return self.responseMatchesValue(response, self.expected_value)
-        return any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
+        result = any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
+        return result
 
-    def notIncludesAny(self, response):
+    def notIncludesAny(self, response: PromptResponse):
         #exclude = self.expected_value.split()
         self.result = not any(self.responseMatchesValue(response, x) for x in self.expected_value)
         return self.result
 
-    def allEqualExpected(self, responses: list[str]):
+    def allEqualExpected(self, responses: list[PromptResponse]):
         self.result = all(self.responseMatchesExpectedValue(response) for response in responses)
         #self.result = self.allEqualsToValue(responses, self.expected_value)
         return self.result
