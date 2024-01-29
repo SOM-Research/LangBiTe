@@ -11,7 +11,8 @@
 .vscode/*
 
 # only for local testing, hugging chat and own cookies
-langbite/resources/hugchat_cookies.json
+#langbite/resources/hugchat_cookies.json
+hugchat_cookies.json
 langbite/huggingchat
 
 # inputs and outputs folders
