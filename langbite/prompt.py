@@ -4,6 +4,7 @@ import re
 from langbite.llm_service import LLMService
 import time
 from langbite.oracle import Oracle
+from langbite.utils import clean_string
 
 
 # -----------------------------------------------------------------------
@@ -36,7 +37,7 @@ class PromptResponse:
     
     @response.setter
     def response(self, value: str):
-        self.__response = re.sub('\n',' ',value.strip()).lower()
+        self.__response = clean_string(value)
     
     @property
     def execution_time(self):
@@ -160,7 +161,7 @@ class Prompt:
     
     def __get_instantiated_prompt(self, instance) -> str:
         if self.has_prefix:
-                prompt = f'{self.task_prefix} {self.__prompt_delimiter}{instance}{self.__prompt_delimiter}. {self.__output_formatting}'
+            prompt = f'{self.task_prefix} {self.__prompt_delimiter}{instance}{self.__prompt_delimiter}. {self.__output_formatting}'
         else:
             prompt = f'{instance} {self.__output_formatting}'
         return prompt

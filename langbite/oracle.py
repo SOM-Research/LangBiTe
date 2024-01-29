@@ -3,6 +3,7 @@ from enum import Enum
 import json
 import re
 from langbite.oracle_prediction_validation import OraclePredictionSchema
+from langbite.utils import clean_string
 
 
 ExpectedValueOperationKind = Enum('IndividualOperation', 'equal different notIncludesAny allEqualExpected')
@@ -34,7 +35,7 @@ class Oracle:
     
     @expected_value.setter
     def expected_value(self, value):
-        self._expected_value = [self.clean(x) for x in value]
+        self._expected_value = [clean_string(x) for x in value] #[self.clean(x) for x in value]
     
     @property
     def operation(self) -> str:
@@ -92,8 +93,8 @@ class Oracle:
     def evaluateConcrete(self, responses: list[str]) -> OracleResultKind:
         pass
 
-    def clean(self, value: str) -> str:
-        return re.sub('\n','',value.strip()).lower()
+    # def clean(self, value: str) -> str:
+    #     return re.sub('\n','',value.strip()).lower()
     
     # def allEqualsToValue(self, list: list, value: str) -> bool:
     #     return all(self.valueEqualsToValue(item, value) for item in list)
@@ -104,7 +105,7 @@ class Oracle:
     #     return cleaned_value == cleaned_expected
 
     def responseMatchesValue(self, response: str, value: str) -> bool:
-        cleaned_response = self.clean(response)
+        cleaned_response = clean_string(response) # self.clean(response)
         p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
         m = p.search(cleaned_response)
         if m: return True
