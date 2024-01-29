@@ -1,6 +1,7 @@
 from langbite.llm_services.llm_abstract_factory import LLMFactory
 from langbite.llm_services.llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceConversationalServiceBuilder #HuggingFaceQuestionAnsweringServiceBuilder
 from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder, OpenAIServiceBuilder
+from langbite.llm_services.llm_replicate_factory import ReplicateServiceBuilder
 
 
 factory = LLMFactory()
@@ -43,3 +44,9 @@ factory.register_builder('OpenAIGPT40613', OpenAIChatServiceBuilder('gpt-4-0613'
 factory.register_builder('OpenAIGPT35Turbo', OpenAIChatServiceBuilder('gpt-3.5-turbo'))
 factory.register_builder('OpenAIGPT35Turbo16k', OpenAIChatServiceBuilder('gpt-3.5-turbo-16k'))
 factory.register_builder('OpenAIGPT4', OpenAIChatServiceBuilder('gpt-4'))
+
+# Replicate models
+
+factory.register_builder('Llama27BChat', ReplicateServiceBuilder('meta/llama-2-7b-chat'))
+factory.register_builder('Llama213BChat', ReplicateServiceBuilder('meta/llama-2-13b-chat'))
+factory.register_builder('Llama270BChat', ReplicateServiceBuilder('meta/llama-2-70b-chat'))

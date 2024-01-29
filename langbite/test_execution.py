@@ -27,7 +27,8 @@ class TestExecution:
         load_dotenv()
         self.__config = {
             'openai_api_key' : os.environ["API_KEY_OPENAI"],
-            'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"]
+            'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"],
+            'replicate_api_key': os.environ["API_KEY_REPLICATE"]
         }
         self.__llm_sentiment = SentimentAnalyzerOracle(**self.__config)
     
