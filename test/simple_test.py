@@ -8,9 +8,9 @@ import sys
 import os
 sys.path.insert(1, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'langbite')))
 
-from langbite.scenario_io_manager import ScenarioIOManager
-from langbite.prompt_io_manager import PromptIOManager
-from langbite.reporting_io_manager import ReportingIOManager
+from langbite.io_managers.scenario_io_manager import ScenarioIOManager
+from langbite.io_managers.prompt_io_manager import PromptIOManager
+from langbite.io_managers.reporting_io_manager import ReportingIOManager
 from langbite.global_evaluation import GlobalEvaluator
 from langbite.test_scenario import TestScenario
 from langbite.test_execution import TestExecution

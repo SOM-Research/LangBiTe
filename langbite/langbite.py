@@ -10,9 +10,9 @@
 # --- -------------------------------------------------------------------
 from importlib.resources import files
 
-from langbite.scenario_io_manager import ScenarioIOManager
-from langbite.prompt_io_manager import PromptIOManager
-from langbite.reporting_io_manager import ReportingIOManager
+from langbite.io_managers.scenario_io_manager import ScenarioIOManager
+from langbite.io_managers.prompt_io_manager import PromptIOManager
+from langbite.io_managers.reporting_io_manager import ReportingIOManager
 from langbite.global_evaluation import GlobalEvaluator
 from langbite.test_scenario import TestScenario
 from langbite.test_execution import TestExecution

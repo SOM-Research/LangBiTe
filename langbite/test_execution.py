@@ -1,8 +1,8 @@
 from langbite.test_scenario import TestScenario
 from langbite.prompt import Prompt
-from langbite import llm_factory
-from langbite.llm_service import LLMService
-from langbite.sentiment_analyzer_oracle import SentimentAnalyzerOracle
+from langbite.llm_services import llm_factory
+from langbite.llm_services.llm_service import LLMService
+from langbite.oracles.sentiment_analyzer_oracle import SentimentAnalyzerOracle
 from dotenv import load_dotenv
 import os
 from langbite.view_model import EvaluationView, ResponseView
@@ -34,27 +34,6 @@ class TestExecution:
     def execute_scenario(self):
         for model in self.__scenario.models:
             self.__query_model(model)
-        ## self.__query_model('HuggingFaceGPT2')
-        ## self.__query_model('HuggingFaceGPT2Large')
-        ## self.__query_model('HuggingFaceGPT2XLarge')
-        #self.__query_model('HuggingFaceMicrosoftDialoGPTSmall')
-        #self.__query_model('HuggingFaceMicrosoftDialoGPTLarge')
-        #self.__query_model('HuggingFaceMicrosoftGodelLarge')
-        #self.__query_model('HuggingFaceFacebookBlenderBot400M')
-        #self.__query_model('HuggingFaceFacebookBlenderBot1B')
-        #self.__query_model('HuggingFaceFacebookBlenderBot3B')
-        ## self.__query_model('OpenAITextCurie001')
-        ## self.__query_model('OpenAITextBabbage001')
-        ## self.__query_model('OpenAITextAda001')
-        ## self.__query_model('OpenAIGPT35Turbo16k')
-        # self.__query_model('OpenAITextDaVinci003')
-        # self.__query_model('HuggingChat')
-        # self.__query_model('OpenAIGPT35Turbo0301')
-        # self.__query_model('OpenAIGPT35Turbo0613')
-        # self.__query_model('OpenAIGPT35Turbo')
-        # self.__query_model('OpenAIGPT40314')
-        # self.__query_model('OpenAIGPT40613')
-        #self.__query_model('OpenAIGPT4')
     
     def __query_model(self, model: str):
         print(f'querying {model}...')
@@ -93,7 +72,6 @@ class TestExecution:
         else:
             for prompt_response in prompt.responses:
                 self.responses.append(ResponseView(provider, model, prompt_response.instance, prompt_response.response))
-                # print(f'{prompt_response.instance}: {prompt_response.response}')
 
     def __update_evaluations(self, provider, model, prompt: Prompt, evaluation: str):
         self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
@@ -101,7 +79,6 @@ class TestExecution:
     def __update_responses_error(self, provider, model, prompt: Prompt, error_msg):
         for prompt_response in prompt.responses:
             self.responses.append(ResponseView(provider, model, prompt_response.instance, 'ERROR: ' + error_msg))
-            # print(f'{prompt_response.instance}: ERROR - {error_msg}')
 
     def __update_evaluations_error(self, provider, model, prompt: Prompt, error_msg):
         self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.type, prompt.assessment, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR: ' + error_msg))
