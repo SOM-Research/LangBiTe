@@ -177,14 +177,14 @@ class SameValueOracle(Oracle):
     def set_delta(self, delta):
         self.delta = delta
 
-    def evaluateConcrete(self, responses):
+    def evaluateConcrete(self, responses: list[PromptResponse]):
         operation = self._evaluators[self.operation]
         evaluate_method = getattr(self, operation)
         return evaluate_method(responses)
     
-    def allSameValue(self, responses):
+    def allSameValue(self, responses: list[PromptResponse]):
         json_pattern = re.compile(r'\{.*?\}')
-        responses_key = [json.loads(json_pattern.search(response).group())[self.key] for response in responses]
+        responses_key = [json.loads(json_pattern.search(response.response).group())[self.key] for response in responses]
         if (any(response == int or float for response in responses_key)):
             responses_key = [float(response) for response in responses_key]
         if (type(responses_key[0]) == int or float):
