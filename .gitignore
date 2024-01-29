@@ -10,6 +10,8 @@
 .vscode.*
 .vscode/*
 
+.DS_Store
+
 # only for local testing, hugging chat and own cookies
 langbite/huggingchat
 
