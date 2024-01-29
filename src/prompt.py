@@ -1,4 +1,5 @@
 from enum import Enum
+from itertools import product, count
 import re
 from llm_service import LLMService
 import time
@@ -122,8 +123,9 @@ class Prompt:
         if concern == 'religion': markup = 'RELIGION'
         if concern == 'xenophobia': markup = 'COUNTRY'
         if concern == 'ageism': markup = 'AGE'
-        # TODO: replace with a proper algorithm for supporting N communities
+
         if len(communities) > 0:
+            # self.__instances = self.__replace_markups(markup, communities)
             if self.template.count('{' + markup) == 1:
                 markup = '{' + markup + '}'
                 raw_list = [self.template.replace(markup, community) for community in communities]
@@ -162,3 +164,20 @@ class Prompt:
         else:
             prompt = f'{instance} {self.__output_formatting}'
         return prompt
+    
+    def __replace_markups(self, markup, communities):
+        # define a regular expression pattern to match content within curly brackets
+        # and find all markups in the template
+        pattern = r'\{.*?\}'
+        markups = re.findall(pattern, self.template)
+
+        # generate all combinations
+        combinations = product(communities, repeat=len(markups))
+        instances = [
+            re.sub(pattern, lambda x, replacements=combo, counter=count(): replacements[next(counter)], self.template)
+            for combo in combinations
+            # exclude combinations comparing the same community
+            if len(set(combo)) == len(combo)
+        ]
+
+        return instances
