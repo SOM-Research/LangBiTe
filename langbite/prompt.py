@@ -1,5 +1,5 @@
 from enum import Enum
-from itertools import product, count
+from itertools import product, count, permutations
 import re
 from langbite.llm_services.llm_service import LLMService
 from langbite.prompt_response import PromptResponse
@@ -8,14 +8,22 @@ from langbite.oracles.sentiment_analyzer_oracle import SentimentAnalyzerOracle
 
 
 # -----------------------------------------------------------------------
-# markups
+# constants
 # -----------------------------------------------------------------------
 
-KEY_SKIN_COLOR = "{SKIN_COLOR}"
-KEY_OCCUPATION = "{JOB_TITLE}"
-KEY_NAME = "{NAME}"
-KEY_GENDER = "{GENDER}"
-KEY_LOCATION = "{LOCATION}"
+PROMPT_DELIMITER = f'"""'
+
+MARKUP_START = '{'
+MARKUP_END = '}'
+
+MARKUPS = {
+    'racism': 'SKIN_COLOR',
+    'sexism': 'GENDER',
+    'lgtbiqphobia': 'SEXUAL_ORIENTATION',
+    'religion': 'RELIGION',
+    'xenophobia': 'COUNTRY',
+    'ageism': 'AGE'
+}
 
 # -----------------------------------------------------------------------
 # enumerations
@@ -25,9 +33,11 @@ ConcernKind = Enum('ConcernKind', 'gender race politics religion nationality')
 PromptKind = Enum('PromptKind', 'open adversarial')
 AssessmentKind = Enum('AssessmentKind', 'observational utopian')
 
+# -----------------------------------------------------------------------
+# main class
+# -----------------------------------------------------------------------
+
 class Prompt:
-    
-    __prompt_delimiter = f'"""'
 
     @property
     def prompt_id(self):
@@ -51,7 +61,7 @@ class Prompt:
     
     @task_prefix.setter
     def task_prefix(self, value):
-        if value is not None: self.__task_prefix = f'{value} The sentence is delimited by {self.__prompt_delimiter}.'
+        if value is not None: self.__task_prefix = f'{value} The sentence is delimited by {PROMPT_DELIMITER}.'
         else: self.__task_prefix = None
     
     @property
@@ -95,27 +105,22 @@ class Prompt:
     
     def instantiate(self, concern, communities):
         # TODO: markup should be an attribute of the ethical concern
-        if concern == 'racism': markup = 'SKIN_COLOR'
-        if concern == 'sexism': markup = 'GENDER'
-        if concern == 'lgtbiqphobia': markup = 'SEXUAL_ORIENTATION'
-        if concern == 'religion': markup = 'RELIGION'
-        if concern == 'xenophobia': markup = 'COUNTRY'
-        if concern == 'ageism': markup = 'AGE'
+        markup = MARKUPS[concern]
 
         if len(communities) > 0:
-            # self.__instances = self.__replace_markups(markup, communities)
-            if self.template.count('{' + markup) == 1:
-                markup = '{' + markup + '}'
-                raw_list = [self.template.replace(markup, community) for community in communities]
-            else: # let's have 2 max, yet
-                markup1 = '{' + markup + '1}'
-                markup2 = '{' + markup + '2}'
-                raw_list = []
-                for community1 in communities:
-                    for community2 in communities:
-                        if community1 != community2:
-                            raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
-            self.__instances = list(set(raw_list))
+            self.__instances = self.__replace_markups(markup, communities)
+            # if self.template.count('{' + markup + '}') > 0:
+            #     markup = '{' + markup + '}'
+            #     raw_list = [self.template.replace(markup, community) for community in communities]
+            # else: # let's have 2 max, yet
+            #     markup1 = '{' + markup + '1}'
+            #     markup2 = '{' + markup + '2}'
+            #     raw_list = []
+            #     for community1 in communities:
+            #         for community2 in communities:
+            #             if community1 != community2:
+            #                 raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
+            # self.__instances = list(set(raw_list))
         else:
             self.__instances = [self.template]
     
@@ -135,30 +140,34 @@ class Prompt:
         self.__responses = responses
 
     def evaluate(self, llmsentiment: SentimentAnalyzerOracle) -> str:
-        #if (self._responses is None or self._oracle is None): return "none"
         result = self.__oracle.evaluate(self.__responses, llmsentiment)
         return result
     
     def __get_instantiated_prompt(self, instance) -> str:
         if self.has_prefix:
-            prompt = f'{self.task_prefix} {self.__prompt_delimiter}{instance}{self.__prompt_delimiter}. {self.__output_formatting}'
+            prompt = f'{self.task_prefix} {PROMPT_DELIMITER}{instance}{PROMPT_DELIMITER}. {self.__output_formatting}'
         else:
             prompt = f'{instance} {self.__output_formatting}'
         return prompt
     
-    def __replace_markups(self, markup, communities):
+    def __replace_markups(self, markup_root, communities):
         # define a regular expression pattern to match content within curly brackets
-        # and find all markups in the template
-        pattern = r'\{.*?\}'
-        markups = re.findall(pattern, self.template)
-
-        # generate all combinations
-        combinations = product(communities, repeat=len(markups))
-        instances = [
-            re.sub(pattern, lambda x, replacements=combo, counter=count(): replacements[next(counter)], self.template)
-            for combo in combinations
-            # exclude combinations comparing the same community
-            if len(set(combo)) == len(combo)
-        ]
+        # and find all distinct markups in the template
+        pattern = MARKUP_START + markup_root + r'[0-9]*?' + MARKUP_END
+        markups = set(re.findall(pattern, self.template))
+        # generate all combinations of communities according to number of markups
+        communities_combos = permutations(communities, len(markups))
+        # exclude combinations comparing a community to itself
+        communities_combos = [combo for combo in communities_combos if len(set(combo)) == len(combo)]
+        instances = []
+        for combo in communities_combos:
+            instance = self.template
+            for markup, community in zip(markups, combo):
+                instance = instance.replace(markup, community)
+            instances.append(instance)
+        # instances = [
+        #     re.sub(pattern, lambda x, replacements=combo, counter=count(): replacements[next(counter)], self.template)
+        #     for combo in lista
+        # ]
 
         return instances
