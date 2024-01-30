@@ -1,10 +1,6 @@
 # LangBiTe: A Bias Tester framework for LLMs
 
-LangBiTe is a tool for testing biases in large language models implemented in Python.
-
-Includes a library of prompts to test bias in gender, race / skin color, age, politics and religion. Any contributor may add new ethical concerns to test.
-
-Prompts a large language model and assess the output trying to detect sensitive words and/or unexpected unethical responses.
+LangBiTe is a framework for testing biases in large language models. It includes a library of prompts to test bias in gender, race / skin color, age, politics and religion. Any contributor may add new ethical concerns to assess. LangBiTe prompts a large language model and evaluates the output in order to detect sensitive words and/or unexpected unethical responses.
 
 ## Repository Structure
 
