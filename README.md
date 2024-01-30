@@ -42,15 +42,29 @@ Your project needs the following keys in the .env file:
 
 To generate a valid input, you may use the [EthicsML](https://github.com/SOM-Research/EthicsML) DSL-based tool.
 
-The following is an example of how to use the LangBiTe controller to, given an ethic requirements model in JSON format: (1) generate test scenarios, (2) execute them and (3) build evaluation reports. LangBiTe could be initiated by either passing a filename that contains the requirements model or a requirements model string in JSON format.
+The following is an example of how to use the LangBiTe controller to, given an ethic requirements model in JSON format: (1) generate test scenarios, (2) execute them and (3) build evaluation reports. LangBiTe could be initiated by either (a) passing a filename that contains the requirements model or (b) a requirements model string in JSON format. The example implements use case (a).
+
+```
+from langbite.langbite import LangBiTe
+
+# initiate the LangBiTe controller
+# by passing a filename
+test = LangBiTe(file='<ETHIC_REQUIREMENTS_JSON_FILENAME')
+# (1) generate test scenarios
+test.generate()
+# (2) execute them
+test.execute()
+# and (3) build evaluation reports
+test.report()
+```
+
+Alternatively to independently calling the three methods generate(), execute() and report(), the complete workflow could be executed by invoking the execute_full_scenario() method. The following code is equivalent to the aforementioned:
 
 ```
 from langbite.langbite import LangBiTe
 
 test = LangBiTe(file='<ETHIC_REQUIREMENTS_JSON_FILENAME')
-test.generate()
-test.execute()
-test.report()
+test.execute_full_scenario()
 ```
 
 ### Contribute with Further Prompt Templates
