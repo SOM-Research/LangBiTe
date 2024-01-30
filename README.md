@@ -11,10 +11,10 @@ Prompts a large language model and assess the output trying to detect sensitive 
 The following tree shows the list of the repository's sections and their main contents:
 
 ```
-├── resources
-|      └── prompts.csv             // The prompt templates library in CSV format. See below and the referenced article for more information about its structure.
-├── src                            // The source code of the tool.
-|      └── langbite.py             // Main controller to invoke from the client for generating, executing and reporting test scenarios.
+├── langbite                       // The source code of the package.
+|      ├── langbite.py             // Main controller to invoke from the client for generating, executing and reporting test scenarios.
+|      └── resources
+|             └── prompts.csv      // The prompt templates library in CSV format. See below and the referenced article for more information about its structure.
 └── test                           // A simple example of a test scenario.
        ├── simple_test.json        // An example of a test scenario definition which assesses religion bias on ChatGPT 3.5 Turbo.
        └── simple_test.py          // A controller for executing the whole testing workflow.
