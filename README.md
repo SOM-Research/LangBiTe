@@ -30,6 +30,7 @@ Your project needs the following keys in the .env file:
 
 - API_KEY_OPENAI, to properly connect to OpenAI's API and models.
 - API_KEY_HUGGINGFACE, to properly invoke Inference APIs in HuggingFace.
+- API_KEY_REPLICATE, to properly connect to models hosted on Replicate.
 
 ### Reference within a Project
 
@@ -41,7 +42,16 @@ Your project needs the following keys in the .env file:
 
 To generate a valid input, you may use the [EthicsML](https://github.com/SOM-Research/EthicsML) DSL-based tool.
 
-- _TBD_.
+The following is an example of how to use the LangBiTe controller to, given an ethic requirements model in JSON format: (1) generate test scenarios, (2) execute them and (3) build evaluation reports. LangBiTe could be initiated by either passing a filename that contains the requirements model or a requirements model string in JSON format.
+
+```
+from langbite.langbite import LangBiTe
+
+test = LangBiTe(file='<ETHIC_REQUIREMENTS_JSON_FILENAME')
+test.generate()
+test.execute()
+test.report()
+```
 
 ### Contribute with Further Prompt Templates
 
