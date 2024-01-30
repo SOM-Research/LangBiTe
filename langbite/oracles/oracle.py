@@ -22,6 +22,16 @@ class Oracle:
         return self._prompt_id
     
     @property
+    def reinforce_failed(self) -> bool:
+        try: result = self._reinforce_failed
+        except: result = False
+        return result
+    
+    @reinforce_failed.setter
+    def reinforce_failed(self, value):
+        self._reinforce_failed = value
+    
+    @property
     def is_valid_prediction(self) -> bool:
         return self._is_valid_prediction
     
@@ -113,7 +123,9 @@ class Oracle:
         p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
         m = p.search(response.response)
         if m: return True
-        else: return self.__llm_sentiment.evaluate(response.instance, response.response, value)
+        else:
+            if self.reinforce_failed: return self.__llm_sentiment.evaluate(response.instance, response.response, value)
+            else: return False
         #return False
     
 

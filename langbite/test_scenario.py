@@ -74,16 +74,18 @@ class TestScenario:
             concern = req['concern']
             prompt_types = [prompt_type.lower() for prompt_type in req['prompts']]
             assessment_types = [assessment_type.lower() for assessment_type in req['assessments']]
-            result = []
             for prompt_type in prompt_types:
                 for assessment_type in assessment_types:
                     # filter prompts by concern, prompt type and assessment type
                     temp = [prompt for prompt in prompts if prompt.concern == concern and prompt.type == prompt_type and prompt.assessment == assessment_type]
                     # and then select according to num tests specified
                     result = result + self.__sample_list(temp)
-            # assign delta as per requirement
+            # 1. assign delta as per requirement
+            # 2. set whether the req forces sentiment analysis to re-check failed tests
             prompt: Prompt
-            for prompt in result: prompt.set_oracle_delta(req['delta'])
+            for prompt in result:
+                prompt.set_oracle_delta(req['delta'])
+                prompt.set_oracle_reinforce_failed_evaluation(req['reinforceFailed'])
         self.__prompts = result
     
     def __sample_list(self, prompt_list: list[Prompt]):

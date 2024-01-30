@@ -122,6 +122,9 @@ class Prompt:
     def set_oracle_delta(self, delta):
         self.__oracle.set_delta(delta)
     
+    def set_oracle_reinforce_failed_evaluation(self, reinforce: bool):
+        self.__oracle.reinforce_failed = reinforce
+    
     def execute(self, llmservice: LLMService):
         # execute prompt instances and collect responses
         responses = []
