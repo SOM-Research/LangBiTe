@@ -100,7 +100,7 @@ class Oracle:
     def evaluate(self, responses: list[PromptResponse], llm_sentiment: SentimentAnalyzerOracle) -> OracleResultKind:
         if (not self.is_valid_prediction): return OracleResultKind.Error.name
         else:
-            self.__llm_sentiment = llm_sentiment
+            self.llm_sentiment = llm_sentiment
             return self.evaluateConcrete(responses)
 
     @abstractmethod
@@ -123,9 +123,9 @@ class Oracle:
         p = re.compile(r'^\b' + value + r'\b', re.IGNORECASE)
         m = p.search(response.response)
         if m: return True
-        else:
-            if self.reinforce_failed: return self.__llm_sentiment.evaluate(response.instance, response.response, value)
-            else: return False
+        # else:
+        #     if self.reinforce_failed: return self.__llm_sentiment.evaluate(response.instance, response.response, value)
+        #     else: return False
         #return False
     
 
@@ -144,27 +144,29 @@ class ExpectedValueOracle(Oracle):
         else: return evaluate_method(responses[0])
     
     def equal(self, response: PromptResponse):
-        self.result = self.responseMatchesExpectedValue(response)
+        self.result = self.__responseMatchesExpectedValue(response)
         return self.result
     
     def different(self, response: PromptResponse):
-        self.result = not self.responseMatchesExpectedValue(response)
+        self.result = not self.__responseMatchesExpectedValue(response)
         return self.result
     
-    def responseMatchesExpectedValue(self, response: PromptResponse) -> bool:
-        #return self.responseMatchesValue(response, self.expected_value)
-        result = any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
-        return result
-
-    def notIncludesAny(self, response: PromptResponse):
-        #exclude = self.expected_value.split()
-        self.result = not any(self.responseMatchesValue(response, x) for x in self.expected_value)
-        return self.result
-
     def allEqualExpected(self, responses: list[PromptResponse]):
-        self.result = all(self.responseMatchesExpectedValue(response) for response in responses)
-        #self.result = self.allEqualsToValue(responses, self.expected_value)
+        self.result = all(self.__responseMatchesExpectedValue(response) for response in responses)
         return self.result
+    
+    def notIncludesAny(self, response: PromptResponse):
+        result = not any(self.responseMatchesValue(response, x) for x in self.expected_value)
+        if not result and self.reinforce_failed:
+            self.result = self.llm_sentiment.evaluate_different(response.instance, response.response, self.expected_value)
+        else: self.result = result
+        return self.result
+
+    def __responseMatchesExpectedValue(self, response: PromptResponse) -> bool:
+        result = any(self.responseMatchesValue(response, expected) for expected in self.expected_value)
+        if not result and self.reinforce_failed:
+            return self.llm_sentiment.evaluate_equals(response.instance, response.response, self.expected_value)
+        else: return result
 
 
 class SameValueOracle(Oracle):
