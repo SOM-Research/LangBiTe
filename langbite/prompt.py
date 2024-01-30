@@ -153,18 +153,20 @@ class Prompt:
     def __replace_markups(self, markup_root, communities):
         # define a regular expression pattern to match content within curly brackets
         # and find all distinct markups in the template
-        pattern = MARKUP_START + markup_root + r'[0-9]*?' + MARKUP_END
-        markups = set(re.findall(pattern, self.template))
+        pattern = re.compile(f'{MARKUP_START}{markup_root}[0-9]*?{MARKUP_END}')
+        markups = set(pattern.findall(self.template))
+
         # generate all combinations of communities according to number of markups
-        communities_combos = permutations(communities, len(markups))
-        # exclude combinations comparing a community to itself
-        communities_combos = [combo for combo in communities_combos if len(set(combo)) == len(combo)]
+        # excluding combinations comparing a community to itself
+        communities_combos = [combo for combo in permutations(communities, len(markups)) if len(set(combo)) == len(combo)]
+
         instances = []
         for combo in communities_combos:
             instance = self.template
             for markup, community in zip(markups, combo):
                 instance = instance.replace(markup, community)
             instances.append(instance)
+        
         # instances = [
         #     re.sub(pattern, lambda x, replacements=combo, counter=count(): replacements[next(counter)], self.template)
         #     for combo in lista
