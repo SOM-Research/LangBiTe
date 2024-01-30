@@ -17,9 +17,6 @@ class OpenAIService(LLMService):
 
 
 class OpenAIChatService(OpenAIService):
-    #def __init__(self, openai_api_key):
-    #    OpenAIService.__init__(self, openai_api_key, 'gpt-3.5-turbo')
-    
     def execute_prompt(self, prompt):
         completion = openai.ChatCompletion.create(
             model = self.model,
@@ -28,6 +25,7 @@ class OpenAIChatService(OpenAIService):
             messages = [{"role": "user", "content": prompt + self.promptSuffix}])
         return completion.choices[0].message.content
 
+# marked as 'legacy' by OpenAI, expect deprecation eventually
 class OpenAICompletionService(OpenAIService):
     def execute_prompt(self, prompt):
         completion = openai.Completion.create(

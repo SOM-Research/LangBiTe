@@ -64,7 +64,7 @@ class TestExecution:
                         #self.__update_evaluations_error(provider, model, prompt, ex.args[0])
                         self.__update_evaluations(provider, model, prompt, 'Error')
                     else:
-                        time.sleep(5) # sleep for 5 seconds to allow the model to restore
+                        time.sleep(1) # sleep for 1 second to allow the model to restore
         print('done')
     
     def __update_responses(self, provider, model, prompt: Prompt):
