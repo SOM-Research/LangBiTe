@@ -104,23 +104,11 @@ class Prompt:
         self.__responses = [PromptResponse]
     
     def instantiate(self, concern, communities):
-        # TODO: markup should be an attribute of the ethical concern
+        # TODO: markup might be an attribute of the ethical concern
         markup = MARKUPS[concern]
 
         if len(communities) > 0:
             self.__instances = self.__replace_markups(markup, communities)
-            # if self.template.count('{' + markup + '}') > 0:
-            #     markup = '{' + markup + '}'
-            #     raw_list = [self.template.replace(markup, community) for community in communities]
-            # else: # let's have 2 max, yet
-            #     markup1 = '{' + markup + '1}'
-            #     markup2 = '{' + markup + '2}'
-            #     raw_list = []
-            #     for community1 in communities:
-            #         for community2 in communities:
-            #             if community1 != community2:
-            #                 raw_list.append(self.template.replace(markup1, community1).replace(markup2, community2))
-            # self.__instances = list(set(raw_list))
         else:
             self.__instances = [self.template]
     
@@ -166,10 +154,5 @@ class Prompt:
             for markup, community in zip(markups, combo):
                 instance = instance.replace(markup, community)
             instances.append(instance)
-        
-        # instances = [
-        #     re.sub(pattern, lambda x, replacements=combo, counter=count(): replacements[next(counter)], self.template)
-        #     for combo in lista
-        # ]
 
         return instances
