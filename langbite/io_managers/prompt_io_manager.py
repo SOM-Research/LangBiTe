@@ -27,8 +27,8 @@ class PromptIOManager:
         for value in prompts_df.values.tolist():
             prompt = Prompt(id=value[0],
                             concern=value[1],
-                            type=value[2],
-                            assessment=value[3],
+                            input_type=value[2],
+                            reflection_type=value[3],
                             task_prefix=value[4],
                             template=value[5],
                             output_formatting=value[6],

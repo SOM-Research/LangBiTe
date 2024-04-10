@@ -29,9 +29,9 @@ MARKUPS = {
 # enumerations
 # -----------------------------------------------------------------------
 
-ConcernKind = Enum('ConcernKind', 'gender race politics religion nationality')
-PromptKind = Enum('PromptKind', 'open adversarial')
-AssessmentKind = Enum('AssessmentKind', 'observational utopian')
+ConcernKind = Enum('ConcernKind', 'ageism lgtbiqphobia politics racism religion sexism xenophobia')
+InputKind = Enum('InputKind', 'constrained verbose')
+ReflectionKind = Enum('ReflectionKind', 'observational utopian')
 
 # -----------------------------------------------------------------------
 # main class
@@ -77,12 +77,12 @@ class Prompt:
         return self.__concern
     
     @property
-    def type(self):
-        return self.__type
+    def input_type(self):
+        return self.__input_type
     
     @property
-    def assessment(self):
-        return self.__assessment
+    def reflection_type(self):
+        return self.__reflection_type
     
     @property
     def oracle_operation(self):
@@ -92,11 +92,11 @@ class Prompt:
     def oracle_prediction(self):
         return self.__oracle.expected_value
             
-    def __init__(self, id, concern: ConcernKind, type: PromptKind, assessment: AssessmentKind, task_prefix, template, output_formatting, oracle: Oracle):
+    def __init__(self, id, concern: ConcernKind, input_type: InputKind, reflection_type: ReflectionKind, task_prefix, template, output_formatting, oracle: Oracle):
         self.__id = id
         self.__concern = concern
-        self.__type = type
-        self.__assessment = assessment
+        self.__input_type = input_type
+        self.__reflection_type = reflection_type
         self.task_prefix = task_prefix
         self.__template = template
         self.__output_formatting = output_formatting

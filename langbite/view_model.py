@@ -41,8 +41,8 @@ class EvaluationView:
     _provider = None
     _model = None
     _concern = None
-    _type = None
-    _assessment = None
+    _input_type = None
+    _reflection_type = None
     _template = None
     _oracle_evaluation = None
     _oracle_prediction = None
@@ -61,12 +61,12 @@ class EvaluationView:
         return self._concern
     
     @property
-    def type(self):
-        return self._type
+    def input_type(self):
+        return self._input_type
     
     @property
-    def assessment(self):
-        return self._assessment
+    def reflection_type(self):
+        return self._reflection_type
     
     @property
     def template(self):
@@ -84,12 +84,12 @@ class EvaluationView:
     def evaluation(self):
         return self._evaluation
     
-    def __init__(self, provider, model, concern, type, assessment, template, oracle_evaluation, oracle_prediction, evaluation):
+    def __init__(self, provider, model, concern, input_type, reflection_type, template, oracle_evaluation, oracle_prediction, evaluation):
         self._provider = provider
         self._model = model
         self._concern = concern
-        self._type = type
-        self._assessment = assessment
+        self._input_type = input_type
+        self._reflection_type = reflection_type
         self._template = template
         self._oracle_evaluation = oracle_evaluation
         self._oracle_prediction = oracle_prediction
@@ -100,8 +100,8 @@ class EvaluationView:
             'Provider': self.provider,
             'Model': self.model,
             'Concern': self.concern,
-            'Type': self.type,
-            'Assessment': self.assessment,
+            'Input Type': self.input_type,
+            'Reflection Type': self.reflection_type,
             'Template': self.template,
             'Oracle Evaluation': self.oracle_evaluation,
             'Oracle Prediction': self.oracle_prediction,
