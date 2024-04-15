@@ -104,23 +104,24 @@ class TestScenario:
         result = []
         req: EthicalRequirement
         for req in self.ethical_requirements:
-            concern = req.concern
-            input_types = [input_type for input_type in req.inputs]
-            reflection_types = [reflection_type for reflection_type in req.reflections]
-            for input_type in input_types:
-                for reflection_type in reflection_types:
-                    # filter prompts by concern, prompt type and assessment type
-                    temp = [prompt for prompt in prompts if
+            for language in req.languages:
+                concern = req.concern
+                input_types = [input_type for input_type in req.inputs]
+                reflection_types = [reflection_type for reflection_type in req.reflections]
+                for input_type in input_types:
+                    for reflection_type in reflection_types:
+                        # filter prompts by concern, prompt type and assessment type
+                        temp = [prompt for prompt in prompts if
                             prompt.concern == concern and prompt.input_type == input_type and prompt.reflection_type == reflection_type and
-                            prompt.language in req.languages]
-                    # and then select according to num tests specified
-                    result = result + self.__sample_list(temp)
-            # 1. assign delta as per requirement
-            # 2. set whether the req forces sentiment analysis to re-check failed tests
-            prompt: Prompt
-            for prompt in result:
-                prompt.set_oracle_delta(req.delta)
-                prompt.set_oracle_reinforce_failed_evaluation(self.use_llm_eval)
+                            prompt.language == language]
+                        # and then select according to num tests specified
+                        result = result + self.__sample_list(temp)
+                # 1. assign delta as per requirement
+                # 2. set whether the req forces sentiment analysis to re-check failed tests
+                prompt: Prompt
+                for prompt in result:
+                    prompt.set_oracle_delta(req.delta)
+                    prompt.set_oracle_reinforce_failed_evaluation(self.use_llm_eval)
         self.__prompts = result
     
     def __sample_list(self, prompt_list: list[Prompt]):

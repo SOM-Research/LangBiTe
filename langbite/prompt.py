@@ -113,7 +113,8 @@ class Prompt:
         markup = MARKUPS[concern]
 
         if len(communities) > 0:
-            self.__instances = self.__replace_markups(markup, communities)
+            lang_communities = communities[self.language]
+            self.__instances = self.__replace_markups(markup, lang_communities)
         else:
             self.__instances = [self.template]
     
