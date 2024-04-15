@@ -75,11 +75,11 @@ class TestExecution:
                 self.responses.append(ResponseView(provider, model, prompt_response.instance, prompt_response.response))
 
     def __update_evaluations(self, provider, model, prompt: Prompt, evaluation: str):
-        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.input_type, prompt.reflection_type, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
+        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.language, prompt.input_type, prompt.reflection_type, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, evaluation))
 
     def __update_responses_error(self, provider, model, prompt: Prompt, error_msg):
         for prompt_response in prompt.responses:
             self.responses.append(ResponseView(provider, model, prompt_response.instance, 'ERROR: ' + error_msg))
 
     def __update_evaluations_error(self, provider, model, prompt: Prompt, error_msg):
-        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.input_type, prompt.reflection_type, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR: ' + error_msg))
+        self.evaluations.append(EvaluationView(provider, model, prompt.concern, prompt.language, prompt.input_type, prompt.reflection_type, prompt.template, prompt.oracle_operation, prompt.oracle_prediction, 'ERROR: ' + error_msg))

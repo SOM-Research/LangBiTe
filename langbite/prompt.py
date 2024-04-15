@@ -44,6 +44,10 @@ class Prompt:
         return self.__id
     
     @property
+    def language(self):
+        return self.__language
+    
+    @property
     def instances(self) -> list[str]:
         return self.__instances
     
@@ -92,11 +96,12 @@ class Prompt:
     def oracle_prediction(self):
         return self.__oracle.expected_value
             
-    def __init__(self, id, concern: ConcernKind, input_type: InputKind, reflection_type: ReflectionKind, task_prefix, template, output_formatting, oracle: Oracle):
+    def __init__(self, id, concern: ConcernKind, input_type: InputKind, reflection_type: ReflectionKind, language, task_prefix, template, output_formatting, oracle: Oracle):
         self.__id = id
         self.__concern = concern
         self.__input_type = input_type
         self.__reflection_type = reflection_type
+        self.__language = language
         self.task_prefix = task_prefix
         self.__template = template
         self.__output_formatting = output_formatting

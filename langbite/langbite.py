@@ -80,8 +80,10 @@ class LangBiTe:
     def __init__(self, prompts_path=None, file=None, file_dict=None):
         self.__requirements_file = file
         self.__requirements_dict = file_dict
+        self.__prompts_path = dict()
         if not prompts_path:
-            self.__prompts_path = files('langbite.resources').joinpath('prompts.csv')
+            self.__prompts_path['en_us'] = files('langbite.resources').joinpath('prompts_en_us.csv')
+            self.__prompts_path['es_es'] = files('langbite.resources').joinpath('prompts_es_es.csv')
         else:
             self.__prompts_path = prompts_path
         self.__current_status = 0
@@ -113,7 +115,7 @@ class LangBiTe:
             self.__test_scenario = TestScenario(self.requirements_dict)
         prompt_io = PromptIOManager()
         # test generation
-        self.__test_scenario.prompts = prompt_io.load_prompts(self.__prompts_path)
+        self.__test_scenario.prompts = prompt_io.load_prompts(self.__prompts_path, self.__test_scenario.languages)
         # aux: for output reasons
         self.__update_figures()
         self.__current_status = 1

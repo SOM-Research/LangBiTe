@@ -1,5 +1,6 @@
 import pandas as pd
 from langbite.view_model import EvaluationView
+from langbite.ethical_requirement import EthicalRequirement
 
 
 class GlobalEvaluation:
@@ -7,6 +8,7 @@ class GlobalEvaluation:
     __provider = None
     __model = None
     __concern = None
+    __language = None
     __input_type = None
     __reflection_type = None
     __passednr = 0
@@ -25,6 +27,10 @@ class GlobalEvaluation:
     @property
     def concern(self):
         return self.__concern
+    
+    @property
+    def language(self):
+        return self.__language
     
     @property
     def input_type(self):
@@ -68,10 +74,11 @@ class GlobalEvaluation:
     def tolerance_evaluation(self):
         return self.__tolerance_evaluation
     
-    def __init__(self, provider, model, concern, input_type, reflection_type, passednr, failednr, errornr, tolerance, tolerance_evaluation):
+    def __init__(self, provider, model, concern, language, input_type, reflection_type, passednr, failednr, errornr, tolerance, tolerance_evaluation):
         self.__provider = provider
         self.__model = model
         self.__concern = concern
+        self.__language = language
         self.__input_type = input_type
         self.__reflection_type = reflection_type
         self.__passednr = passednr
@@ -85,6 +92,7 @@ class GlobalEvaluation:
             'Provider': self.provider,
             'Model': self.model,
             'Concern': self.concern,
+            'Language': self.language,
             'Input Type': self.input_type,
             'Reflection Type': self.reflection_type,
             'Passed Nr': self.passednr,
@@ -99,9 +107,9 @@ class GlobalEvaluation:
 
 class GlobalEvaluator:
 
-    def evaluate(self, evaluations: list[EvaluationView], ethical_requirements: list):
+    def evaluate(self, evaluations: list[EvaluationView], ethical_requirements: list[EthicalRequirement]):
         df = pd.DataFrame.from_records([e.to_dict() for e in evaluations])
-        df = df.groupby(by=['Provider','Model','Concern','Input Type','Reflection Type']).agg(**{
+        df = df.groupby(by=['Provider','Model','Concern','Language','Input Type','Reflection Type']).agg(**{
                 'PassedNr': ('Evaluation', lambda s: s.eq('Passed').sum()),
                 'FailedNr': ('Evaluation', lambda s: s.eq('Failed').sum()),
                 'ErrorNr': ('Evaluation', lambda s: s.eq('Error').sum())
@@ -109,7 +117,7 @@ class GlobalEvaluator:
         self.__evaluate_tolerance(df, ethical_requirements)
         return self.__evaluations_tolist(df)
     
-    def __evaluate_tolerance(self, df: pd.DataFrame, ethical_requirements: list):
+    def __evaluate_tolerance(self, df: pd.DataFrame, ethical_requirements: list[EthicalRequirement]):
         tolerances = {req.concern:req.tolerance for req in ethical_requirements}
         df['Tolerance'] = df.apply(lambda row: tolerances[row.Concern], axis=1)
         df['Tolerance Evaluation'] = df.apply(lambda row: self.__evaluate(tolerances[row.Concern], row.PassedNr, row.FailedNr), axis=1)
@@ -125,11 +133,12 @@ class GlobalEvaluator:
             provider=x[0],
             model=x[1],
             concern=x[2],
-            input_type=x[3],
-            reflection_type=x[4],
-            passednr=x[5],
-            failednr=x[6],
-            errornr=x[7],
-            tolerance=x[8],
-            tolerance_evaluation=x[9]
+            language=x[3],
+            input_type=x[4],
+            reflection_type=x[5],
+            passednr=x[6],
+            failednr=x[7],
+            errornr=x[8],
+            tolerance=x[9],
+            tolerance_evaluation=x[10]
         ),df.values.tolist()))

@@ -1,6 +1,7 @@
 from langbite.prompt import Prompt
 from langbite.ethical_requirement import EthicalRequirements, EthicalRequirement
 from random import sample
+import langbite.utils
 
 class TestScenario:
 
@@ -72,6 +73,14 @@ class TestScenario:
     def prompts(self) -> list[Prompt]:
         return self.__prompts
     
+    @property
+    def languages(self):
+        return self.__languages
+    
+    @languages.setter
+    def languages(self, value):
+        self.__languages = value
+    
     @prompts.setter
     def prompts(self, value: list[Prompt]):
         self.__select_prompts(value)
@@ -85,7 +94,11 @@ class TestScenario:
         self.num_retries = cfg['nRetries']
         self.use_llm_eval = cfg['useLLMEval']
         self.ethical_requirements = EthicalRequirements(cfg['requirements']).requirements
+        self.languages = self.__set_languages()
         self.models = cfg['aiModels']
+    
+    def __set_languages(self):
+        return langbite.utils.merge_unique([e.languages for e in self.ethical_requirements])
     
     def __select_prompts(self, prompts: list[Prompt]):
         result = []
@@ -97,7 +110,9 @@ class TestScenario:
             for input_type in input_types:
                 for reflection_type in reflection_types:
                     # filter prompts by concern, prompt type and assessment type
-                    temp = [prompt for prompt in prompts if prompt.concern == concern and prompt.input_type == input_type and prompt.reflection_type == reflection_type]
+                    temp = [prompt for prompt in prompts if
+                            prompt.concern == concern and prompt.input_type == input_type and prompt.reflection_type == reflection_type and
+                            prompt.language in req.languages]
                     # and then select according to num tests specified
                     result = result + self.__sample_list(temp)
             # 1. assign delta as per requirement

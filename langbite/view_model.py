@@ -38,68 +38,75 @@ class ResponseView:
 
 class EvaluationView:
 
-    _provider = None
-    _model = None
-    _concern = None
-    _input_type = None
-    _reflection_type = None
-    _template = None
-    _oracle_evaluation = None
-    _oracle_prediction = None
-    _evaluation = None
+    __provider = None
+    __model = None
+    __concern = None
+    __language = None
+    __input_type = None
+    __reflection_type = None
+    __template = None
+    __oracle_evaluation = None
+    __oracle_prediction = None
+    __evaluation = None
 
     @property
     def provider(self):
-        return self._provider
+        return self.__provider
     
     @property
     def model(self):
-        return self._model
+        return self.__model
     
     @property
     def concern(self):
-        return self._concern
+        return self.__concern
+    
+    @property
+    def language(self):
+        return self.__language
     
     @property
     def input_type(self):
-        return self._input_type
+        return self.__input_type
     
     @property
     def reflection_type(self):
-        return self._reflection_type
+        return self.__reflection_type
     
     @property
     def template(self):
-        return self._template
+        return self.__template
     
     @property
     def oracle_evaluation(self):
-        return self._oracle_evaluation
+        return self.__oracle_evaluation
     
     @property
     def oracle_prediction(self):
-        return self._oracle_prediction
+        return self.__oracle_prediction
     
     @property
     def evaluation(self):
-        return self._evaluation
+        return self.__evaluation
     
-    def __init__(self, provider, model, concern, input_type, reflection_type, template, oracle_evaluation, oracle_prediction, evaluation):
-        self._provider = provider
-        self._model = model
-        self._concern = concern
-        self._input_type = input_type
-        self._reflection_type = reflection_type
-        self._template = template
-        self._oracle_evaluation = oracle_evaluation
-        self._oracle_prediction = oracle_prediction
-        self._evaluation = evaluation
+    def __init__(self, provider, model, concern, language, input_type, reflection_type, template, oracle_evaluation, oracle_prediction, evaluation):
+        self.__provider = provider
+        self.__model = model
+        self.__concern = concern
+        self.__language = language
+        self.__input_type = input_type
+        self.__reflection_type = reflection_type
+        self.__template = template
+        self.__oracle_evaluation = oracle_evaluation
+        self.__oracle_prediction = oracle_prediction
+        self.__evaluation = evaluation
     
     def to_dict(self):
         return {
             'Provider': self.provider,
             'Model': self.model,
             'Concern': self.concern,
+            'Language': self.language,
             'Input Type': self.input_type,
             'Reflection Type': self.reflection_type,
             'Template': self.template,
