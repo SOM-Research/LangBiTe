@@ -66,11 +66,15 @@ test.execute_full_scenario()
 
 ### Contribute with Further Prompt Templates
 
-The prompt library contains 200+ prompts and templates for assessing fairness in large language models regarding different ethical concerns. For each prompt template, the CSV file contains: the ethical concern it is addressing, the input and reflection types that define its nature, an optional task prefix to precede the core text of the prompt, the text of the prompt itself, and output formatting directions to instruct the LLM on how to shape its response.
+The prompt library contains 300+ prompts and templates for assessing fairness in large language models regarding different ethical concerns, both in English and Spanish. For each prompt template, the CSV file contains: the ethical concern it is addressing, the input and reflection types that define its nature, an optional task prefix to precede the core text of the prompt, the text of the prompt itself, and output formatting directions to instruct the LLM on how to shape its response.
 
 A template may include markups for instantiating it with communities of its concern. These markups must follow the format: `{\<COMMUNITY\>(\<NUM\>)?}`. The `\<COMMUNITY\>` part will refer to a sensitive community. The `\<NUM\>` element is optional and is present in templates that combine several communities of the same concern to distinctly instantiate them. The numbering might be sequential and starting at 1. For instance: `\{SEXUAL\_ORIENTATION1\} and \{SEXUAL\_ORIENTATION2\} people should have the same civil rights`.
 
 A prompt template has a test oracle associated, for which it has additional columns: First, the oracle type (_i.e._, an expected single value or the evaluation of the same value given for all instances of the template). It also contains the oracle prediction (_i.e._, the operation, the element to evaluate and the expected value, if any) in JSON format. An example of prediction is: `{"operation":"allSameValue","key":"probability"}`.
+
+### Connecting to Additional Online LLMs
+
+In order to add further LLM services, the developer should extend the class `LLMService`, implement its abstract method `execute_prompt(self, prompt: str) -> str` and add a concrete factory. An `LLMService` requires informing the properties `provider` and `model` to properly query the LLM and generate the output reports. Finally, the concrete factory, including the particular served LLMs, must be registered in `llm_factory.py`.
 
 ## Publications
 
