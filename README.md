@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/671032095.svg)](https://zenodo.org/doi/10.5281/zenodo.10987270)
+
 # LangBiTe: A Bias Tester framework for LLMs
 
 LangBiTe is a framework for testing biases in large language models.
