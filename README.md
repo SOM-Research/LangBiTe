@@ -84,6 +84,12 @@ To cite the initial approach proposal:
 Sergio Morales, Robert Clarisó and Jordi Cabot. "Automating Bias Testing of LLMs," 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE), Luxembourg, 2023, pp. 1705-1707, doi: 10.1109/ASE56229.2023.00018
 ```
 
+To cite the paper describing the software:
+
+```
+Sergio Morales, Robert Clarisó and Jordi Cabot. "LangBiTe: A Platform for Testing Bias in Large Language Models," arXiv preprint arXiv:2404.18558 (2024) [cs.SE]
+```
+
 ## License
 
 The source code for the site is licensed under the MIT License, which you can find in the LICENSE.md file.
