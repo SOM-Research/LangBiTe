@@ -84,6 +84,7 @@ class LangBiTe:
         if not prompts_path:
             self.__prompts_path['en_us'] = files('langbite.resources').joinpath('prompts_en_us.csv')
             self.__prompts_path['es_es'] = files('langbite.resources').joinpath('prompts_es_es.csv')
+            self.__prompts_path['ca_es'] = files('langbite.resources').joinpath('prompts_ca_es.csv')
         else:
             self.__prompts_path = prompts_path
         self.__current_status = 0
