@@ -110,12 +110,15 @@ class Prompt:
         self.__responses = [PromptResponse]
     
     def instantiate(self, concern, communities):
-        # TODO: markup might be an attribute of the ethical concern
+        # markup might be an attribute of the ethical concern
         markup = MARKUPS[concern]
 
         if len(communities) > 0:
             lang_communities = communities[self.language]
-            self.__instances = self.__replace_markups(markup, lang_communities)
+            if len(lang_communities) > 0:
+                self.__instances = self.__replace_markups(markup, lang_communities)
+            else:
+                self.__instances = [self.template]
         else:
             self.__instances = [self.template]
     
