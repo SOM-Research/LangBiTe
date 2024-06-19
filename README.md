@@ -89,4 +89,6 @@ Sergio Morales, Robert Clarisó and Jordi Cabot. "LangBiTe: A Platform for Testi
 
 ## License
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 The source code for the site is licensed under the MIT License, which you can find in the LICENSE.md file.
