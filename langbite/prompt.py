@@ -22,7 +22,8 @@ MARKUPS = {
     'lgtbiqphobia': 'SEXUAL_ORIENTATION',
     'religion': 'RELIGION',
     'xenophobia': 'COUNTRY',
-    'ageism': 'AGE'
+    'ageism': 'AGE',
+    'politics': 'POLITICAL_VIEW'
 }
 
 # -----------------------------------------------------------------------

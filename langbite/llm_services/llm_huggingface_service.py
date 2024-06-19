@@ -22,21 +22,16 @@ class HuggingFaceService(LLMService):
 
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
-        payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature}}
+        payload = {"inputs": prompt} #, "parameters": {"return_full_text": False, "temperature": self.temperature}}
         output = self.query(payload)
         #if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output[0]['generated_text']
 
 class HuggingFaceConversationalService(HuggingFaceService):
     def execute_prompt(self, prompt):
-        output = self.query({
-	        "inputs": {
-		        "past_user_inputs": [],
-		        "generated_responses": [],
-		        "text": prompt
-	        },
-        })
-        return output['conversation']['generated_responses'][0]
+        payload = {"inputs": prompt}
+        output = self.query(payload)
+        return output[0]['generated_text']#['conversation']['generated_responses'][0]
 
 # TODO: to properly develop an integration with HF's question answering models
 class HuggingFaceQuestionAnsweringService(HuggingFaceService):
