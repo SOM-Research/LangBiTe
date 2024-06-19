@@ -13,13 +13,10 @@ Given an ethical requirements model, LangBiTe prompts a large language model and
 The following tree shows the list of the repository's sections and their main contents:
 
 ```
-├── langbite                         // The source code of the package.
-|      ├── langbite.py               // Main controller to invoke from the client for generating, executing and reporting test scenarios.
-|      └── resources
-|             └── prompts_CO_RE.csv  // The prompt templates libraries in CSV format. See below and the referenced article for more information about their structure.
-└── test                             // A simple example of a test scenario.
-       ├── simple_test.json          // An example of a test scenario definition which assesses religion bias on ChatGPT 3.5 Turbo.
-       └── simple_test.py            // A controller for executing the whole testing workflow.
+└── langbite                        // The source code of the package.
+      ├── langbite.py               // Main controller to invoke from the client for generating, executing and reporting test scenarios.
+      └── resources
+             └── prompts_CO_RE.csv  // The prompt templates libraries in CSV format. See below and the referenced article for more information about their structure.
 ```
 
 ## Requirements
