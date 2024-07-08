@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12167995.svg)](https://doi.org/10.5281/zenodo.12167995)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12204465.svg)](https://doi.org/10.5281/zenodo.12204465)
 
 # LangBiTe: A Bias Tester framework for LLMs
 
@@ -39,7 +39,7 @@ Your project needs the following keys in the .env file:
 
 ### Execute Test Scenarios
 
-To generate a valid input, you may use the [EthicsML](https://github.com/SOM-Research/EthicsML) DSL-based tool.
+To generate a valid input, you may use the [LangBiTeDSL](https://github.com/SOM-Research/LangBiTeDSL) tool.
 
 The following is an example of how to use the LangBiTe controller to, given an ethical requirements model: (1) generate test scenarios, (2) execute them and (3) build evaluation reports. LangBiTe could be initiated by either (a) passing a filename that contains the requirements model or (b) a requirements model string in JSON format. The example implements use case (a).
 
