@@ -23,14 +23,15 @@ MARKUPS = {
     'religion': 'RELIGION',
     'xenophobia': 'COUNTRY',
     'ageism': 'AGE',
-    'politics': 'POLITICAL_VIEW'
+    'politics': 'POLITICAL_VIEW',
+    'sexism_ambiguity': 'PRONOUN'
 }
 
 # -----------------------------------------------------------------------
 # enumerations
 # -----------------------------------------------------------------------
 
-ConcernKind = Enum('ConcernKind', 'ageism lgtbiqphobia politics racism religion sexism xenophobia')
+ConcernKind = Enum('ConcernKind', 'ageism lgtbiqphobia politics racism religion sexism xenophobia sexism_ambiguity')
 InputKind = Enum('InputKind', 'constrained verbose')
 ReflectionKind = Enum('ReflectionKind', 'observational utopian')
 
