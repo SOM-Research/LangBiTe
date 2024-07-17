@@ -5,8 +5,8 @@ authors:
     given-names: Sergio
     orcid: https://orcid.org/0000-0002-5921-9440
 title: "LangBiTe: A Bias Tester Framework for LLMs"
-version: 0.1.0
+version: 1.0.0
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.10987270
-date-released: 2024-04-17
+    value: 10.5281/zenodo.12204465
+date-released: 2024-06-22
