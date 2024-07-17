@@ -75,17 +75,13 @@ In order to add further LLM services, the developer should extend the class `LLM
 
 ## Publications
 
-To cite the initial approach proposal:
+This repository is the companion to the following research paper:
 
-```
-Sergio Morales, Robert Clarisó and Jordi Cabot. "Automating Bias Testing of LLMs," 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE), Luxembourg, 2023, pp. 1705-1707, doi: 10.1109/ASE56229.2023.00018
-```
+> Sergio Morales, Robert Clarisó and Jordi Cabot. "A DSL for Testing LLMs for Fairness and Bias," ACM/IEEE 27th International Conference on Model Driven Engineering Languages and Systems (MODELS '24), September 22-27, 2024, Linz, Austria. (to be published)
 
 To cite the paper describing the software:
 
-```
-Sergio Morales, Robert Clarisó and Jordi Cabot. "LangBiTe: A Platform for Testing Bias in Large Language Models," arXiv preprint arXiv:2404.18558 (2024) [cs.SE]
-```
+> Sergio Morales, Robert Clarisó and Jordi Cabot. "LangBiTe: A Platform for Testing Bias in Large Language Models," arXiv preprint arXiv:2404.18558 (2024) [cs.SE]
 
 ## License
 
