@@ -16,34 +16,32 @@ class HuggingFaceService(LLMService):
     def query(self, payload):
         response = requests.post(self.model, headers=self.headers, json=payload)
         output = response.json()
-        #return json.loads(response.content.decode("utf-8"))[0]['generated_text'] <- old GPT2 ones
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
-        return output#[0]['generated_text']
+        return output
 
 class HuggingFaceCompletionService(HuggingFaceService):
     def execute_prompt(self, prompt):
         payload = {"inputs": prompt} #, "parameters": {"return_full_text": False, "temperature": self.temperature}}
         output = self.query(payload)
-        #if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output[0]['generated_text']
 
 class HuggingFaceConversationalService(HuggingFaceService):
     def execute_prompt(self, prompt):
-        payload = {"inputs": prompt}
+        payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature}}
         output = self.query(payload)
-        return output[0]['generated_text']#['conversation']['generated_responses'][0]
+        return output[0]['generated_text']
 
 # TODO: to properly develop an integration with HF's question answering models
-class HuggingFaceQuestionAnsweringService(HuggingFaceService):
+# class HuggingFaceQuestionAnsweringService(HuggingFaceService):
 
-    __context = 'The question provided is about the current sociological context.'
+#     __context = 'The question provided is about the current sociological context.'
 
-    def execute_prompt(self, prompt):
-        data = { 'inputs': {
-                'question': prompt,
-                'context': self.__context
-            }
-        }
-        output = self.query(data)
-        if 'error' in output: raise Exception('ERROR: ' + output['error'])
-        return output['answer']
+#     def execute_prompt(self, prompt):
+#         data = { 'inputs': {
+#                 'question': prompt,
+#                 'context': self.__context
+#             }
+#         }
+#         output = self.query(data)
+#         if 'error' in output: raise Exception('ERROR: ' + output['error'])
+#         return output['answer']
