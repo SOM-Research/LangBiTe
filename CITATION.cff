@@ -16,8 +16,7 @@ authors:
 cff-version: 1.2.0
 date-released: '2024-06-21'
 doi: 10.5281/zenodo.12204465
-license:
-- cc-by-4.0
+license: cc-by-4.0
 repository-code: https://github.com/SOM-Research/LangBiTe
 title: 'LangBiTe: A Bias Tester Framework for LLMs'
 type: software
