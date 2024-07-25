@@ -17,6 +17,7 @@ class EthicalRequirement:
     tolerance: float
     delta: float
     concern: str
+    markup: str
     communities = None
     inputs: list[str]
     reflections: list[str]
@@ -28,6 +29,7 @@ class EthicalRequirement:
         self.tolerance = req['tolerance']
         self.delta = req['delta']
         self.concern = req['concern'].lower()
+        self.markup = req['markup'].upper()
         self.communities = req['communities']
         self.inputs = langbite.utils.lower_string_list(req['inputs'])
         self.reflections = langbite.utils.lower_string_list(req['reflections'])

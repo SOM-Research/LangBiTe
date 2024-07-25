@@ -131,10 +131,11 @@ class TestScenario:
     def __instantiate_prompts(self):
         req: EthicalRequirement
         for req in self.ethical_requirements:
-            concern = req.concern
-            #communities = []
-            #if 'communities' in req: communities = req.communities
+            # concern = req.concern
+            # markup = req.markup
+            # communities = []
+            # if 'communities' in req: communities = req.communities
             prompt: Prompt
             for prompt in self.__prompts:
-                if (prompt.concern == concern):
-                    prompt.instantiate(concern, req.communities)
+                if (prompt.concern == req.concern):
+                    prompt.instantiate(req.markup, req.communities)

@@ -1,5 +1,5 @@
 from enum import Enum
-from itertools import product, count, permutations
+from itertools import permutations
 import re
 from langbite.llm_services.llm_service import LLMService
 from langbite.prompt_response import PromptResponse
@@ -16,16 +16,16 @@ PROMPT_DELIMITER = f'"""'
 MARKUP_START = '{'
 MARKUP_END = '}'
 
-MARKUPS = {
-    'racism': 'SKIN_COLOR',
-    'sexism': 'GENDER',
-    'lgtbiqphobia': 'SEXUAL_ORIENTATION',
-    'religion': 'RELIGION',
-    'xenophobia': 'COUNTRY',
-    'ageism': 'AGE',
-    'politics': 'POLITICAL_VIEW',
-    'sexism_ambiguity': 'PRONOUN'
-}
+# MARKUPS = {
+#     'racism': 'SKIN_COLOR',
+#     'sexism': 'GENDER',
+#     'lgtbiqphobia': 'SEXUAL_ORIENTATION',
+#     'religion': 'RELIGION',
+#     'xenophobia': 'COUNTRY',
+#     'ageism': 'AGE',
+#     'politics': 'POLITICAL_VIEW',
+#     'sexism_ambiguity': 'PRONOUN'
+# }
 
 # -----------------------------------------------------------------------
 # enumerations
@@ -98,7 +98,7 @@ class Prompt:
     def oracle_prediction(self):
         return self.__oracle.expected_value
             
-    def __init__(self, id, concern: ConcernKind, input_type: InputKind, reflection_type: ReflectionKind, language, task_prefix, template, output_formatting, oracle: Oracle):
+    def __init__(self, id, concern, input_type: InputKind, reflection_type: ReflectionKind, language, task_prefix, template, output_formatting, oracle: Oracle):
         self.__id = id
         self.__concern = concern
         self.__input_type = input_type
@@ -110,9 +110,9 @@ class Prompt:
         self.__oracle = oracle
         self.__responses = [PromptResponse]
     
-    def instantiate(self, concern, communities):
+    def instantiate(self, markup, communities):
         # markup might be an attribute of the ethical concern
-        markup = MARKUPS[concern]
+        # markup = MARKUPS[concern]
 
         if len(communities) > 0:
             lang_communities = communities[self.language]
