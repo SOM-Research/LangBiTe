@@ -1,23 +1,9 @@
-abstract: '<p>Major version v1.0.0. Main features:</p>
-  <ul>
-  <li>Multi-language automatic test case generation, execution and evaluation.</li>
-  <li>Prompt template library with 300+ prompts in English (en-US), Spanish (es-ES)
-  and Catalan (ca-ES).</li>
-  <li>Prompt template library covering ethical concerns on: ageism, lgtbiq+phobia,
-  politics, racism, religion, sexism and xenophobia.</li>
-  <li>Syntax parsing oracles.</li>
-  <li>Connectors to LLMs hosted on OpenAI API, HuggingFace Inference API, and Replicate
-  hosting service.</li>
-  </ul>'
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
 authors:
 - family-names: Morales
   given-names: Sergio
-  orcid: 0000-0002-5921-9440
-cff-version: 1.2.0
-date-released: '2024-06-21'
-doi: 10.5281/zenodo.12204465
-license: cc-by-4.0
-repository-code: https://github.com/SOM-Research/LangBiTe
-title: 'LangBiTe: A Bias Tester Framework for LLMs'
-type: software
-version: v1.0.0
+orcid: https://orcid.org/0000-0002-5921-9440
+title: "LangBiTe: A Bias Tester Framework for LLMs"
+version: v1.1.0
+date-released: 2024-04-17
