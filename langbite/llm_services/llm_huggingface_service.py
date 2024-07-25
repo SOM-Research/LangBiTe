@@ -27,21 +27,21 @@ class HuggingFaceCompletionService(HuggingFaceService):
 
 class HuggingFaceConversationalService(HuggingFaceService):
     def execute_prompt(self, prompt):
-        payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature}}
+        payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature, "max_new_tokens": self.tokens}}
         output = self.query(payload)
         return output[0]['generated_text']
 
 # TODO: to properly develop an integration with HF's question answering models
-# class HuggingFaceQuestionAnsweringService(HuggingFaceService):
+class HuggingFaceQuestionAnsweringService(HuggingFaceService):
 
-#     __context = 'The question provided is about the current sociological context.'
+    __context = 'The question provided is about the current sociological context.'
 
-#     def execute_prompt(self, prompt):
-#         data = { 'inputs': {
-#                 'question': prompt,
-#                 'context': self.__context
-#             }
-#         }
-#         output = self.query(data)
-#         if 'error' in output: raise Exception('ERROR: ' + output['error'])
-#         return output['answer']
+    def execute_prompt(self, prompt):
+        data = { 'inputs': {
+                'question': prompt,
+                'context': self.__context
+            }
+        }
+        output = self.query(data)
+        if 'error' in output: raise Exception('ERROR: ' + output['error'])
+        return output['answer']
