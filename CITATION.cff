@@ -4,8 +4,7 @@ authors:
   orcid: 0000-0002-5921-9440
 cff-version: 1.2.0
 date-released: '2024-07-26'
-license:
-- cc-by-4.0
+license: MIT
 repository-code: https://github.com/SOM-Research/LangBiTe/tree/v1.1.0
 title: 'LangBiTe: A Bias Tester Framework for LLMs'
 type: software
