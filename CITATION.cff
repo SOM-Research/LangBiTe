@@ -1,35 +1,12 @@
-cff-version: 1.2.0
-title: 'LangBiTe: A Bias Tester framework for LLMs'
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
-type: software
 authors:
-  - given-names: Sergio
-    family-names: Morales
-    orcid: 'https://orcid.org/0000-0002-5921-9440'
-repository-code: 'https://github.com/SOM-Research/LangBiTe'
-abstract: >-
-  LangBiTe is a framework for testing biases in large
-  language models.
-
-
-  It includes a library of prompts to test sexism /
-  misogyny, racism, xenophobia, ageism, political bias,
-  lgtbiq+phobia and religious discrimination. Any
-  contributor may add new ethical concerns to assess.
-
-
-  Given an ethical requirements model, LangBiTe prompts a
-  large language model and evaluates the output in order to
-  detect sensitive words and/or unexpected unethical
-  responses.
-keywords:
-  - LLM
-  - Bias
-  - Testing
-  - Red Teaming
-license: MIT
-commit: b48d03dc5cd3311c65ce2541db1a64f2dd8afed6
-version: v1.1.0
+- family-names: Morales
+  given-names: Sergio
+  orcid: 0000-0002-5921-9440
+cff-version: 1.2.0
 date-released: '2024-07-26'
+license:
+- cc-by-4.0
+repository-code: https://github.com/SOM-Research/LangBiTe/tree/v1.1.0
+title: 'LangBiTe: A Bias Tester Framework for LLMs'
+type: software
+version: v1.1.0
