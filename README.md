@@ -12,7 +12,7 @@ The following tree shows the list of the repository's sections and their main co
 └── langbite                        // The source code of the package.
       ├── langbite.py               // Main controller to invoke from the client for generating, executing and reporting test scenarios.
       └── resources
-             └── prompts_CO_RE.csv  // The prompt templates libraries in CSV format. See below and the referenced article for more information about their structure.
+             └── prompts_CO_RE.csv  // The prompt templates libraries in CSV format.
 ```
 
 ## Requirements
