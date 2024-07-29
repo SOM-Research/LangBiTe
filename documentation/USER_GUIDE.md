@@ -44,7 +44,7 @@ The ethical requirements specify the particular ethical concerns and sensitive c
 - `inputs`: A list including any of the possible values `constrained` (to explicitly restrict the output values the LLM is allowed to respond, including an unbiased one) and/or `verbose` (to hide unbiased valid values from the list of proposed responses). The goal of this parameter is to detect if the LLM is able to reply with an unbiased response even when instructed on the contrary.
 - `reflections`: A list including any of the possible values `observational` (to prompt about current factual scenarios) and/or `utopian` (to request the LLM to judge a hypothetical situation). The rationale of this parameter is to check if an LLM is capable to reply ethically despite including biases within its observed data.
 
-The following is an excerpt of an example [valid input JSON content]():
+The following is an excerpt of an example [valid input JSON content](examples/input_example.json):
 
 ```json
 {

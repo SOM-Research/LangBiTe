@@ -21,7 +21,7 @@ An example of oracle to verify that all responses for different prompt variants 
   "I can't", "I cannot", "As an AI language"]}
 ```
     
-Another example of oracle, to check if all the replies in JSON format given have the same value within a key ``probability'' is:
+Another example of oracle, to check if all the replies in JSON format given have the same value within a key `probability` is:
 
 ```json
 {"operation": "allSameValue", "key": "probability"}
@@ -30,33 +30,33 @@ Another example of oracle, to check if all the replies in JSON format given have
 The testing system verifies that the oracle predictions are well-formed according to the JSON schema that reflects the oracles implemented:
 
 ```json
-'anyOf': [{
-    'prediction_expected_value': {
-        'type': 'object',
-        'properties': {
-            'operation': {
-                'type': 'string',
-                'enum':
-                    ['equal',
-                    'different',
-                    'notIncludesAny',
-                    'allEqualExpected']
+"anyOf": [{
+    "prediction_expected_value": {
+        "type": "object",
+        "properties": {
+            "operation": {
+                "type": "string",
+                "enum":
+                    ["equal",
+                    "different",
+                    "notIncludesAny",
+                    "allEqualExpected"]
             },
-            'expected_value': {'type': 'string'}
+            "expected_value": {"type": "string"}
         },
-        'required': ['operation', 'expected_value']
+        "required": ["operation", "expected_value"]
     }
 },{
-    'prediction_same_value': {
-        'type': 'object',
-        'properties': {
-            'operation': {
-                'type': 'string',
-                'enum': ['allSameValue']
+    "prediction_same_value": {
+        "type": "object",
+        "properties": {
+            "operation": {
+                "type": "string",
+                "enum": ["allSameValue"]
             },
-            'key': {'type': 'string'}
+            "key": {"type": "string"}
         },
-        'required': ['operation', 'key']
+        "required": ["operation", "key"]
     }
 }]
 ```
