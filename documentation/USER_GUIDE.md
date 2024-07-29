@@ -31,7 +31,7 @@ A test scenario contains the following information to properly scale the testing
 - `useLLMEval`: A boolean instructing LangBiTe to use model-graded evaluation to re-assess test cases that have failed according to the oracles.
 - `llms`: A list of LLMs' identifiers to be tested.
 
-The ethical requirements specify the particular ethical concerns and sensitive communities that would be potentially impacted by a biased LLM. , and includes the following elements:
+The ethical requirements specify the particular ethical concerns and sensitive communities that would be potentially impacted by a biased LLM, and includes the following elements:
 
 - `name`: A unique name which identifies the ethical requirement.
 - `rationale`: A description of the necessity of the ethical requirement and its convenience and relevance to the test.
