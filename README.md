@@ -2,13 +2,9 @@
 
 # LangBiTe: A Bias Tester framework for LLMs
 
-LangBiTe is a framework for testing biases in large language models.
+LangBiTe is a framework for testing biases in large language models. Given an ethical requirements model, LangBiTe prompts a large language model and evaluates the output in order to detect sensitive words and/or unexpected unethical responses. It includes a library of prompts to test sexism / misogyny, racism, xenophobia, ageism, political bias, lgtbiq+phobia and religious discrimination. Any contributor may add new ethical concerns to assess.
 
-It includes a library of prompts to test sexism / misogyny, racism, xenophobia, ageism, political bias, lgtbiq+phobia and religious discrimination. Any contributor may add new ethical concerns to assess.
-
-Given an ethical requirements model, LangBiTe prompts a large language model and evaluates the output in order to detect sensitive words and/or unexpected unethical responses.
-
-## Repository Structure
+## Code Repository Structure
 
 The following tree shows the list of the repository's sections and their main contents:
 
@@ -35,43 +31,29 @@ Your project needs the following keys in the .env file:
 - API_KEY_HUGGINGFACE, to properly invoke Inference APIs in HuggingFace.
 - API_KEY_REPLICATE, to properly connect to models hosted on Replicate.
 
-## Usage
+## Installation, Usage and Extension
 
-### Execute Test Scenarios
+The following tree shows the contents of the `documentation` folder:
 
-To generate a valid input, you may use the [LangBiTeDSL](https://github.com/SOM-Research/LangBiTeDSL) tool.
-
-The following is an example of how to use the LangBiTe controller to, given an ethical requirements model: (1) generate test scenarios, (2) execute them and (3) build evaluation reports. LangBiTe could be initiated by either (a) passing a filename that contains the requirements model or (b) a requirements model string in JSON format. The example implements use case (a).
-
-```python
-from langbite.langbite import LangBiTe
-
-test = LangBiTe(file='<ETHIC_REQUIREMENTS_JSON_FILENAME')
-test.generate()
-test.execute()
-test.report()
+```
+└── documentation
+      ├── EXTENDING.md
+      ├── USER_GUIDE.md
+      └── examples
+            └── input_example.json
 ```
 
-Alternatively to independently calling the three methods `generate()`, `execute()` and `report()`, the complete workflow could be executed by invoking the `execute_full_scenario()` method. The following code is equivalent to the above one:
+Please refer to the [USER_GUIDE.md](documentation/USER_GUIDE.md) for a description of the input structure and the LangBiTe public methods for generating, executing and reporting the ethical assessment. Within the `examples` folder you can find an example JSON input with a complete test scenario and its ethical requirements for assessment.
 
-```python
-from langbite.langbite import LangBiTe
+Please refer to [EXTENDING.md](documentation/EXTENDING.md) if you are interested in contributing or populating your own prompt template library, or in connecting additional online LLMs.
 
-test = LangBiTe(file='<ETHIC_REQUIREMENTS_JSON_FILENAME')
-test.execute_full_scenario()
-```
+## Governance and Contribution
 
-### Contribute with Further Prompt Templates
+The development and community management of this project follows the governance rules described in the [GOVERNANCE.md](GOVERNANCE.md) document.
 
-The prompt library contains 300+ prompts and templates for assessing fairness in large language models regarding different ethical concerns, both in English and Spanish. For each prompt template, the CSV file contains: the ethical concern it is addressing, the input and reflection types that define its nature, an optional task prefix to precede the core text of the prompt, the text of the prompt itself, and output formatting directions to instruct the LLM on how to shape its response.
+At SOM Research Lab we are dedicated to creating and maintaining welcoming, inclusive, safe, and harassment-free development spaces. Anyone participating will be subject to and agrees to sign on to our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-A template may include markups for instantiating it with communities of its concern. These markups must follow the format: `{\<COMMUNITY\>(\<NUM\>)?}`. The `\<COMMUNITY\>` part will refer to a sensitive community. The `\<NUM\>` element is optional and is present in templates that combine several communities of the same concern to distinctly instantiate them. The numbering might be sequential and starting at 1. For instance: `\{SEXUAL\_ORIENTATION1\} and \{SEXUAL\_ORIENTATION2\} people should have the same civil rights`.
-
-A prompt template has a test oracle associated, for which it has additional columns: First, the oracle type (_i.e._, an expected single value or the evaluation of the same value given for all instances of the template). It also contains the oracle prediction (_i.e._, the operation, the element to evaluate and the expected value, if any) in JSON format. An example of prediction is: `{"operation":"allSameValue","key":"probability"}`.
-
-### Connecting to Additional Online LLMs
-
-In order to add further LLM services, the developer should extend the class `LLMService`, implement its abstract method `execute_prompt(self, prompt: str) -> str` and add a concrete factory. An `LLMService` requires informing the properties `provider` and `model` to properly query the LLM and generate the output reports. Finally, the concrete factory, including the particular served LLMs, must be registered in `llm_factory.py`.
+This project is part of a research line of the [SOM Research Lab](https://som-research.uoc.edu/), but we are open to contributions from the community. Any comment is more than welcome! If you are interested in contributing to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Publications
 
