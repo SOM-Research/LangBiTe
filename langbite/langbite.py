@@ -18,6 +18,7 @@ from langbite.test_scenario import TestScenario
 from langbite.test_execution import TestExecution
 from langbite.prompt import Prompt
 from datetime import datetime
+from abc import abstractmethod
 
 
 class RequirementsFileRequiredException(Exception):
@@ -26,7 +27,7 @@ class RequirementsFileRequiredException(Exception):
 class WrongStateException(Exception):
     '''Sorry, you haven't followed the expected workflow. The proper invoking sequence is: init LangBite, generate, execute and report.'''
 
-class LangBiTe:
+class AbstractLangBiTe:
 
     # ---------------------------------------------------------------------------------
     # Public and private properties
@@ -77,16 +78,9 @@ class LangBiTe:
     # Internal and auxiliary methods
     # ---------------------------------------------------------------------------------
 
-    def __init__(self, prompts_path=None, file=None, file_dict=None):
+    def __init__(self, file=None, file_dict=None):
         self.__requirements_file = file
         self.__requirements_dict = file_dict
-        self.__prompts_path = dict()
-        if not prompts_path:
-            self.__prompts_path['en_us'] = files('langbite.resources').joinpath('prompts_en_us.csv')
-            self.__prompts_path['es_es'] = files('langbite.resources').joinpath('prompts_es_es.csv')
-            self.__prompts_path['ca_es'] = files('langbite.resources').joinpath('prompts_ca_es.csv')
-        else:
-            self.__prompts_path = prompts_path
         self.__current_status = 0
 
     def __update_figures(self):
@@ -105,6 +99,11 @@ class LangBiTe:
         self.execute()
         self.report()
 
+    @abstractmethod
+    def load_prompts(self, prompt_io):
+        pass
+    
+    
     def generate(self):
         if (self.__current_status != 0): raise WrongStateException
         if (self.__requirements_file_empty): raise RequirementsFileRequiredException
@@ -116,7 +115,7 @@ class LangBiTe:
             self.__test_scenario = TestScenario(self.requirements_dict)
         prompt_io = PromptIOManager()
         # test generation
-        self.__test_scenario.prompts = prompt_io.load_prompts(self.__prompts_path, self.__test_scenario.languages)
+        self.__test_scenario.prompts = self.load_prompts(prompt_io)
         # aux: for output reasons
         self.__update_figures()
         self.__current_status = 1
@@ -125,6 +124,7 @@ class LangBiTe:
         if (self.__current_status != 1): raise WrongStateException
         time_ini = datetime.now()
         # test execution and evaluation
+        print("TEST SCENARIO ", self.__test_scenario)
         transaction = TestExecution(self.__test_scenario)
         transaction.execute_scenario()
         self.__responses = transaction.responses
@@ -133,12 +133,49 @@ class LangBiTe:
         print(f'Time elapsed for executing {self.__num_instances} instances (from {self.__num_prompts} prompt templates): ' + str(time_end - time_ini))
         self.__current_status = 2
 
-    def report(self):
+    def report(self, path=None):
         if (self.__current_status != 2): raise WrongStateException
         global_evaluator = GlobalEvaluator()
         global_evaluation = global_evaluator.evaluate(self.__evaluations, self.__test_scenario.ethical_requirements)
         reporting_io = ReportingIOManager()
-        reporting_io.write_responses(self.__responses)
-        reporting_io.write_evaluations(self.__evaluations)
-        reporting_io.write_global_evaluation(global_evaluation)
+        if path is not None:
+            reporting_io.set_path(path)
+        responses = reporting_io.write_responses(self.__responses)
+        evaluations = reporting_io.write_evaluations(self.__evaluations)
+        global_eval= reporting_io.write_global_evaluation(global_evaluation)
+        
+        reports = {'responses': responses,
+                   'evaluations': evaluations,
+                   'global_eval': global_eval
+                   }
+        
+        return reports
 
+class LangBiTe(AbstractLangBiTe):
+
+    def __init__(self, prompts_path=None, file=None, file_dict=None):
+        
+        self.__prompts_path = dict()
+        super().__init__(file=file, file_dict=file_dict)
+        if not prompts_path:
+            self.__prompts_path['en_us'] = files('langbite.resources').joinpath('prompts_en_us.csv')
+            self.__prompts_path['es_es'] = files('langbite.resources').joinpath('prompts_es_es.csv')
+            self.__prompts_path['ca_es'] = files('langbite.resources').joinpath('prompts_ca_es.csv')
+        else:
+            self.__prompts_path = prompts_path
+    
+    def load_prompts(self, prompt_io):
+        return prompt_io.load_prompts(self.__prompts_path, self._AbstractLangBiTe__test_scenario.languages)
+    
+
+class LangBiTeForAPI(AbstractLangBiTe):
+    
+    def __init__(self, json_data):
+        file_dict = json_data['config']
+        self.cases = json_data['cases']
+        self.input_lang = json_data['input_language']
+        super().__init__(file_dict=file_dict)
+  
+    def load_prompts(self, prompt_io):
+        return prompt_io.load_prompts_from_json(self.cases, self.input_lang)
+    

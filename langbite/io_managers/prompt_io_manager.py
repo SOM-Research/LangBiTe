@@ -2,7 +2,7 @@ import pandas
 import numpy as np
 from langbite.prompt import Prompt
 from langbite.oracles import oracle_factory
-
+import json
 
 class PromptIOManager:
 
@@ -37,4 +37,27 @@ class PromptIOManager:
                                 oracle=oracle_factory.factory.create(key=value[7],prediction=value[8],prompt_id=value[0]),
                                 language=lang)
                 all_prompts.append(prompt)
+        return all_prompts
+    
+    def load_prompts_from_json(self, cases, input_language):
+        all_prompts = []
+        
+        data = json.loads(cases)
+
+        # Convert the dictionary to a DataFrame
+        prompts_df = pandas.DataFrame(data)
+        prompts_df = prompts_df.replace(np.nan, None)
+        
+        for value in prompts_df.values.tolist():
+            prompt = Prompt(id=value[0],
+                            concern=value[1],
+                            input_type=value[2],
+                            reflection_type=value[3],
+                            task_prefix=value[4],
+                            template=value[5],
+                            output_formatting=value[6],
+                            oracle=oracle_factory.factory.create(key=value[7],prediction=value[8],prompt_id=value[0]),
+                            language=input_language)
+            all_prompts.append(prompt)
+            
         return all_prompts
