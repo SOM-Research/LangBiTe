@@ -2,9 +2,20 @@ from langbite.llm_services.llm_abstract_factory import LLMFactory
 from langbite.llm_services.llm_huggingface_factory import HuggingFaceCompletionServiceBuilder, HuggingFaceConversationalServiceBuilder
 from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder
 from langbite.llm_services.llm_replicate_factory import ReplicateServiceBuilder
+from langbite.llm_services.llm_plugins_factory import PluginsImporter
+# from langbite.llm_services.llm_modulos_factory import ModulosChatServiceBuilder
 
 factory = LLMFactory()
 
+plugins_importer = PluginsImporter()
+plugins = plugins_importer.import_all_plugins()
+
+# Register all plugins
+for plugin_name, builder in plugins.items():
+    if hasattr(builder, 'name'):  # Check if the method exists
+        factory.register_builder(builder.name(), builder) 
+
+    
 # HuggingFace's text completion models
 
 # factory.register_builder('HuggingFaceGPT2', HuggingFaceCompletionServiceBuilder('https://api-inference.huggingface.co/models/gpt2'))
@@ -36,6 +47,7 @@ factory.register_builder('HuggingFaceMistral7B01', HuggingFaceConversationalServ
 factory.register_builder('HuggingFaceMixtral8x7B01Instruct', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1'))
 
 factory.register_builder('HuggingFaceFalcon7BInstruct', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct'))
+factory.register_builder('LLama32', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct'))
 
 
 # these next two are for question answering, may require different invoke method
@@ -60,8 +72,10 @@ factory.register_builder('OpenAIGPT35TurboInstruct', OpenAIChatServiceBuilder('g
 factory.register_builder('Llama27BChat', ReplicateServiceBuilder('meta/llama-2-7b-chat'))
 factory.register_builder('Llama213BChat', ReplicateServiceBuilder('meta/llama-2-13b-chat'))
 factory.register_builder('Llama270BChat', ReplicateServiceBuilder('meta/llama-2-70b-chat'))
+factory.register_builder('Llama270BChat', ReplicateServiceBuilder('meta/llama-2-70b-chat'))
 
 
+# factory.register_builder('ModulosChat', ModulosChatServiceBuilder())
 # ------------------------------------------------
 # DEPRECATED MODELS
 # ------------------------------------------------
