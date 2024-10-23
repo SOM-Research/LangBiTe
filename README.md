@@ -57,7 +57,7 @@ This project is part of a research line of the [SOM Research Lab](https://som-re
 
 ## Publications
 
-This repository is the companion to the following research paper (pending publication):
+This repository is the companion to the following research paper:
 
 > Sergio Morales, Robert Clarisó and Jordi Cabot. "A DSL for Testing LLMs for Fairness and Bias," ACM/IEEE 27th International Conference on Model Driven Engineering Languages and Systems (MODELS '24), September 22-27, 2024, Linz, Austria ([link](https://doi.org/10.1145/3640310.3674093))
 
