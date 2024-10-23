@@ -59,11 +59,11 @@ This project is part of a research line of the [SOM Research Lab](https://som-re
 
 This repository is the companion to the following research paper (pending publication):
 
-> Sergio Morales, Robert Clarisó and Jordi Cabot. "A DSL for Testing LLMs for Fairness and Bias," ACM/IEEE 27th International Conference on Model Driven Engineering Languages and Systems (MODELS '24), September 22-27, 2024, Linz, Austria
+> Sergio Morales, Robert Clarisó and Jordi Cabot. "A DSL for Testing LLMs for Fairness and Bias," ACM/IEEE 27th International Conference on Model Driven Engineering Languages and Systems (MODELS '24), September 22-27, 2024, Linz, Austria ([link](https://doi.org/10.1145/3640310.3674093))
 
 Other publications:
 
-> Sergio Morales, Robert Clarisó and Jordi Cabot. "Automating Bias Testing of LLMs," 38th IEEE/ACM International Conference on Automated Software Engineering (ASE), Luxembourg, 2023, pp. 1705-1707, doi: 10.1109/ASE56229.2023.00018 ([link](https://doi.org/10.1109/ASE56229.2023.00018))
+> Sergio Morales, Robert Clarisó and Jordi Cabot. "Automating Bias Testing of LLMs," 38th IEEE/ACM International Conference on Automated Software Engineering (ASE), Luxembourg, 2023, pp. 1705-1707 ([link](https://doi.org/10.1109/ASE56229.2023.00018))
 
 > Sergio Morales, Robert Clarisó and Jordi Cabot. "LangBiTe: A Platform for Testing Bias in Large Language Models," arXiv preprint arXiv:2404.18558 (2024) [cs.SE] ([link](https://doi.org/10.48550/arXiv.2404.18558))
 
