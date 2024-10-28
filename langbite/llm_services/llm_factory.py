@@ -69,7 +69,6 @@ factory.register_builder('OpenAIGPT35TurboInstruct', OpenAIChatServiceBuilder('g
 factory.register_builder('Llama27BChat', ReplicateServiceBuilder('meta/llama-2-7b-chat'))
 factory.register_builder('Llama213BChat', ReplicateServiceBuilder('meta/llama-2-13b-chat'))
 factory.register_builder('Llama270BChat', ReplicateServiceBuilder('meta/llama-2-70b-chat'))
-factory.register_builder('Llama270BChat', ReplicateServiceBuilder('meta/llama-2-70b-chat'))
 
 
 # factory.register_builder('ModulosChat', ModulosChatServiceBuilder())
