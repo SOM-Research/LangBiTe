@@ -3,20 +3,18 @@ from langbite.llm_services.llm_huggingface_factory import HuggingFaceConversatio
 from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder
 from langbite.llm_services.llm_replicate_service import ReplicateServiceBuilder
 from langbite.llm_services.llm_ollama_factory import OLlamaServiceBuilder
-from langbite.llm_services.llm_plugins_factory import PluginsImporter
+#from langbite.llm_services.llm_plugins_factory import PluginsImporter
 
 factory = LLMFactory()
 
 
-factory = LLMFactory()
-
-plugins_importer = PluginsImporter()
-plugins = plugins_importer.import_all_plugins()
+# plugins_importer = PluginsImporter()
+# plugins = plugins_importer.import_all_plugins()
 
 # Register all plugins
-for plugin_name, builder in plugins.items():
-    if hasattr(builder, 'name'):  # Check if the method exists
-        factory.register_builder(builder.name(), builder) 
+# for plugin_name, builder in plugins.items():
+#     if hasattr(builder, 'name'):  # Check if the method exists
+#         factory.register_builder(builder.name(), builder) 
 
     
 # HuggingFace's conversational models
