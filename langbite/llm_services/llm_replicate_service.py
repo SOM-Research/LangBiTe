@@ -1,7 +1,17 @@
 import os
-
 import replicate
 from langbite.llm_services.llm_service import LLMService
+
+
+class ReplicateServiceBuilder:
+    def __init__(self, model):
+        self._instance = None
+        self._model = model
+
+    def __call__(self, replicate_api_key, **_ignored):
+        if not self._instance:
+            self._instance = ReplicateService(replicate_api_key, self._model)
+        return self._instance
 
 
 class ReplicateService(LLMService):

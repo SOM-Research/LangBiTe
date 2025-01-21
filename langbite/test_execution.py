@@ -28,7 +28,8 @@ class TestExecution:
         self.__config = {
             'openai_api_key' : os.environ["API_KEY_OPENAI"],
             'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"],
-            'replicate_api_key': os.environ["API_KEY_REPLICATE"]
+            'replicate_api_key': os.environ["API_KEY_REPLICATE"],
+            'ollama_url': os.environ["OLLAMA_URL"]
         }
         self.__llm_sentiment = SentimentAnalyzerOracle(**self.__config)
     

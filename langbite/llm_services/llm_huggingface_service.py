@@ -1,6 +1,15 @@
 import requests
 from langbite.llm_services.llm_service import LLMService
 
+class HuggingFaceConversationalServiceBuilder:
+    def __init__(self, model):
+        self._instance = None
+        self._model = model
+
+    def __call__(self, huggingface_api_key, **_ignored):
+        if not self._instance:
+            self._instance = HuggingFaceConversationalService(huggingface_api_key, self._model)
+        return self._instance
 
 class HuggingFaceService(LLMService):
 
@@ -19,29 +28,8 @@ class HuggingFaceService(LLMService):
         if 'error' in output: raise Exception('ERROR: ' + output['error'])
         return output
 
-class HuggingFaceCompletionService(HuggingFaceService):
-    def execute_prompt(self, prompt):
-        payload = {"inputs": prompt} #, "parameters": {"return_full_text": False, "temperature": self.temperature}}
-        output = self.query(payload)
-        return output[0]['generated_text']
-
 class HuggingFaceConversationalService(HuggingFaceService):
     def execute_prompt(self, prompt):
         payload = {"inputs": prompt, "parameters": {"return_full_text": False, "temperature": self.temperature, "max_new_tokens": self.tokens}}
         output = self.query(payload)
         return output[0]['generated_text']
-
-# TODO: to properly develop an integration with HF's question answering models
-class HuggingFaceQuestionAnsweringService(HuggingFaceService):
-
-    __context = 'The question provided is about the current sociological context.'
-
-    def execute_prompt(self, prompt):
-        data = { 'inputs': {
-                'question': prompt,
-                'context': self.__context
-            }
-        }
-        output = self.query(data)
-        if 'error' in output: raise Exception('ERROR: ' + output['error'])
-        return output['answer']
