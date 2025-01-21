@@ -12,16 +12,20 @@
 
 .DS_Store
 
-# only for local testing, hugging chat and own cookies
-langbite/huggingchat
+# master datasets
+datasets
 
-# inputs and outputs folders
+# inputs and outputs files and folders
 inputs
 outputs
 reports
 
 # others
 main.py
+huggingchat
 
 # byte-compiled / optimized / DLL files
 __pycache__
+
+# playground files
+__playground

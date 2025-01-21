@@ -1,10 +1,26 @@
 from langbite.llm_services.llm_abstract_factory import LLMFactory
-from langbite.llm_services.llm_huggingface_service import HuggingFaceConversationalServiceBuilder
-from langbite.llm_services.llm_openai_service import OpenAIChatServiceBuilder
+from langbite.llm_services.llm_huggingface_factory import HuggingFaceConversationalServiceBuilder
+from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder
 from langbite.llm_services.llm_replicate_service import ReplicateServiceBuilder
-from langbite.llm_services.llm_ollama_service import OLlamaServiceBuilder
+from langbite.llm_services.llm_ollama_factory import OLlamaServiceBuilder
+from langbite.llm_services.llm_plugins_factory import PluginsImporter
 
 factory = LLMFactory()
+
+
+factory = LLMFactory()
+
+plugins_importer = PluginsImporter()
+plugins = plugins_importer.import_all_plugins()
+
+# Register all plugins
+for plugin_name, builder in plugins.items():
+    if hasattr(builder, 'name'):  # Check if the method exists
+        factory.register_builder(builder.name(), builder) 
+
+    
+# HuggingFace's conversational models
+
 
 factory.register_builder('HuggingFaceFlanT5Base', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/google/flan-t5-base'))
 factory.register_builder('HuggingFaceFlanT5Large', HuggingFaceConversationalServiceBuilder('https://api-inference.huggingface.co/models/google/flan-t5-large'))

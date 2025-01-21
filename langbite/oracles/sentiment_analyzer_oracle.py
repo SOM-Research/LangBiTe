@@ -1,5 +1,5 @@
 from langbite.llm_services import llm_factory
-from langbite.llm_services.llm_openai_service import OpenAIChatService
+from langbite.llm_services.llm_openai_factory import OpenAIChatService
 
 
 class SentimentAnalyzerOracle:
