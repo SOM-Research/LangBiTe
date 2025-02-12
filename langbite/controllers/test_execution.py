@@ -1,11 +1,10 @@
-from langbite.test_scenario import TestScenario
-from langbite.prompt import Prompt
+from langbite.controllers.test_scenario import TestScenario
+from langbite.model.prompt import Prompt
 from langbite.llm_services import llm_factory
 from langbite.llm_services.llm_service import LLMService
 from langbite.oracles.sentiment_analyzer_oracle import SentimentAnalyzerOracle
-from dotenv import load_dotenv
-import os
-from langbite.view_model import EvaluationView, ResponseView
+import langbite.io_managers.secrets as Secrets
+from langbite.model.view_model import EvaluationView, ResponseView
 import time
 
 class TestExecution:
@@ -24,13 +23,7 @@ class TestExecution:
         self.__scenario = scenario
         self.__responses = []
         self.__evaluations = []
-        load_dotenv()
-        self.__config = {
-            'openai_api_key' : os.environ["API_KEY_OPENAI"],
-            'huggingface_api_key' : os.environ["API_KEY_HUGGINGFACE"],
-            'replicate_api_key': os.environ["API_KEY_REPLICATE"],
-            'ollama_url': os.environ["OLLAMA_URL"]
-        }
+        self.__config = Secrets.load_api_keys()
         self.__llm_sentiment = SentimentAnalyzerOracle(**self.__config)
     
     def execute_scenario(self):
