@@ -15,9 +15,14 @@
         "model": "gpt-4-turbo"
     },
     {
-        "key": "OpenAIGPT4bo",
+        "key": "OpenAIGPT4o",
         "provider": "OpenAI",
         "model": "gpt-4o"
+    },
+    {
+        "key": "OpenAIGPT4oMini",
+        "provider": "OpenAI",
+        "model": "gpt-4o-mini"
     },
     {
         "key": "Llama27BChat",
