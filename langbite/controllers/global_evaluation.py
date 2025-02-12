@@ -1,6 +1,6 @@
 import pandas as pd
-from langbite.view_model import EvaluationView
-from langbite.ethical_requirement import EthicalRequirement
+from langbite.model.view_model import EvaluationView
+from langbite.model.ethical_requirement import EthicalRequirement
 
 
 class GlobalEvaluation:

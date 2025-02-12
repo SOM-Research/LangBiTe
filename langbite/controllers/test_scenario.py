@@ -1,5 +1,5 @@
-from langbite.prompt import Prompt
-from langbite.ethical_requirement import EthicalRequirements, EthicalRequirement
+from langbite.model.prompt import Prompt
+from langbite.model.ethical_requirement import EthicalRequirements, EthicalRequirement
 from random import sample
 import langbite.utils
 

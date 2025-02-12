@@ -5,7 +5,7 @@ import re
 from langbite.oracles.oracle_prediction_validation import OraclePredictionSchema
 from langbite.utils import clean_string
 from langbite.oracles.sentiment_analyzer_oracle import SentimentAnalyzerOracle
-from langbite.prompt_response import PromptResponse
+from langbite.model.prompt_response import PromptResponse
 
 # TODO: We may allow the user to decide whether they accept a refusal from the model or not.
 # This decision would be injected from the ethical concern to the oracle evaluation.

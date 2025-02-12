@@ -2,7 +2,7 @@ from enum import Enum
 from itertools import permutations
 import re
 from langbite.llm_services.llm_service import LLMService
-from langbite.prompt_response import PromptResponse
+from langbite.model.prompt_response import PromptResponse
 from langbite.oracles.oracle import Oracle
 from langbite.oracles.sentiment_analyzer_oracle import SentimentAnalyzerOracle
 

@@ -1,6 +1,6 @@
 import pandas
 import numpy as np
-from langbite.prompt import Prompt
+from langbite.model.prompt import Prompt
 from langbite.oracles import oracle_factory
 import json
 

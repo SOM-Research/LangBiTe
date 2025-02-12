@@ -13,10 +13,10 @@ from importlib.resources import files
 from langbite.io_managers.scenario_io_manager import ScenarioIOManager
 from langbite.io_managers.prompt_io_manager import CSVPromptIOManager, JSONPromptIOManager
 from langbite.io_managers.reporting_io_manager import ReportingIOManager
-from langbite.global_evaluation import GlobalEvaluator
-from langbite.test_scenario import TestScenario
-from langbite.test_execution import TestExecution
-from langbite.prompt import Prompt
+from langbite.controllers.global_evaluation import GlobalEvaluator
+from langbite.controllers.test_scenario import TestScenario
+from langbite.controllers.test_execution import TestExecution
+from langbite.model.prompt import Prompt
 from datetime import datetime
 from abc import abstractmethod
 
