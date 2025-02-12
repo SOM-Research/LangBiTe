@@ -32,9 +32,8 @@ class OpenAIService(LLMService):
 class OpenAIChatService(OpenAIService):
     def execute_prompt(self, prompt):
         messages = [{ "role": "user", "content": prompt + self.promptSuffix }]
-        completion = self.api_client.chat.completions.create(
-            model = self.model,
-            temperature = self.temperature,
-            max_tokens = self.tokens,
-            messages = messages)
+        arguments = {"model": self.model, "messages": messages}
+        if (self.temperature): arguments["temperature"] = self.temperature
+        if (self.tokens): arguments["max_tokens"] = self.tokens
+        completion = self.api_client.chat.completions.create(**arguments)
         return completion.choices[0].message.content

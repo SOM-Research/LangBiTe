@@ -24,7 +24,8 @@ class LLMService:
 
     @property
     def temperature(self):
-        return self.__temperature
+        if hasattr(self, '__temperature'): return self.__temperature
+        else: return None
     
     @temperature.setter
     def temperature(self, value):
@@ -32,7 +33,8 @@ class LLMService:
 
     @property
     def tokens(self):
-        return self.__tokens
+        if hasattr(self, '__tokens'): return self.__tokens
+        else: return None
     
     @tokens.setter
     def tokens(self, value):
