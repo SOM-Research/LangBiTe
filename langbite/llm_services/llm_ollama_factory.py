@@ -20,5 +20,10 @@ class OLlamaService(LLMService):
 
     def execute_prompt(self, prompt):
         ollama_client = Client(host=self.__url)
-        output = ollama_client.generate(model=self.model, stream=False, prompt=prompt)
-        return output['response']
+        #adopted_prompt = prompt + ' Be brief and concise, and do not use more than 20 words in your response.'# [{"role": "user", "content": prompt + ' Be brief and concise, and do not use more than 20 words in your response.'}]
+        adopted_prompt = [{"role": "user", "content": prompt}]
+        options =  {"temperature": self.temperature, "num_predict": self.tokens}
+        output = ollama_client.chat(model=self.model, stream=False, messages=adopted_prompt, options=options)
+        #output = ollama_client.generate(model=self.model, stream=False, prompt=prompt, options=options)
+        #return output['response']
+        return output.message.content

@@ -1,0 +1,110 @@
+[
+    {
+        "key": "OpenAIGPT35Turbo",
+        "provider": "OpenAI",
+        "model": "gpt-3.5-turbo"
+    },
+    {
+        "key": "OpenAIGPT4",
+        "provider": "OpenAI",
+        "model": "gpt-4"
+    },
+    {
+        "key": "OpenAIGPT4Turbo",
+        "provider": "OpenAI",
+        "model": "gpt-4-turbo"
+    },
+    {
+        "key": "OpenAIGPT4bo",
+        "provider": "OpenAI",
+        "model": "gpt-4o"
+    },
+    {
+        "key": "Llama27BChat",
+        "provider": "Replicate",
+        "model": "meta/llama-2-7b-chat"
+    },
+    {
+        "key": "Llama213BChat",
+        "provider": "Replicate",
+        "model": "meta/llama-2-13b-chat"
+    },
+    {
+        "key": "Llama270BChat",
+        "provider": "Replicate",
+        "model": "meta/llama-2-70b-chat"
+    },
+    {
+        "key": "OLlamaSalamandra7BInstruct",
+        "provider": "OLlama",
+        "model": "salamandra-7b-instruct:latest"
+    },
+    {
+        "key": "OLlamaSalamandra2BInstruct",
+        "provider": "OLlama",
+        "model": "salamandra-2b-instruct:latest"
+    },
+    {
+        "key": "OLlamaDeepSeek32B",
+        "provider": "OLlama",
+        "model": "deepseek-r1:32b"
+    },
+    {
+        "key": "OLlamaDeepSeek14B",
+        "provider": "OLlama",
+        "model": "deepseek-r1:14b"
+    },
+    {
+        "key": "OLlamaMistral",
+        "provider": "OLlama",
+        "model": "mistral"
+    },
+    {
+        "key": "HuggingFaceFlanT5Base",
+        "provider": "HuggingFace",
+        "model": "google/flan-t5-base",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/flan-t5-base"
+    },
+    {
+        "key": "HuggingFaceFlanT5Large",
+        "provider": "HuggingFace",
+        "model": "google/flan-t5-large",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/flan-t5-large"
+    },
+    {
+        "key": "HuggingFaceFlanT5XXL",
+        "provider": "HuggingFace",
+        "model": "google/flan-t5-xxl",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/flan-t5-xxl"
+    },
+    {
+        "key": "HuggingFaceMT5Base",
+        "provider": "HuggingFace",
+        "model": "google/mt5-base",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/mt5-base"
+    },
+    {
+        "key": "HuggingFaceMT5Large",
+        "provider": "HuggingFace",
+        "model": "google/mt5-large",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/mt5-large"
+    },
+    {
+        "key": "HuggingFaceGemma2BIT",
+        "provider": "HuggingFace",
+        "model": "google/gemma-2b-it",
+        "inference_api_url": "https://api-inference.huggingface.co/models/google/gemma-2b-it"
+    },
+    {
+        "key": "HuggingFaceFalcon7BInstruct",
+        "provider": "HuggingFace",
+        "model": "tiiuae/falcon-7b-instruct",
+        "inference_api_url": "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
+    },
+    {
+        "key": "HuggingFaceMixtral8x7B01Instruct",
+        "provider": "HuggingFace",
+        "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        "inference_api_url": "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"
+    }
+]
