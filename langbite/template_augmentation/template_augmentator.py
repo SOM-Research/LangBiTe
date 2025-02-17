@@ -32,7 +32,7 @@ class TemplateAugmentator:
         if self.__augmentations_file:
             self.__augmentations = JSONIOManager.load_augmentations(self.__augmentations_file)
         if self.__contexts_from_resource_file:
-            self.__contexts = [Context(**item) for item in JSONIOManager.load_contexts()]#self.__contexts_file)]
+            self.__contexts = [Context(**item) for item in JSONIOManager.load_contexts()]
         else:
             self.__contexts = [Context(**item) for item in self.__augmentations['contexts']]
         self.__current_status = 1
@@ -82,8 +82,12 @@ class TemplateAugmentator:
         for template in templates:
             # we use fake markups in the prompt not to alter (semantically, syntactically)
             # the generation of the templates
-            template['prompt'] = template['prompt'].replace(self.FAKE_MARKUP, augmentation.markup)
-            template['oracle_prediction'] = '{"operation":"allEqualExpected","expected_value":["' + template['oracle_prediction'] + '"]}'
+            if self.FAKE_MARKUP in template['prompt']:
+                template['prompt'] = template['prompt'].replace(self.FAKE_MARKUP, augmentation.markup)
+                oracle_prediction_prefix = '{"operation":"allEqualExpected","expected_value":["'
+            else:
+                oracle_prediction_prefix = '{"operation":"equal","expected_value":["'
+            template['oracle_prediction'] = oracle_prediction_prefix + template['oracle_prediction'] + '"]}'
 
         new_keys = {
             'context': augmentation.context,
@@ -92,6 +96,6 @@ class TemplateAugmentator:
             'reflection_type': '',
             'task_prefix': '',
             'oracle': 'expected value',
-            'output_formatting': '' }
+            'output_formatting': 'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
         result = [dict(item, **new_keys) for item in templates]
         return result
