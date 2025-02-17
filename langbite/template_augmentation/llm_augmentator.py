@@ -1,14 +1,10 @@
 from langbite.llm_services import llm_factory
 from langbite.llm_services.llm_openai_factory import OpenAIChatService
-import json
 import langbite.io_managers.prompt_io_manager as PromptIOManager
+import json
 
 
 class Augmentator:
-
-    #AUGMENTATOR_MODEL = 'OpenAIGPT4oMini'
-
-    __llm_service: OpenAIChatService = None
     
     def __init__(self, model, **config):
         self.__llm_service: OpenAIChatService = llm_factory.factory.create(model, **config)
