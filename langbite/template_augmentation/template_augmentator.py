@@ -2,38 +2,76 @@ from langbite.io_managers import json_io_manager as JSONIOManager
 import langbite.io_managers.secrets as Secrets
 from langbite.template_augmentation.augmentation import Augmentation, EthicalConcern, Context
 from langbite.template_augmentation.llm_augmentator import Augmentator
+import pandas as pd
+from langbite.io_managers.reporting_io_manager import ReportingIOManager
+
+class AugmentatorWrongStateException(Exception):
+    '''Sorry, you haven't followed the expected workflow. The proper invoking sequence is: init LangBite, generate, execute and report.'''
 
 class TemplateAugmentator:
 
     FAKE_MARKUP = 'CHUMPINFLAS'
 
-    def __init__(self, augmentations_file): #, contexts_file):
+    def __init__(self, augmentation_pars=None, augmentations_file=None, contexts_from_resource_file=True):
+        self.__augmentations = augmentation_pars
         self.__augmentations_file = augmentations_file
-        #self.__contexts_file = contexts_file
-        self.__api_keys = Secrets.load_api_keys()
-        self.__augmentator = Augmentator(**self.__api_keys)
+        self.__contexts_from_resource_file = contexts_from_resource_file
+        self.__current_status = 0
+
+    # ---------------------------------------------------------------------------------
+    # Methods for fetching, executing and reporting augmentations
+    # ---------------------------------------------------------------------------------
+
+    def execute_full_scenario(self):
+        self.fetch_augmentation()
+        self.execute()
+        self.report()
+
+    def fetch_augmentation(self):
+        if (self.__current_status != 0): raise AugmentatorWrongStateException
+        if self.__augmentations_file:
+            self.__augmentations = JSONIOManager.load_augmentations(self.__augmentations_file)
+        if self.__contexts_from_resource_file:
+            self.__contexts = [Context(**item) for item in JSONIOManager.load_contexts()]#self.__contexts_file)]
+        else:
+            self.__contexts = [Context(**item) for item in self.__augmentations['contexts']]
+        self.__current_status = 1
     
     def execute(self):
-        result = []
-        augmentations = JSONIOManager.load_augmentations(self.__augmentations_file)
-        concerns = [EthicalConcern(**item) for item in augmentations['concerns']]
-        #contexts = [Context(**item) for item in self.__augmentations['contexts']]
-        contexts = [Context(**item) for item in JSONIOManager.load_contexts()]#self.__contexts_file)]
-        for aug in augmentations['augmentations']:
+        if (self.__current_status != 1): raise AugmentatorWrongStateException
+        self.__result = []
+        concerns = [EthicalConcern(**item) for item in self.__augmentations['concerns']]
+        for aug in self.__augmentations['augmentations']:
             augmentation = Augmentation(**aug)
             concern = next(item for item in concerns if item.concern == augmentation.concern)
             augmentation.markup = concern.markup
             augmentation.communities = concern.communities
-            context = next(item for item in contexts if item.context == augmentation.context)
+            context = next(item for item in self.__contexts if item.context == augmentation.context)
             augmentation.scenarios = context.scenarios
-            result += (self.__generate_templates(augmentation))
-        return result
+            self.__result += (self.__generate_templates(augmentation))
+        self.__current_status = 2
     
+    def report(self):
+        if (self.__current_status != 2): raise AugmentatorWrongStateException
+        df = pd.DataFrame.from_records(self.__result)
+        #df.insert(0, 'context', df.pop('context'))
+        df = df[['concern', 'input_type', 'reflection_type', 'task_prefix', 'prompt', 'output_formatting', 'oracle', 'oracle_prediction', 'context', 'scenario']]
+        print(df)
+        report = ReportingIOManager()
+        report.write_output_file(df, 'augmentation')
+
+    # ---------------------------------------------------------------------------------
+    # Private methods
+    # ---------------------------------------------------------------------------------
+
     def __generate_templates(self, augmentation: Augmentation):
+
+        api_keys = Secrets.load_api_keys()
+        augmentator = Augmentator(**api_keys)
 
         print(f'Generating prompts for: {augmentation.context}')
 
-        templates = self.__augmentator.execute(
+        templates = augmentator.execute(
             concern=augmentation.concern,
             communities=augmentation.communities,
             context=augmentation.context,
