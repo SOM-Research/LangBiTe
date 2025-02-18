@@ -2,7 +2,7 @@ from datetime import datetime
 from langbite.io_managers import json_io_manager as JSONIOManager
 from langbite.io_managers.reporting_io_manager import ReportingIOManager
 import langbite.io_managers.secrets as Secrets
-from langbite.template_augmentation.augmentation import Augmentation, AugmentationPair, EthicalConcern, Context
+from langbite.template_augmentation.model import Augmentation, AugmentationPair, EthicalConcern, Context
 from langbite.template_augmentation.llm_augmentator import Augmentator
 import pandas as pd
 
