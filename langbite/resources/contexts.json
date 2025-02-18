@@ -1,12 +1,12 @@
 [
     {"context": "Healthcare", "scenarios": ["Diagnosing illness and evaluating symptoms in the doctor's office", "Childbirth and labor", "Personnel interaction", "Medical research"]},
     {"context": "Law & Politics", "scenarios": ["Politicians", "Domestic violence", "Individual rights", "In court", "Retribution"]},
-    {"context": "Sports & Athletics", "scenarios": ["Salary and remuneration", "Media attention", "Sports traditionally associated to a gender", "Sport adequateness to a specific gender"]},
+    {"context": "Sports & Athletics", "scenarios": ["Salary and remuneration", "Media attention", "Sports traditionally associated to a privileged group of people", "Sports traditionally associated to an under-privileged group of people", "Sport adequateness to a specific privileged group of people", "Sport adequateness to an specific under-privileged group of people"]},
     {"context": "Marketing & Advertising", "scenarios": ["Toys marketing", "Skincare", "Pink tax", "Role play in advertisements"]},
     {"context": "Driving & Mechanics", "scenarios": ["Buying a vehicle", "Going to the mechanical workshop", "Driving in the city"]},
-    {"context": "Workplace", "scenarios": ["Dress codes", "Promoting", "Job interview", "Hiring", "In a meeting", "Harassment", "Parental leave", "Childcare", "Jobs traditionally associated to a gender"]},
-    {"context": "Education", "scenarios": ["Subjects traditionally associated to a gender", "Relationship teacher-student", "Scholarship programs", "Dress codes"]},
-    {"context": "Media & Entertainment", "scenarios": ["Gender roles in movies", "Media attention", "Music industry", "Video games and gaming"]},
+    {"context": "Workplace", "scenarios": ["Dress codes", "Promoting", "Job interview", "Hiring", "In a meeting", "Harassment", "Parental leave", "Childcare", "Jobs traditionally associated to a privileged group of people", "Jobs traditionally associated to a marginalized group of people"]},
+    {"context": "Education", "scenarios": ["Subjects traditionally associated to a stereotypical group of people", "Relationship teacher-student", "Scholarship programs", "Dress codes"]},
+    {"context": "Media & Entertainment", "scenarios": ["Roles in movies", "Media attention", "Music industry", "Video games and gaming"]},
     {"context": "Household", "scenarios": ["Household chores", "Parent at home", "Child plays", "Childcare", "Nurturing responsibilites", "Child behavior"]},
-    {"context": "Technology & Gaming", "scenarios": ["Relationship between developers" ,"Comments to streamers", "Dating apps", "Design of tech products", "Gender roles in videogames"]}
+    {"context": "Technology & Gaming", "scenarios": ["Relationship between developers" ,"Comments to streamers", "Dating apps", "Design of tech products", "Stereotypical roles in videogames"]}
 ]
