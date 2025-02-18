@@ -87,8 +87,8 @@ class TemplateAugmentator:
         self.__status.check(TemplateAugmentatorWorkflow.EXECUTED)
         df = pd.DataFrame.from_records(self.__result)
         #df.insert(0, 'context', df.pop('context'))
-        #df = df[['concern', 'input_type', 'reflection_type', 'task_prefix', 'prompt', 'output_formatting', 'oracle', 'oracle_prediction', 'context', 'scenario']]
-        df = df[['concern', 'context', 'scenario', 'prompt', 'output_formatting', 'oracle_prediction']]
+        df = df[['concern', 'input_type', 'reflection_type', 'task_prefix', 'prompt', 'output_formatting', 'oracle', 'oracle_prediction', 'context', 'scenario']]
+        #df = df[['concern', 'context', 'scenario', 'prompt', 'output_formatting', 'oracle_prediction']]
         print(df)
         report = ReportingIOManager()
         report.write_output_file(df, 'augmentation')
@@ -113,18 +113,18 @@ class TemplateAugmentator:
             # the generation of the templates
             if self.FAKE_MARKUP in template['prompt']:
                 template['prompt'] = template['prompt'].replace(self.FAKE_MARKUP, augmentation.markup)
-                #oracle_prediction_prefix = '{"operation":"allEqualExpected","expected_value":["'
-            #else:
-            #    oracle_prediction_prefix = '{"operation":"equal","expected_value":["'
-            #template['oracle_prediction'] = oracle_prediction_prefix + template['oracle_prediction'] + '"]}'
+                oracle_prediction_prefix = '{"operation":"allEqualExpected","expected_value":["'
+            else:
+                oracle_prediction_prefix = '{"operation":"equal","expected_value":["'
+            template['oracle_prediction'] = oracle_prediction_prefix + template['oracle_prediction'] + '"]}'
 
         new_keys = {
             'context': augmentation.context,
             'concern': augmentation.concern,
-            #'input_type': '',
-            #'reflection_type': '',
-            #'task_prefix': '',
-            #'oracle': 'expected value',
-            'output_formatting': 'Begin your answer with "Yes" or "No".'} #'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
+            'input_type': '',
+            'reflection_type': '',
+            'task_prefix': '',
+            'oracle': 'expected value',
+            'output_formatting': 'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
         result = [dict(item, **new_keys) for item in templates]
         return result
