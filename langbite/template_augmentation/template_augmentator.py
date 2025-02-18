@@ -2,9 +2,10 @@ from datetime import datetime
 from langbite.io_managers import json_io_manager as JSONIOManager
 from langbite.io_managers.reporting_io_manager import ReportingIOManager
 import langbite.io_managers.secrets as Secrets
-from langbite.template_augmentation.augmentation import Augmentation, EthicalConcern, Context
+from langbite.template_augmentation.augmentation import Augmentation, AugmentationPair, EthicalConcern, Context
 from langbite.template_augmentation.llm_augmentator import Augmentator
 import pandas as pd
+
 
 class AugmentatorWrongStateException(Exception):
     '''Sorry, you haven't followed the expected workflow. The proper invoking sequence is: init LangBite, generate, execute and report.'''
@@ -24,6 +25,7 @@ class TemplateAugmentatorWorkflow:
     def next(self):
         self.__status += 1
 
+
 class TemplateAugmentator:
 
     FAKE_MARKUP = 'CHUMPINFLAS'
@@ -32,10 +34,10 @@ class TemplateAugmentator:
     def result(self):
         return self.__result
 
-    def __init__(self, augmentation_pars=None, augmentations_file=None, contexts_from_resource_file=True):
+    def __init__(self, augmentation_pars=None, augmentation_file=None, contexts_from_resource_file=True):
         self.__result = []
-        self.__augmentations = augmentation_pars
-        self.__augmentations_file = augmentations_file
+        self.__augmentation_json = augmentation_pars
+        self.__augmentation_file = augmentation_file
         self.__contexts_from_resource_file = contexts_from_resource_file
         self.__status = TemplateAugmentatorWorkflow()
 
@@ -48,41 +50,31 @@ class TemplateAugmentator:
         self.execute()
         self.report()
 
+
     def fetch_augmentation(self):
         self.__status.check(TemplateAugmentatorWorkflow.INIT)
-        if self.__augmentations_file:
-            self.__augmentations = JSONIOManager.load_augmentations(self.__augmentations_file)
-        if self.__contexts_from_resource_file:
-            self.__contexts = [Context(**item) for item in JSONIOManager.load_contexts()]
+        if self.__augmentation_file:
+            self.__load_augmentations(JSONIOManager.load_augmentations(self.__augmentation_file))
         else:
-            self.__contexts = [Context(**item) for item in self.__augmentations['contexts']]
+            self.__load_augmentations(self.__augmentation_json)
         self.__status.next()
-    
+
+
     def execute(self):
         self.__status.check(TemplateAugmentatorWorkflow.FETCHED)
         time_ini = datetime.now()
 
         api_keys = Secrets.load_api_keys()
-        self.__augmentator = Augmentator(
-            model = self.__augmentations['llm'],
-            num_templates = self.__augmentations['num_templates'],
-            language = self.__augmentations['language'],
-            **api_keys)
+        self.__augmentator = Augmentator(self.__augmentation.llm, self.__augmentation.num_templates, self.__augmentation.language, **api_keys)
 
-        concerns = [EthicalConcern(**item) for item in self.__augmentations['concerns']]
-        for aug in self.__augmentations['augmentations']:
-            augmentation = Augmentation(**aug)
-            concern = next(item for item in concerns if item.concern == augmentation.concern)
-            augmentation.markup = concern.markup
-            augmentation.communities = concern.communities
-            context = next(item for item in self.__contexts if item.context == augmentation.context)
-            augmentation.scenarios = context.scenarios
-            self.__result += (self.__generate_templates(augmentation))
+        for aug in self.__augmentation.augmentations:
+            self.__result += (self.__generate_templates(aug))
 
         time_end = datetime.now()
         print(f'Time elapsed for generating {len(self.__result)} prompt templates): ' + str(time_end - time_ini))
         self.__status.next()
     
+
     def report(self):
         self.__status.check(TemplateAugmentatorWorkflow.EXECUTED)
         df = pd.DataFrame.from_records(self.__result)
@@ -97,7 +89,24 @@ class TemplateAugmentator:
     # Private methods
     # ---------------------------------------------------------------------------------
 
-    def __generate_templates(self, augmentation: Augmentation):
+    def __load_augmentations(self, augmentation_json: str):
+        self.__augmentation = Augmentation(**augmentation_json)
+        concerns = [EthicalConcern(**item) for item in augmentation_json['concerns']]
+        if self.__contexts_from_resource_file:
+            contexts = [Context(**item) for item in JSONIOManager.load_contexts()]
+        else:
+            contexts = [Context(**item) for item in augmentation_json['contexts']]
+        augmentations = [AugmentationPair(**item) for item in augmentation_json['augmentations']]
+        for aug in augmentations:
+            concern = next(item for item in concerns if item.concern == aug.concern)
+            aug.markup = concern.markup
+            aug.communities = concern.communities
+            context = next(item for item in contexts if item.context == aug.context)
+            aug.scenarios = context.scenarios
+        self.__augmentation.augmentations = augmentations
+
+
+    def __generate_templates(self, augmentation: AugmentationPair):
 
         print(f'Generating prompts for: {augmentation.context} ({augmentation.concern})')
 
@@ -126,5 +135,6 @@ class TemplateAugmentator:
             'task_prefix': '',
             'oracle': 'expected value',
             'output_formatting': 'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
+        
         result = [dict(item, **new_keys) for item in templates]
         return result

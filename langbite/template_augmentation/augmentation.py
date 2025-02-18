@@ -1,4 +1,4 @@
-class Augmentation:
+class AugmentationPair:
 
     @property
     def markup(self):
@@ -44,3 +44,21 @@ class Context:
         self.context = context
         self.scenarios = scenarios
 
+class Augmentation:
+
+    @property
+    def augmentations(self) -> list[AugmentationPair]:
+        return self.__augmentations
+    
+    @augmentations.setter
+    def augmentations(self, value: list[AugmentationPair]):
+        self.__augmentations = value
+
+    def __init__(self, language, llm, num_templates, **ignore):
+        self.language = language
+        self.llm = llm
+        self.num_templates = num_templates
+        self.__augmentations = []
+    
+    def add_augmentation(self, value: AugmentationPair):
+        self.__augmentations.append(value)
