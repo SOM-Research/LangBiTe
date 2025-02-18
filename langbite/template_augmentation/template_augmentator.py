@@ -1,3 +1,4 @@
+from datetime import datetime
 from langbite.io_managers import json_io_manager as JSONIOManager
 from langbite.io_managers.reporting_io_manager import ReportingIOManager
 import langbite.io_managers.secrets as Secrets
@@ -59,6 +60,15 @@ class TemplateAugmentator:
     
     def execute(self):
         self.__status.check(TemplateAugmentatorWorkflow.FETCHED)
+        time_ini = datetime.now()
+
+        api_keys = Secrets.load_api_keys()
+        self.__augmentator = Augmentator(
+            model = self.__augmentations['llm'],
+            num_templates = self.__augmentations['num_templates'],
+            language = self.__augmentations['language'],
+            **api_keys)
+
         concerns = [EthicalConcern(**item) for item in self.__augmentations['concerns']]
         for aug in self.__augmentations['augmentations']:
             augmentation = Augmentation(**aug)
@@ -68,13 +78,17 @@ class TemplateAugmentator:
             context = next(item for item in self.__contexts if item.context == augmentation.context)
             augmentation.scenarios = context.scenarios
             self.__result += (self.__generate_templates(augmentation))
+
+        time_end = datetime.now()
+        print(f'Time elapsed for generating {len(self.__result)} prompt templates): ' + str(time_end - time_ini))
         self.__status.next()
     
     def report(self):
         self.__status.check(TemplateAugmentatorWorkflow.EXECUTED)
         df = pd.DataFrame.from_records(self.__result)
         #df.insert(0, 'context', df.pop('context'))
-        df = df[['concern', 'input_type', 'reflection_type', 'task_prefix', 'prompt', 'output_formatting', 'oracle', 'oracle_prediction', 'context', 'scenario']]
+        #df = df[['concern', 'input_type', 'reflection_type', 'task_prefix', 'prompt', 'output_formatting', 'oracle', 'oracle_prediction', 'context', 'scenario']]
+        df = df[['concern', 'context', 'scenario', 'prompt', 'output_formatting', 'oracle_prediction']]
         print(df)
         report = ReportingIOManager()
         report.write_output_file(df, 'augmentation')
@@ -85,18 +99,13 @@ class TemplateAugmentator:
 
     def __generate_templates(self, augmentation: Augmentation):
 
-        api_keys = Secrets.load_api_keys()
-        augmentator = Augmentator(augmentation.llm, **api_keys)
+        print(f'Generating prompts for: {augmentation.context} ({augmentation.concern})')
 
-        print(f'Generating prompts for: {augmentation.context}')
-
-        templates = augmentator.execute(
+        templates = self.__augmentator.execute(
             concern=augmentation.concern,
             communities=augmentation.communities,
             context=augmentation.context,
             scenarios=augmentation.scenarios,
-            num_templates=augmentation.num_templates,
-            language=augmentation.language,
             fake_markup=self.FAKE_MARKUP)
 
         for template in templates:
@@ -104,18 +113,18 @@ class TemplateAugmentator:
             # the generation of the templates
             if self.FAKE_MARKUP in template['prompt']:
                 template['prompt'] = template['prompt'].replace(self.FAKE_MARKUP, augmentation.markup)
-                oracle_prediction_prefix = '{"operation":"allEqualExpected","expected_value":["'
-            else:
-                oracle_prediction_prefix = '{"operation":"equal","expected_value":["'
-            template['oracle_prediction'] = oracle_prediction_prefix + template['oracle_prediction'] + '"]}'
+                #oracle_prediction_prefix = '{"operation":"allEqualExpected","expected_value":["'
+            #else:
+            #    oracle_prediction_prefix = '{"operation":"equal","expected_value":["'
+            #template['oracle_prediction'] = oracle_prediction_prefix + template['oracle_prediction'] + '"]}'
 
         new_keys = {
             'context': augmentation.context,
             'concern': augmentation.concern,
-            'input_type': '',
-            'reflection_type': '',
-            'task_prefix': '',
-            'oracle': 'expected value',
-            'output_formatting': 'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
+            #'input_type': '',
+            #'reflection_type': '',
+            #'task_prefix': '',
+            #'oracle': 'expected value',
+            'output_formatting': 'Begin your answer with "Yes" or "No".'} #'Do not use a JSON format for your response. Begin your answer with "Yes" or "No".' }
         result = [dict(item, **new_keys) for item in templates]
         return result

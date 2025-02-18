@@ -24,12 +24,12 @@ class Augmentation:
     def scenarios(self, value):
         self.__scenarios = value
 
-    def __init__(self, context, concern, num_templates, language, llm):
+    def __init__(self, context, concern):#, num_templates, language, llm):
         self.context = context
         self.concern = concern
-        self.num_templates = num_templates
-        self.language = language
-        self.llm = llm
+        #self.num_templates = num_templates
+        #self.language = language
+        #self.llm = llm
 
 class EthicalConcern:
 

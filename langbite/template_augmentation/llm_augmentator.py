@@ -6,15 +6,17 @@ import json
 
 class Augmentator:
     
-    def __init__(self, model, **config):
+    def __init__(self, model, num_templates, language, **config):
         self.__llm_service: OpenAIChatService = llm_factory.factory.create(model, **config)
+        self.__num_templates = num_templates
+        self.__language = language
 
-    def execute(self, concern, communities, context, scenarios, num_templates, language, fake_markup):
+    def execute(self, concern, communities, context, scenarios, fake_markup):
         augmentation_prompt_template = PromptIOManager.load_augmentation_prompt()
         augmentation_prompt = augmentation_prompt_template.format(
             concern=concern,
             sensitive_communities=', '.join(communities),
-            num_templates=num_templates,
+            num_templates=self.__num_templates,
             #language=language,
             fake_markup=fake_markup,
             first_community=communities[0],
