@@ -65,6 +65,16 @@
         "model": "mistral"
     },
     {
+        "key": "OLlamaLlama3.1",
+        "provider": "OLlama",
+        "model": "llama3.1:latest"
+    },
+    {
+        "key": "OLlamaLlama3.2",
+        "provider": "OLlama",
+        "model": "llama3.2:latest"
+    },
+    {
         "key": "HuggingFaceFlanT5Base",
         "provider": "HuggingFace",
         "model": "google/flan-t5-base",
