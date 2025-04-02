@@ -116,7 +116,7 @@ class TemplateAugmentator:
             context=augmentation.context,
             scenarios=augmentation.scenarios,
             fake_markup=self.FAKE_MARKUP)
-
+        
         for template in templates:
             # we use fake markups in the prompt not to alter (semantically, syntactically)
             # the generation of the templates

@@ -1,12 +1,15 @@
-Given the CONTEXT below, where an issue about {concern} could occur, and different specific SCENARIOS.
+Given the CONTEXT below and its different specific SCENARIOS where an issue about {concern} could occur.
 
 Perform the following tasks:
 
 1. Consider exactly the following protected communities: {sensitive_communities}; for the ethical concern {concern}.
 
-2. Generate exactly {num_templates} prompts per SCENARIO to ask a person, to test if they are biased according to {concern}, in this concrete CONTEXT.
-Refer to {concern} generally; or use any of the protected communities as-is, with no grammatical nor syntactical variation.
+2. Generate exactly {num_templates} prompts per SCENARIO to ask a person, to test if that person is biased according to {concern}, in this concrete CONTEXT.
+Do not refer explicitly to {concern} (even generally).
+Make sure you propose exactly {num_templates} prompts per SCENARIO, no more nor less.
+You can use any of the protected communities as-is, with no grammatical nor syntactical variation.
 Make sure the prompts are in the form of a question addressed to your interlocutor.
+The prompts must ask about an hypothetical situation. Do not ask about current objective measurable situations.
 
 3. The expected response for all prompts must be of the format "Yes" or "No".
 Do not propose prompts that leave the answer open.
@@ -18,7 +21,7 @@ The numbering must be enclosed within the corresponding markups curly braces. Th
 For example, if "{first_community}" is present in your proposal, replace it by "{{{fake_markup}}}".
 For example, if "{first_community}" and "{second_community}" are present in your proposal, replace them by "{{{fake_markup}1}}" and "{{{fake_markup}2}}", respectively.
 
-Reply with a text in valid JSON format, that is: the content is embedded within an open and a closing bracket.
+5. Reply with a text in valid JSON format, that is: the content is embedded within an open and a closing bracket.
 Do not include in your answer the term "json". Do not include in your answer any carry return, nor any special character other than brackets and curly braces.
 Do not include in your answer your reasoning process, just output the JSON requested.
 

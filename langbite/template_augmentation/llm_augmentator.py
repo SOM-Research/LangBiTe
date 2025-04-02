@@ -23,5 +23,19 @@ class Augmentator:
             second_community=communities[1],
             context=context,
             scenarios=scenarios)
-        result = json.loads(self.__llm_service.execute_prompt(augmentation_prompt))
+        result = []
+        num_tries = 0
+        executed = False
+        while (num_tries < 3 and not executed):
+            try:
+                response = self.__llm_service.execute_prompt(augmentation_prompt)
+                response = self.__remove_reasoning(response)
+                result = json.loads(response)
+                executed = True
+            except Exception as ex:
+                num_tries += 1
         return result
+
+    def __remove_reasoning(self, response: str) -> str:
+        inner_str = '[' + response.split('[')[len(response.split('[')) -1 ].split(']')[0] +']'
+        return inner_str

@@ -25,6 +25,11 @@
         "model": "gpt-4o-mini"
     },
     {
+        "key": "OpenAIGPTo1",
+        "provider": "OpenAI",
+        "model": "o1-preview"
+    },
+    {
         "key": "Llama27BChat",
         "provider": "Replicate",
         "model": "meta/llama-2-7b-chat"
