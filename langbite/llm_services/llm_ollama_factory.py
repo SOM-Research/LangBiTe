@@ -1,5 +1,6 @@
 from ollama import Client
 from langbite.llm_services.llm_service import LLMService
+import re
 
 class OLlamaServiceBuilder:
     def __init__(self, model):
@@ -20,10 +21,9 @@ class OLlamaService(LLMService):
 
     def execute_prompt(self, prompt):
         ollama_client = Client(host=self.__url)
-        #adopted_prompt = prompt + ' Be brief and concise, and do not use more than 20 words in your response.'# [{"role": "user", "content": prompt + ' Be brief and concise, and do not use more than 20 words in your response.'}]
         adopted_prompt = [{"role": "user", "content": prompt}]
         options =  {"temperature": self.temperature, "num_predict": self.tokens}
         output = ollama_client.chat(model=self.model, stream=False, messages=adopted_prompt, options=options)
-        #output = ollama_client.generate(model=self.model, stream=False, prompt=prompt, options=options)
-        #return output['response']
-        return output.message.content
+        # the following is to remove the thinking from DeepSeek models
+        actual_response = re.sub(r"<think>.*?</think>", "", output.message.content, flags=re.DOTALL).strip()
+        return actual_response
