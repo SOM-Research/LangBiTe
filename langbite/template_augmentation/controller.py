@@ -65,7 +65,7 @@ class TemplateAugmentator:
         time_ini = datetime.now()
 
         api_keys = Secrets.load_api_keys()
-        self.__augmentator = Augmentator(self.__augmentation.llm, self.__augmentation.num_templates, self.__augmentation.language, **api_keys)
+        self.__augmentator = Augmentator(self.__augmentation.llm, self.__augmentation.num_templates, self.__augmentation.language, self.__augmentation.additional_instructions, **api_keys)
 
         for aug in self.__augmentation.augmentations:
             self.__result += (self.__generate_templates(aug))

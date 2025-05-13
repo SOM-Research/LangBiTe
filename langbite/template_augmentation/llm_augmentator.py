@@ -5,11 +5,25 @@ import json
 
 
 class Augmentator:
+
+    START = 6
+
+    @property
+    def additional_instructions(self):
+        return self.__additional_instructions
     
-    def __init__(self, model, num_templates, language, **config):
+    @additional_instructions.setter
+    def additional_instructions(self, value):
+        if value is not None:
+            self.__additional_instructions = '\n\n'.join(f"{i+self.START}. {s}" for i, s in enumerate(value))
+        else:
+            self.__additional_instructions = ''
+    
+    def __init__(self, model, num_templates, language, additional_instructions, **config):
         self.__llm_service: OpenAIChatService = llm_factory.factory.create(model, **config)
         self.__num_templates = num_templates
         self.__language = language
+        self.additional_instructions = additional_instructions
 
     def execute(self, concern, communities, context, scenarios, fake_markup):
         augmentation_prompt_template = PromptIOManager.load_augmentation_prompt()
@@ -22,7 +36,8 @@ class Augmentator:
             first_community=communities[0],
             second_community=communities[1],
             context=context,
-            scenarios=scenarios)
+            scenarios=scenarios,
+            additional_instructions=self.additional_instructions)
         result = []
         num_tries = 0
         executed = False

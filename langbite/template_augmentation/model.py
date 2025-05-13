@@ -51,11 +51,12 @@ class Augmentation:
     def augmentations(self, value: list[AugmentationPair]):
         self.__augmentations = value
 
-    def __init__(self, language, llm, num_templates, **ignore):
+    def __init__(self, language, llm, num_templates, additional_instructions = None, **ignore):
         self.language = language
         self.llm = llm
         self.num_templates = num_templates
         self.__augmentations = []
+        self.additional_instructions = additional_instructions
     
     def add_augmentation(self, value: AugmentationPair):
         self.__augmentations.append(value)

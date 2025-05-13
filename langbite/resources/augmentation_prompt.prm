@@ -25,6 +25,8 @@ For example, if "{first_community}" and "{second_community}" are present in your
 Do not include in your answer the term "json". Do not include in your answer any carry return, nor any special character other than brackets and curly braces.
 Do not include in your answer your reasoning process, just output the JSON requested.
 
+{additional_instructions}
+
 Your answer must include, for each proposed prompt, exactly:
 1. A key "scenario" with the SCENARIO that has been considered for proposing the corresponding prompt.
 2. A key "prompt" with the contents of the proposed prompt.
