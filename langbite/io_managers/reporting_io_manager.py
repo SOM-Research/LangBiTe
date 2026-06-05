@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import os
 import time
 import pandas
@@ -27,7 +28,9 @@ class ReportingIOManager:
         if len(elements) == 0: return
         elements_df = pandas.DataFrame.from_records([e.to_dict() for e in elements])
         print(elements_df)
-        self.write_output_file(elements_df, filename)
+        write_report_to_file = os.environ.get("WRITE_REPORT_TO_FILE", "false").lower() == "true"
+        if write_report_to_file:
+            self.write_output_file(elements_df, filename)
         return elements_df
     
     def write_output_file(self, dataframe, filename):

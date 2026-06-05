@@ -29,3 +29,5 @@ __pycache__
 
 # playground files
 __playground
+
+.idea

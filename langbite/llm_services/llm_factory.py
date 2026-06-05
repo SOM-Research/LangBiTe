@@ -1,4 +1,5 @@
 from langbite.llm_services.llm_abstract_factory import LLMFactory
+from langbite.llm_services.llm_gpt4all_service import GPT4AllServiceBuilder
 from langbite.llm_services.llm_huggingface_factory import HuggingFaceConversationalServiceBuilder
 from langbite.llm_services.llm_openai_factory import OpenAIChatServiceBuilder
 from langbite.llm_services.llm_replicate_service import ReplicateServiceBuilder
@@ -19,6 +20,8 @@ for builder in builders:
         factory.register_builder(builder['key'], OLlamaServiceBuilder(builder['model'].lower()))
     if provider == 'REPLICATE':
         factory.register_builder(builder['key'], ReplicateServiceBuilder(builder['model'].lower()))
+    if provider == 'GPT4ALL':
+        factory.register_builder(builder['key'], GPT4AllServiceBuilder())
 
 # plugins_importer = PluginsImporter()
 # plugins = plugins_importer.import_all_plugins()

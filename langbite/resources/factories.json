@@ -126,5 +126,9 @@
         "provider": "HuggingFace",
         "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
         "inference_api_url": "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"
+    },
+    {
+        "key": "GPT4ALL",
+        "provider": "GPT4ALL"
     }
 ]
